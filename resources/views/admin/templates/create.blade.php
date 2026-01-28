@@ -4,14 +4,8 @@
     <div class="container">
         <h2>Upload Template Photobooth</h2>
 
-        {{-- @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif --}}
-
         @if ($errors->any())
-            <div class="alert alert-danger">
-                {{ implode(', ', $errors->all()) }}
-            </div>
+            <div class="alert alert-danger">{{ implode(', ', $errors->all()) }}</div>
         @endif
 
         <form method="POST" action="{{ route('admin.templates.upload') }}" enctype="multipart/form-data"
@@ -46,7 +40,7 @@
                 <button type="button" onclick="removeSelected()">🗑 Hapus</button>
             </div>
 
-            <canvas id="canvas" style="border:1px solid #aaa;"></canvas>
+            <canvas id="canvas" style="border:1px solid #aaa"></canvas>
 
             <br><br>
             <button class="btn btn-primary">Simpan Template</button>
@@ -56,74 +50,93 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 
     <script>
+        /* ===============================
+       FABRIC GLOBAL CONFIG
+    ================================ */
+        fabric.Object.prototype.originX = 'left';
+        fabric.Object.prototype.originY = 'top';
+        fabric.Object.prototype.transparentCorners = false;
+        fabric.Object.prototype.cornerColor = 'green';
+        fabric.Object.prototype.borderColor = 'green';
+        fabric.Object.prototype.cornerSize = 10;
+
+        /* ===============================
+           CANVAS
+        ================================ */
         const canvas = new fabric.Canvas('canvas');
         let SCALE = 1;
 
+        /* ===============================
+           LOAD TEMPLATE IMAGE
+        ================================ */
         document.getElementById('templateInput').addEventListener('change', e => {
             const reader = new FileReader();
             reader.onload = ev => {
                 fabric.Image.fromURL(ev.target.result, img => {
+
+                    canvas.clear();
+
                     const maxWidth = 900;
                     SCALE = maxWidth / img.width;
 
                     canvas.setWidth(img.width * SCALE);
                     canvas.setHeight(img.height * SCALE);
 
-                    img.scale(SCALE);
+                    img.set({
+                        scaleX: SCALE,
+                        scaleY: SCALE,
+                        originX: 'left',
+                        originY: 'top',
+                        selectable: false,
+                        evented: false
+                    });
+
                     canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
                 });
             };
             reader.readAsDataURL(e.target.files[0]);
         });
 
+        /* ===============================
+           ADD FRAMES
+        ================================ */
         function addRect() {
-            const r = new fabric.Rect({
+            canvas.add(new fabric.Rect({
                 left: 50,
                 top: 50,
                 width: 300 * SCALE,
                 height: 200 * SCALE,
-                fill: 'rgba(0, 255, 0, 0.35)', // hijau transparan
-                selectable: true,
-                hasControls: true,
+                fill: 'rgba(0,255,0,0.35)',
                 data: {
                     shape: 'rect'
                 }
-            });
-            canvas.add(r).setActiveObject(r);
+            })).setActiveObject(canvas.getObjects().slice(-1)[0]);
         }
 
-
         function addCircle() {
-            const c = new fabric.Ellipse({
+            canvas.add(new fabric.Ellipse({
                 left: 100,
                 top: 100,
                 rx: 150 * SCALE,
                 ry: 150 * SCALE,
-                fill: 'rgba(0, 255, 0, 0.35)', // hijau transparan
-                selectable: true,
-                hasControls: true,
+                fill: 'rgba(0,255,0,0.35)',
                 data: {
                     shape: 'circle'
                 }
-            });
-            canvas.add(c).setActiveObject(c);
+            })).setActiveObject(canvas.getObjects().slice(-1)[0]);
         }
 
-        fabric.Object.prototype.set({
-            transparentCorners: false,
-            cornerColor: 'green',
-            cornerStrokeColor: '#006400',
-            borderColor: 'green',
-            cornerSize: 10
-        });
-
-
-
+        /* ===============================
+           REMOVE
+        ================================ */
         function removeSelected() {
             const o = canvas.getActiveObject();
             if (o) canvas.remove(o);
         }
 
+        /* ===============================
+           PREPARE FRAMES (🔥 FIX UTAMA)
+        ================================ */
         function prepareFrames() {
             const objects = canvas.getObjects();
 
@@ -133,19 +146,11 @@
             }
 
             const frames = objects.map(o => {
-                let w = o.type === 'rect' ?
-                    o.width * o.scaleX :
-                    o.rx * 2 * o.scaleX;
-
-                let h = o.type === 'rect' ?
-                    o.height * o.scaleY :
-                    o.ry * 2 * o.scaleY;
-
                 return {
                     x: Math.round(o.left / SCALE),
                     y: Math.round(o.top / SCALE),
-                    width: Math.round(w / SCALE),
-                    height: Math.round(h / SCALE),
+                    width: Math.round(o.getScaledWidth() / SCALE),
+                    height: Math.round(o.getScaledHeight() / SCALE),
                     shape: o.data.shape
                 };
             });

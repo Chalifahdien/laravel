@@ -61,11 +61,20 @@
                         <td>
                             <a href="#" class="btn btn-sm btn-info">👁</a>
                             <a href="/templates/{{ $t->id }}/edit" class="btn btn-sm btn-warning">✏️</a>
-                            <form action="#" method="POST" class="d-inline">
+                            <form method="POST" action="{{ route('admin.templates.toggle', $t->id) }}" class="d-inline">
+                                @csrf
+                                @method('PATCH')
+                                <button class="btn btn-sm btn-info">
+                                    {{ $t->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                </button>
+                            </form>
+
+                            <form method="POST" action="{{ route('admin.templates.destroy', $t->id) }}" class="d-inline"
+                                onsubmit="return confirm('Hapus template ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus template?')">
-                                    🗑
+                                <button class="btn btn-sm btn-danger">
+                                    Hapus
                                 </button>
                             </form>
                         </td>

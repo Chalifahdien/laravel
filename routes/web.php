@@ -45,4 +45,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         TemplateUploadController::class,
         'update'
     ])->name('admin.templates.update');
+
+    Route::delete('/templates/{template}', [TemplateUploadController::class, 'destroy'])->name('admin.templates.destroy');
+    Route::patch('/templates/{template}/toggle', [TemplateUploadController::class, 'toggle'])->name('admin.templates.toggle');
+
 });
