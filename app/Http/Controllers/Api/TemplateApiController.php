@@ -23,7 +23,7 @@ class TemplateApiController extends Controller
             $templates->map(fn($t) => [
                 'id' => $t->id,
                 'name' => $t->name,
-                'preview_image' => $t->preview_image
+                'template_image' => $t->preview_image
                     ? asset('storage/' . $t->preview_image)
                     : null,
                 'frame_count' => $t->frame_count,
