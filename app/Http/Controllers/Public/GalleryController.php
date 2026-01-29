@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Public;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\PhotoSession;
-use Illuminate\Support\Facades\Storage;
+use App\Models\SessionPhoto;
 
 class GalleryController extends Controller
 {
     /**
-     * HALAMAN GALERI HASIL FOTO
+     * HALAMAN GALERI FOTO
      */
     public function show($session_id)
     {
-        $session = PhotoSession::with([
-            'photos.frame',
-            'finalImage'
-        ])->where('id', $session_id)
-            ->where('status', 'FINISHED')
-            ->firstOrFail();
+        $session = PhotoSession::with(['photos', 'finalImage'])
+            ->findOrFail($session_id);
 
         return view('public.gallery', compact('session'));
     }
@@ -28,9 +23,8 @@ class GalleryController extends Controller
      */
     public function downloadFrame($photo_id)
     {
-        $photo = \App\Models\SessionPhoto::findOrFail($photo_id);
-
-        $path = storage_path("app/public/{$photo->photo_path}");
+        $photo = SessionPhoto::findOrFail($photo_id);
+        $path = storage_path('app/public/' . $photo->photo_path);
 
         abort_if(!file_exists($path), 404);
 
@@ -38,15 +32,16 @@ class GalleryController extends Controller
     }
 
     /**
-     * DOWNLOAD FINAL IMAGE
+     * DOWNLOAD FOTO FINAL
      */
     public function downloadFinal($session_id)
     {
-        $session = PhotoSession::with('finalImage')->findOrFail($session_id);
+        $session = PhotoSession::with('finalImage')
+            ->findOrFail($session_id);
 
         abort_if(!$session->finalImage, 404);
 
-        $path = storage_path("app/public/{$session->finalImage->image_path}");
+        $path = storage_path('app/public/' . $session->finalImage->image_path);
 
         abort_if(!file_exists($path), 404);
 
