@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
 
@@ -75,3 +76,19 @@ Route::middleware(['auth'])
         Route::delete('/machines/{machine}', [AdminMachineController::class, 'destroy'])
             ->name('machines.destroy');
     });
+
+
+Route::get(
+    'photo-sessions/{session_id}/download/',
+    [GalleryController::class, 'show']
+)->name('gallery.show');
+
+Route::get(
+    '/gallery/frame/{photo_id}/download',
+    [GalleryController::class, 'downloadFrame']
+)->name('gallery.frame.download');
+
+Route::get(
+    '/gallery/{session_id}/final/download',
+    [GalleryController::class, 'downloadFinal']
+)->name('gallery.final.download');
