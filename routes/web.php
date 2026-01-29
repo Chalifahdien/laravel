@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Public\GaleriController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-// use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
 
@@ -80,15 +80,15 @@ Route::middleware(['auth'])
 
 Route::get(
     'photo-sessions/{session_id}/download/',
-    [AdminMachineController::class, 'show']
+    [GaleriController::class, 'show']
 )->name('gallery.show');
 
 Route::get(
     '/gallery/frame/{photo_id}/download',
-    [AdminMachineController::class, 'downloadFrame']
+    [GaleriController::class, 'downloadFrame']
 )->name('gallery.frame.download');
 
 Route::get(
     '/gallery/{session_id}/final/download',
-    [AdminMachineController::class, 'downloadFinal']
+    [GaleriController::class, 'downloadFinal']
 )->name('gallery.final.download');
