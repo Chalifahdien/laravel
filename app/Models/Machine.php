@@ -10,6 +10,7 @@ class Machine extends Model
         'name',
         'slug',
         'paper_size_id',
+        'amount',
         'is_active'
     ];
 
