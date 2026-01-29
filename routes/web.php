@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
 
