@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\TemplateApiController;
 use App\Http\Controllers\Api\PhotoSessionController;
 
 Route::get('/user', function (Request $request) {
