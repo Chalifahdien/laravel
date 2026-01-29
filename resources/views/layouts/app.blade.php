@@ -13,7 +13,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>STARTER KIT</title>
+    <title>YASHA SNAP</title>
     <!-- Favicon -->
     {{-- <link rel="icon" type="image/png" href="{{ asset('logo/image.png') }}"> --}}
     <!-- CSS files -->
@@ -41,7 +41,7 @@
     </div>
     <script src="{{ asset('dist/js/tabler.min.js') }}"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const toast = document.getElementById("toast-simple");
 
             if (toast) {
