@@ -22,12 +22,12 @@
                                 New view
                             </a>
                         </span>
-                        <a href="#" class="btn btn-outline-primary btn-5 d-none d-sm-inline-block" data-bs-toggle="modal"
-                            data-bs-target="#modal-report">
+                        <a href="#" class="btn btn-outline-primary btn-5 d-none d-sm-inline-block"
+                            data-bs-toggle="modal" data-bs-target="#modal-report">
                             <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-2">
                                 <path d="M12 5l0 14" />
                                 <path d="M5 12l14 0" />
                             </svg>
@@ -40,9 +40,9 @@
                         <a href="#" class="btn btn-primary btn-6 d-sm-none btn-icon" data-bs-toggle="modal"
                             data-bs-target="#modal-report" aria-label="Create new report">
                             <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-2">
                                 <path d="M12 5l0 14" />
                                 <path d="M5 12l14 0" />
                             </svg>
@@ -151,9 +151,9 @@
                                     </a>
                                     <a href="#" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
                                         <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" class="icon icon-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
                                             <path d="M12 5l0 14" />
                                             <path d="M5 12l14 0" />
                                         </svg>

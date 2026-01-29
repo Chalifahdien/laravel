@@ -33,14 +33,17 @@ class TemplateUploadController extends Controller
 
         return view('admin.templates.edit', [
             'template' => $template,
-            'frames' => $template->frames
+            'frames' => $template->frames,
+            'paperSizes' => PaperSize::where('is_active', 1)->get()
         ]);
     }
 
     public function update(Request $request, Template $template)
     {
         $request->validate([
-            'frames' => 'required|json'
+            'frames' => 'required|json',
+            'name' => 'required|string|max:100',
+            'paper_size_id' => 'required|exists:paper_sizes,id',
         ]);
 
         $frames = json_decode($request->frames, true);
@@ -59,7 +62,9 @@ class TemplateUploadController extends Controller
         }
 
         $template->update([
-            'frame_count' => count($frames)
+            'frame_count' => count($frames),
+            'paper_size_id' => $request->paper_size_id,
+            'name' => $request->name,
         ]);
 
         return redirect()

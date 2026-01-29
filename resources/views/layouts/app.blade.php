@@ -32,11 +32,6 @@
 
         <div class="page-wrapper">
             @yield('content')
-            <footer class="footer footer-transparent d-print-none">
-                <div class="container-xl">
-                    Footer
-                </div>
-            </footer>
         </div>
     </div>
     <script src="{{ asset('dist/js/tabler.min.js') }}"></script>
