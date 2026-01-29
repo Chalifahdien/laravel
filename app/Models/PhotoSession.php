@@ -38,8 +38,9 @@ class PhotoSession extends Model
 
     public function finalImage()
     {
-        return $this->hasOne(FinalImage::class);
+        return $this->hasOne(FinalImage::class, 'session_id');
     }
+
 
     public function download()
     {
