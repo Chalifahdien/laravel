@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
 
 
@@ -50,3 +51,27 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/templates/{template}/toggle', [TemplateUploadController::class, 'toggle'])->name('admin.templates.toggle');
 
 });
+
+
+Route::middleware(['auth'])
+    ->group(function () {
+
+        // CRUD Machine
+        Route::get('/machines', [AdminMachineController::class, 'index'])
+            ->name('machines.index');
+
+        Route::get('/machines/create', [AdminMachineController::class, 'create'])
+            ->name('machines.create');
+
+        Route::post('/machines', [AdminMachineController::class, 'store'])
+            ->name('machines.store');
+
+        Route::get('/machines/{machine}/edit', [AdminMachineController::class, 'edit'])
+            ->name('machines.edit');
+
+        Route::put('/machines/{machine}', [AdminMachineController::class, 'update'])
+            ->name('machines.update');
+
+        Route::delete('/machines/{machine}', [AdminMachineController::class, 'destroy'])
+            ->name('machines.destroy');
+    });
