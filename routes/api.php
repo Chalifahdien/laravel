@@ -15,6 +15,8 @@ Route::post('/photo-sessions/start', [PhotoSessionController::class, 'start']);
 Route::get('/photo-sessions/{id}', [PhotoSessionController::class, 'show']);
 
 
-// routes/api.php
-Route::get('/templates', [TemplateApiController::class, 'index']);
-Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
+Route::prefix('templates')->group(function () {
+    Route::get('/', [TemplateApiController::class, 'index']);        // list template aktif
+    Route::get('/{id}', [TemplateApiController::class, 'show']);     // detail template + frames
+});
+
