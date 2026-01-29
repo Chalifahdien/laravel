@@ -4,91 +4,79 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Payment;
 use App\Models\PhotoSession;
-use App\Models\Template;
+use App\Models\SessionPhoto;
+use App\Models\FinalImage;
+use Illuminate\Support\Facades\DB;
 
 class PhotoSessionController extends Controller
 {
-    public function start(Request $request)
+    public function completeSession(Request $request, PhotoSession $session)
     {
         $request->validate([
-            'order_id' => 'required|string',
-            'machine_id' => 'required|exists:machines,id',
+            'frames' => 'required|array',
+            'frames.*' => 'required|image',
+            'final_image' => 'required|image'
         ]);
 
-        // 1️⃣ Ambil payment
-        $payment = Payment::where('order_id', $request->order_id)->first();
+        DB::beginTransaction();
 
-        if (!$payment) {
-            return response()->json([
-                'status' => 'NOT_FOUND',
-                'message' => 'Payment tidak ditemukan'
-            ], 404);
-        }
+        try {
+            /* ============================
+               SAVE FRAME PHOTOS
+            ============================ */
+            foreach ($request->file('frames') as $frameId => $file) {
 
-        if ($payment->transaction_status !== 'PAID') {
-            return response()->json([
-                'status' => 'WAITING_PAYMENT'
-            ], 402);
-        }
+                $path = $file->store(
+                    "sessions/{$session->id}/frames",
+                    'public'
+                );
 
-        // 2️⃣ Cegah double session
-        $existing = PhotoSession::where('payment_id', $payment->id)->first();
-        if ($existing) {
-            return response()->json([
-                'status' => 'READY',
-                'session_id' => $existing->id,
+                SessionPhoto::updateOrCreate(
+                    [
+                        'session_id' => $session->id,
+                        'frame_id' => $frameId
+                    ],
+                    [
+                        'photo_path' => $path
+                    ]
+                );
+            }
+
+            /* ============================
+               SAVE FINAL IMAGE
+            ============================ */
+            $finalPath = $request->file('final_image')
+                ->store("sessions/{$session->id}/final", 'public');
+
+            FinalImage::create([
+                'session_id' => $session->id,
+                'image_path' => $finalPath
             ]);
-        }
 
-        // 3️⃣ Ambil template aktif
-        $template = Template::where('is_active', 1)->first();
+            /* ============================
+               UPDATE SESSION
+            ============================ */
+            $session->update([
+                'status' => 'DONE',
+                'finished_at' => now()
+            ]);
 
-        if (!$template) {
+            DB::commit();
+
+            return response()->json([
+                'status' => 'SUCCESS',
+                'session_id' => $session->id,
+                'final_image' => $finalPath
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'status' => 'ERROR',
-                'message' => 'Template aktif tidak ditemukan'
+                'message' => $e->getMessage()
             ], 500);
         }
-
-        // 4️⃣ Buat session
-        $session = PhotoSession::create([
-            'machine_id' => $request->machine_id,
-            'payment_id' => $payment->id,
-            'template_id' => $template->id,
-            'status' => 'PAID',
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes(5),
-        ]);
-
-        // 5️⃣ Kirim frame ke mesin
-        $frames = $template->frames()->orderBy('frame_order')->get()->map(fn($f) => [
-            'frame_id' => $f->id,
-            'x' => $f->x,
-            'y' => $f->y,
-            'width' => $f->width,
-            'height' => $f->height,
-            'shape' => $f->shape,
-        ]);
-
-        return response()->json([
-            'status' => 'READY',
-            'session_id' => $session->id,
-            'template_id' => $template->id,
-            'expires_at' => $session->expires_at,
-            'frames' => $frames
-        ]);
-    }
-
-    public function show($id)
-    {
-        $session = PhotoSession::with('photos')->find($id);
-
-        if (!$session) {
-            return response()->json(['status' => 'NOT_FOUND'], 404);
-        }
-
-        return response()->json($session);
     }
 }

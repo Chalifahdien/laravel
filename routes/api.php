@@ -21,3 +21,7 @@ Route::prefix('templates')->group(function () {
     Route::get('/{id}', [TemplateApiController::class, 'show']);     // detail template + frames
 });
 
+Route::post(
+    '/sessions/{session}/complete',
+    [PhotoSessionController::class, 'completeSession']
+);
