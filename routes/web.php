@@ -16,8 +16,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/', function () {
-        return view('welcome');
-    });
+        return view('welcome'); });
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::post('/users', [UserController::class, 'store'])->name('user.store');
     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('user.update');
@@ -26,69 +25,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 });
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/templates/create', [TemplateUploadController::class, 'create'])
-        ->name('admin.templates.create');
-
-    Route::post('/templates/upload', [TemplateUploadController::class, 'upload'])
-        ->name('admin.templates.upload');
-
-    Route::get('/templates', [
-        TemplateUploadController::class,
-        'index'
-    ])->name('admin.templates.index');
-
-    Route::get('/templates/{template}/edit', [
-        TemplateUploadController::class,
-        'edit'
-    ])->name('admin.templates.edit');
-
-    Route::put('/templates/{template}', [
-        TemplateUploadController::class,
-        'update'
-    ])->name('admin.templates.update');
-
+Route::middleware(['auth'])->group(function () {
+    // CRUD TEMPLATE
+    Route::get('/templates/create', [TemplateUploadController::class, 'create'])->name('admin.templates.create');
+    Route::post('/templates/upload', [TemplateUploadController::class, 'upload'])->name('admin.templates.upload');
+    Route::get('/templates', [TemplateUploadController::class, 'index'])->name('admin.templates.index');
+    Route::get('/templates/{template}/edit', [TemplateUploadController::class, 'edit'])->name('admin.templates.edit');
+    Route::put('/templates/{template}', [TemplateUploadController::class, 'update'])->name('admin.templates.update');
     Route::delete('/templates/{template}', [TemplateUploadController::class, 'destroy'])->name('admin.templates.destroy');
     Route::patch('/templates/{template}/toggle', [TemplateUploadController::class, 'toggle'])->name('admin.templates.toggle');
 
+    // CRUD Machine
+    Route::get('/machines', [AdminMachineController::class, 'index'])->name('machines.index');
+    Route::get('/machines/create', [AdminMachineController::class, 'create'])->name('machines.create');
+    Route::post('/machines', [AdminMachineController::class, 'store'])->name('machines.store');
+    Route::get('/machines/{machine}/edit', [AdminMachineController::class, 'edit'])->name('machines.edit');
+    Route::put('/machines/{machine}', [AdminMachineController::class, 'update'])->name('machines.update');
+    Route::delete('/machines/{machine}', [AdminMachineController::class, 'destroy'])->name('machines.destroy');
 });
 
-
-Route::middleware(['auth'])
-    ->group(function () {
-
-        // CRUD Machine
-        Route::get('/machines', [AdminMachineController::class, 'index'])
-            ->name('machines.index');
-
-        Route::get('/machines/create', [AdminMachineController::class, 'create'])
-            ->name('machines.create');
-
-        Route::post('/machines', [AdminMachineController::class, 'store'])
-            ->name('machines.store');
-
-        Route::get('/machines/{machine}/edit', [AdminMachineController::class, 'edit'])
-            ->name('machines.edit');
-
-        Route::put('/machines/{machine}', [AdminMachineController::class, 'update'])
-            ->name('machines.update');
-
-        Route::delete('/machines/{machine}', [AdminMachineController::class, 'destroy'])
-            ->name('machines.destroy');
-    });
-
-
-Route::get(
-    'photo-sessions/{session_id}/download/',
-    [GaleriController::class, 'show']
-)->name('gallery.show');
-
-Route::get(
-    '/gallery/frame/{photo_id}/download',
-    [GaleriController::class, 'downloadFrame']
-)->name('gallery.frame.download');
-
-Route::get(
-    '/gallery/{session_id}/final/download',
-    [GaleriController::class, 'downloadFinal']
-)->name('gallery.final.download');
+// PUBLIC ROUETE
+Route::get('photo-sessions/{session_id}/download/', [GaleriController::class, 'show'])->name('gallery.show');
+Route::get('/gallery/frame/{photo_id}/download', [GaleriController::class, 'downloadFrame'])->name('gallery.frame.download');
+Route::get('/gallery/{session_id}/final/download', [GaleriController::class, 'downloadFinal'])->name('gallery.final.download');

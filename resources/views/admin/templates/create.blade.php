@@ -7,14 +7,17 @@
             <div class="row g-2 align-items-center">
 
                 <div class="col">
-                    <div class="page-pretitle">Photobooth</div>
-                    <h2 class="page-title">➕ Upload Template Photobooth</h2>
+                    <div class="page-pretitle">
+                        Photobooth
+                    </div>
+                    <h2 class="page-title">
+                        Upload Template Photobooth
+                    </h2>
                 </div>
 
                 <div class="col-auto ms-auto d-print-none">
-                    <a href="{{ url('/templates') }}" class="btn btn-link">← Kembali</a>
+                    <a href="{{ url('/templates') }}" class="btn btn-link">← Back</a>
                 </div>
-
             </div>
         </div>
     </div>
@@ -169,8 +172,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                            FABRIC CONFIG
-                                                                                                                                                        ================================ */
+                                                                                                                                                                                    FABRIC CONFIG
+                                                                                                                                                                                ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;

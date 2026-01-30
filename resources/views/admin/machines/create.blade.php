@@ -10,13 +10,13 @@
                         Management
                     </div>
                     <h2 class="page-title">
-                        Tambah Mesin Baru
+                        Add New Machine
                     </h2>
                 </div>
 
                 <div class="col-auto ms-auto d-print-none">
-                    <a href="{{ route('machines.index') }}" class="btn btn-outline-secondary">
-                        Kembali
+                    <a href="{{ route('machines.index') }}" class="btn btn-link">
+                        ← Back
                     </a>
                 </div>
             </div>
@@ -41,39 +41,27 @@
                 @csrf
 
                 <div class="card-header">
-                    <h3 class="card-title">Form Tambah Mesin</h3>
+                    <h3 class="card-title">Add Machine Form</h3>
                 </div>
 
                 <div class="card-body">
                     <div class="row row-cards">
 
-                        {{-- Nama --}}
+                        {{-- Name --}}
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Nama Mesin</label>
+                                <label class="form-label">Machine Name</label>
                                 <input type="text" name="name" class="form-control" value="{{ old('name') }}"
                                     placeholder="Photobooth Mall A" required>
                             </div>
                         </div>
 
-                        {{-- Slug --}}
-                        {{-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Slug (unik)</label>
-                                <input type="text" name="slug" class="form-control" value="{{ old('slug') }}"
-                                    placeholder="mall-a-01" required>
-                                <small class="text-secondary">
-                                    Digunakan oleh mesin / device
-                                </small>
-                            </div>
-                        </div> --}}
-
                         {{-- Paper size --}}
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Ukuran Kertas</label>
+                                <label class="form-label">Paper Size</label>
                                 <select name="paper_size_id" class="form-select" required>
-                                    <option value="">-- Pilih ukuran --</option>
+                                    <option value="">-- Select paper size --</option>
                                     @foreach ($paperSizes as $paper)
                                         <option value="{{ $paper->id }}"
                                             {{ old('paper_size_id') == $paper->id ? 'selected' : '' }}>
@@ -87,7 +75,7 @@
                         {{-- Price --}}
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Harga (Rp)</label>
+                                <label class="form-label">Price (IDR)</label>
                                 <input type="number" name="price" class="form-control" value="{{ old('price') }}"
                                     min="1000" placeholder="30000" required>
                             </div>
@@ -98,7 +86,7 @@
                             <div class="mb-3">
                                 <label class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" name="is_active" value="1" checked>
-                                    <span class="form-check-label">Mesin Aktif</span>
+                                    <span class="form-check-label">Active Machine</span>
                                 </label>
                             </div>
                         </div>
@@ -108,7 +96,7 @@
 
                 <div class="card-footer text-end">
                     <button type="submit" class="btn btn-primary">
-                        Simpan Mesin
+                        Save Machine
                     </button>
                 </div>
 

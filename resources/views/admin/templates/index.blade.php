@@ -52,32 +52,32 @@
                     <table class="table table-vcenter table-bordered card-table">
                         <thead>
                             <tr>
-                                <th class="bg-transparent">#</th>
-                                <th class="bg-transparent">Preview</th>
-                                <th class="bg-transparent">Name</th>
-                                <th class="bg-transparent">Paper Size</th>
-                                <th class="bg-transparent">Frame</th>
-                                <th class="bg-transparent">Status</th>
-                                <th class="bg-transparent">Created At</th>
-                                <th class="bg-transparent w-1"></th>
+                                <th>#</th>
+                                <th>Preview</th>
+                                <th>Name</th>
+                                <th>Paper Size</th>
+                                <th>Frame</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th class="w-1"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($templates as $i => $t)
                                 <tr>
-                                    <td class=" text-muted">{{ $i + 1 }}
+                                    <td class="text-muted">{{ $i + 1 }}
                                     </td>
 
-                                    <td class="">
+                                    <td>
                                         <span class="avatar avatar-md"
                                             style="background-image: url('{{ asset('storage/' . $t->template_image) }}')">
                                         </span>
                                     </td>
-                                    <td class="" class="fw-semibold">
+                                    <td class="fw-semibold">
                                         {{ $t->name }}
                                     </td>
 
-                                    <td class="">
+                                    <td>
                                         <div>{{ $t->paperSize->name ?? '-' }}</div>
                                         <div class="text-muted small">
                                             {{ $t->paperSize->width_mm ?? '' }} ×
@@ -85,13 +85,13 @@
                                         </div>
                                     </td>
 
-                                    <td class="">
+                                    <td>
                                         <span class="badge bg-blue-lt">
                                             {{ $t->frame_count }} frame
                                         </span>
                                     </td>
 
-                                    <td class="">
+                                    <td>
 
                                         <form method="POST" action="{{ route('admin.templates.toggle', $t->id) }}">
                                             @csrf
@@ -109,10 +109,10 @@
                                         @endif
                                     </td>
 
-                                    <td class="" class="text-muted">
+                                    <td class="text-muted">
                                         {{ $t->created_at->format('d M Y') }}
                                     </td>
-                                    <td class="">
+                                    <td>
                                         <div class="btn-list flex-nowrap justify-content-end">
                                             <a href="/templates/{{ $t->id }}/edit"
                                                 class="btn btn-icon btn-outline-warning" title="Edit">
@@ -302,22 +302,11 @@
 
     {{-- Model Hapus --}}
     @forelse ($templates as $i => $t)
-        <div class="modal modal-blur fade" id="hapus{{ $t->id }}" tabindex="-1" role="dialog"
-            aria-hidden="true">
+        <div class="modal modal-blur fade" id="hapus{{ $t->id }}" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="modal-body text-center py-4">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
-                        {{-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="icon mb-2 text-danger icon-lg">
-                            <path d="M12 9v4"></path>
-                            <path
-                                d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                            </path>
-                            <path d="M12 16h.01"></path>
-                        </svg> --}}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="icon mb-2 text-danger icon-lg">

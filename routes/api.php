@@ -9,24 +9,13 @@ use App\Http\Controllers\Api\TemplateApiController;
 use App\Http\Controllers\Api\PhotoSessionController;
 use App\Http\Controllers\Api\PhotoSessionStartController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {return $request->user();})->middleware('auth:sanctum');
 
 Route::post('/payments', [PaymentController::class, 'create']);
 Route::get('/payments/{order_id}/check', [PaymentController::class, 'checkStatus']);
 Route::post('/photo-sessions/start', [SessionController::class, 'start']);
 Route::get('/photo-sessions/{id}', [SessionController::class, 'show']);
-
-
-Route::prefix('templates')->group(function () {
-    Route::get('/', [TemplateApiController::class, 'index']);        // list template aktif
-    Route::get('/{id}', [TemplateApiController::class, 'show']);     // detail template + frames
-});
-
-Route::post(
-    '/sessions/{session}/complete',
-    [PhotoSessionStartController::class, 'completeSession']
-);
-
+Route::get('/templates', [TemplateApiController::class, 'index']);
+Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
+Route::post('/sessions/{session}/complete', [PhotoSessionStartController::class, 'completeSession']);
 Route::get('/machines/{id}/detail', [MachineController::class, 'detail']);
