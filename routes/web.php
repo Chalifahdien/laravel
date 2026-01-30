@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Public\GaleriController;
 use App\Http\Controllers\Admin\PaperSizeController;
 use App\Http\Controllers\Admin\AdminMachineController;
@@ -42,12 +43,17 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/machines/{machine}', [AdminMachineController::class, 'update'])->name('machines.update');
     Route::delete('/machines/{machine}', [AdminMachineController::class, 'destroy'])->name('machines.destroy');
 
+    // CRUD Paper Siza
     Route::get('/paper-sizes', [PaperSizeController::class, 'index'])->name('admin.paper-sizes.index');
-    Route::get('/paper-sizes/create', [PaperSizeController::class, 'create'])->name('create');
-    Route::post('/paper-sizes', [PaperSizeController::class, 'store'])->name('store');
-    Route::get('/paper-sizes/{paperSize}/edit', [PaperSizeController::class, 'edit'])->name('admin.paper-sizes.edit');
-    Route::put('/paper-sizes/{paperSize}', [PaperSizeController::class, 'update'])->name('update');
-    Route::delete('/paper-sizes/{paperSize}', [PaperSizeController::class, 'destroy'])->name('destroy');
+    Route::post('/paper-sizes', [PaperSizeController::class, 'store'])->name('admin.paper-sizes.store');
+    Route::put('/paper-sizes/{paperSize}', [PaperSizeController::class, 'update'])->name('admin.paper-sizes.update');
+    Route::delete('/paper-sizes/{paperSize}', [PaperSizeController::class, 'destroy'])->name('admin.paper-sizes.destroy');
+
+    // Gallery 
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('admin.gallery.index');
+    Route::get('/gallery/session/{sessionId}', [GalleryController::class, 'bySession'])->name('admin.gallery.session');
+    Route::put('/gallery/{finalImage}/toggle-printed', [GalleryController::class, 'togglePrinted'])->name('admin.gallery.toggle-printed');
+    Route::delete('/gallery/{finalImage}', [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
 });
 
 // PUBLIC ROUETE

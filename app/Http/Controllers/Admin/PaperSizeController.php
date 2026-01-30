@@ -19,14 +19,6 @@ class PaperSizeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('admin.paper-sizes.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -48,14 +40,6 @@ class PaperSizeController extends Controller
         return redirect()
             ->route('admin.paper-sizes.index')
             ->with('success', 'Paper size created successfully.');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PaperSize $paperSize)
-    {
-        return view('admin.paper-sizes.edit', compact('paperSize'));
     }
 
     /**
@@ -94,15 +78,4 @@ class PaperSizeController extends Controller
             ->with('success', 'Paper size deleted successfully.');
     }
 
-    /**
-     * Toggle active / inactive
-     */
-    public function toggle(PaperSize $paperSize)
-    {
-        $paperSize->update([
-            'is_active' => !$paperSize->is_active
-        ]);
-
-        return back();
-    }
 }
