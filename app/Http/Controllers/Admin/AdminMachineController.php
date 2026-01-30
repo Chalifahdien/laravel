@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class AdminMachineController extends Controller
 {
     /**
-     * LIST MACHINE
+     * LIST MACHINES
      */
     public function index()
     {
@@ -21,7 +21,7 @@ class AdminMachineController extends Controller
     }
 
     /**
-     * FORM CREATE
+     * CREATE FORM
      */
     public function create()
     {
@@ -51,12 +51,12 @@ class AdminMachineController extends Controller
         ]);
 
         return redirect()
-            ->route('machines.index')
-            ->with('success', 'Machine berhasil ditambahkan');
+            ->back()
+            ->with('success', 'Machine successfully added');
     }
 
     /**
-     * FORM EDIT
+     * EDIT FORM
      */
     public function edit(Machine $machine)
     {
@@ -85,8 +85,8 @@ class AdminMachineController extends Controller
         ]);
 
         return redirect()
-            ->route('machines.index')
-            ->with('success', 'Machine berhasil diperbarui');
+            ->back()
+            ->with('success', 'Machine successfully updated');
     }
 
     /**
@@ -98,7 +98,6 @@ class AdminMachineController extends Controller
 
         return redirect()
             ->route('machines.index')
-            ->with('success', 'Machine berhasil dihapus');
+            ->with('success', 'Machine successfully deleted');
     }
-
 }

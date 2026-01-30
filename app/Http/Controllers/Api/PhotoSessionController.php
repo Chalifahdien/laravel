@@ -9,7 +9,7 @@ use App\Models\SessionPhoto;
 use App\Models\FinalImage;
 use Illuminate\Support\Facades\DB;
 
-class PhotoSessionStartController extends Controller
+class PhotoSessionController extends Controller
 {
     public function completeSession(Request $request, PhotoSession $session)
     {

@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\TemplateApiController;
 use App\Http\Controllers\Api\PhotoSessionController;
-use App\Http\Controllers\Api\PhotoSessionStartController;
 
 // Route::get('/user', function (Request $request) {return $request->user();})->middleware('auth:sanctum');
 
@@ -17,5 +16,5 @@ Route::post('/photo-sessions/start', [SessionController::class, 'start']);
 Route::get('/photo-sessions/{id}', [SessionController::class, 'show']);
 Route::get('/templates', [TemplateApiController::class, 'index']);
 Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
-Route::post('/sessions/{session}/complete', [PhotoSessionStartController::class, 'completeSession']);
+Route::post('/sessions/{session}/complete', [PhotoSessionController::class, 'completeSession']);
 Route::get('/machines/{id}/detail', [MachineController::class, 'detail']);

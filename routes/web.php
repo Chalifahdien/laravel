@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Public\GaleriController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Public\GaleriController;
+use App\Http\Controllers\Admin\PaperSizeController;
 use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
 
@@ -14,18 +15,16 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
-        return view('welcome'); });
+        return view('welcome');
+    });
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::post('/users', [UserController::class, 'store'])->name('user.store');
     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::put('/user/reset/{id}', [UserController::class, 'reset'])->name('user.reset');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
-
-});
-Route::middleware(['auth'])->group(function () {
     // CRUD TEMPLATE
     Route::get('/templates/create', [TemplateUploadController::class, 'create'])->name('admin.templates.create');
     Route::post('/templates/upload', [TemplateUploadController::class, 'upload'])->name('admin.templates.upload');
@@ -42,6 +41,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/machines/{machine}/edit', [AdminMachineController::class, 'edit'])->name('machines.edit');
     Route::put('/machines/{machine}', [AdminMachineController::class, 'update'])->name('machines.update');
     Route::delete('/machines/{machine}', [AdminMachineController::class, 'destroy'])->name('machines.destroy');
+
+    Route::get('/paper-sizes', [PaperSizeController::class, 'index'])->name('admin.paper-sizes.index');
+    Route::get('/paper-sizes/create', [PaperSizeController::class, 'create'])->name('create');
+    Route::post('/paper-sizes', [PaperSizeController::class, 'store'])->name('store');
+    Route::get('/paper-sizes/{paperSize}/edit', [PaperSizeController::class, 'edit'])->name('admin.paper-sizes.edit');
+    Route::put('/paper-sizes/{paperSize}', [PaperSizeController::class, 'update'])->name('update');
+    Route::delete('/paper-sizes/{paperSize}', [PaperSizeController::class, 'destroy'])->name('destroy');
 });
 
 // PUBLIC ROUETE

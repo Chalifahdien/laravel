@@ -7,11 +7,13 @@ use App\Models\PaperSize;
 use App\Models\Template;
 use App\Models\TemplateFrame;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TemplateUploadController extends Controller
 {
+    /**
+     * LIST TEMPLATES
+     */
     public function index()
     {
         $templates = Template::with('paperSize')
@@ -20,6 +22,10 @@ class TemplateUploadController extends Controller
 
         return view('admin.templates.index', compact('templates'));
     }
+
+    /**
+     * CREATE FORM
+     */
     public function create()
     {
         return view('admin.templates.create', [
@@ -27,6 +33,9 @@ class TemplateUploadController extends Controller
         ]);
     }
 
+    /**
+     * EDIT FORM
+     */
     public function edit(Template $template)
     {
         $template->load('frames', 'paperSize');
@@ -38,6 +47,9 @@ class TemplateUploadController extends Controller
         ]);
     }
 
+    /**
+     * UPDATE TEMPLATE
+     */
     public function update(Request $request, Template $template)
     {
         $request->validate([
@@ -48,6 +60,7 @@ class TemplateUploadController extends Controller
 
         $frames = json_decode($request->frames, true);
 
+        // delete existing frames
         $template->frames()->delete();
 
         foreach ($frames as $i => $f) {
@@ -68,10 +81,13 @@ class TemplateUploadController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.templates.index')
-            ->with('success', 'Template berhasil diperbarui');
+            ->back()
+            ->with('success', 'Template successfully updated');
     }
 
+    /**
+     * UPLOAD TEMPLATE
+     */
     public function upload(Request $request)
     {
         $request->validate([
@@ -84,7 +100,9 @@ class TemplateUploadController extends Controller
         $frames = json_decode($request->frames, true);
 
         if (!is_array($frames) || count($frames) === 0) {
-            return back()->withErrors(['frames' => 'Minimal 1 frame harus dibuat']);
+            return back()->withErrors([
+                'frames' => 'At least 1 frame must be created'
+            ]);
         }
 
         $path = $request->file('template')->store('templates', 'public');
@@ -111,9 +129,12 @@ class TemplateUploadController extends Controller
 
         return redirect()
             ->route('admin.templates.create')
-            ->with('success', 'Template berhasil disimpan');
+            ->with('success', 'Template successfully saved');
     }
 
+    /**
+     * TOGGLE ACTIVE / INACTIVE
+     */
     public function toggle(Template $template)
     {
         $template->update([
@@ -123,29 +144,29 @@ class TemplateUploadController extends Controller
         return back()->with(
             'success',
             $template->is_active
-            ? 'Template berhasil diaktifkan'
-            : 'Template berhasil dinonaktifkan'
+            ? 'Template successfully activated'
+            : 'Template successfully deactivated'
         );
     }
 
+    /**
+     * DELETE TEMPLATE
+     */
     public function destroy(Template $template)
     {
-        // hapus frame dulu
+        // delete frames first
         $template->frames()->delete();
 
-        // hapus file gambar
+        // delete image file
         if ($template->template_image) {
-            \Storage::disk('public')->delete($template->template_image);
+            Storage::disk('public')->delete($template->template_image);
         }
 
-        // hapus template
+        // delete template
         $template->delete();
 
         return redirect()
             ->route('admin.templates.index')
-            ->with('success', 'Template berhasil dihapus');
+            ->with('success', 'Template successfully deleted');
     }
-
-
-
 }
