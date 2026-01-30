@@ -161,7 +161,7 @@
                             <div class="row g-3">
                                 @forelse ($photoSession->photos as $photo)
                                     <div class="col-md-3 col-sm-4 col-6">
-                                        <img src="{{ asset('storage/' . $photo->image_path) }}" class="img-fluid rounded">
+                                        <img src="{{ asset('storage/' . $photo->photo_path) }}" class="img-fluid rounded">
                                     </div>
                                 @empty
                                     <div class="text-muted text-center">
