@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Public\GaleriController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PaperSizeController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
 
@@ -17,14 +19,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
+    // DASHBOARD
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::post('/users', [UserController::class, 'store'])->name('user.store');
     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::put('/user/reset/{id}', [UserController::class, 'reset'])->name('user.reset');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+    // TRANSACTIONS
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{photoSession}', [TransactionController::class, 'show'])->name('transactions.show');
 
     // CRUD TEMPLATE
     Route::get('/templates/create', [TemplateUploadController::class, 'create'])->name('admin.templates.create');
@@ -49,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/paper-sizes/{paperSize}', [PaperSizeController::class, 'update'])->name('admin.paper-sizes.update');
     Route::delete('/paper-sizes/{paperSize}', [PaperSizeController::class, 'destroy'])->name('admin.paper-sizes.destroy');
 
-    // Gallery 
+    // Gallery
     Route::get('/gallery', [GalleryController::class, 'index'])->name('admin.gallery.index');
     Route::get('/gallery/session/{sessionId}', [GalleryController::class, 'bySession'])->name('admin.gallery.session');
     Route::put('/gallery/{finalImage}/toggle-printed', [GalleryController::class, 'togglePrinted'])->name('admin.gallery.toggle-printed');
