@@ -71,7 +71,7 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="mb-2">
                                     <label class="form-label">Template PNG</label>
                                     <input class="form-control" type="file" name="template" id="templateInput"
                                         accept="image/png" required>
@@ -80,6 +80,14 @@
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 my-3 w-100">
+                            <div class="col w-50">
+                                <a href="{{ url('/templates') }}" class="btn btn-outline-azure w-100">Cancel</a>
+                            </div>
+                            <div class="col w-50">
+                                <button class="btn btn-primary w-100">Save</button>
                             </div>
                         </div>
                     </div>
@@ -132,15 +140,6 @@
 
                         </div>
                     </div>
-
-                    {{-- ACTION --}}
-                    <div class="col-12">
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ url('/templates') }}" class="btn btn-link">Batal</a>
-                            <button class="btn btn-primary">💾 Simpan Template</button>
-                        </div>
-                    </div>
-
                 </div>
             </form>
 
@@ -170,8 +169,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                FABRIC CONFIG
-                                                                                                                            ================================ */
+                                                                                                                                                            FABRIC CONFIG
+                                                                                                                                                        ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;

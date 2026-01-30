@@ -17,9 +17,14 @@
 
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="{{ url('/templates/create') }}" class="btn btn-primary">
-                            <i class="ti ti-plus"></i>
-                            Tambah Template
+                        <a href="{{ url('/templates/create') }}" class="btn btn-indigo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon">
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
+                            </svg>
+                            Add Template
                         </a>
                     </div>
                 </div>
@@ -44,7 +49,7 @@
                     </select>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-vcenter table-mobile-md card-table">
+                    <table class="table table-vcenter table-bordered card-table">
                         <thead>
                             <tr>
                                 <th class="bg-transparent">#</th>
@@ -269,11 +274,7 @@
                 });
 
                 // Footer visibility
-                if (isSearching || totalRows > 10) {
-                    footer.classList.remove('d-none');
-                } else {
-                    footer.classList.add('d-none');
-                }
+                footer.classList.remove('d-none');
 
                 // Info
                 info.innerHTML = `
@@ -341,11 +342,6 @@
                                     </a>
                                 </div>
                                 <div class="col">
-                                    {{-- <form action="{{ route('user.destroy', $t->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-
-                                    </form> --}}
                                     <form method="POST" action="{{ route('admin.templates.destroy', $t->id) }}">
                                         @csrf
                                         @method('DELETE')

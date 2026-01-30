@@ -48,13 +48,11 @@
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="mb-3">
                                     <label class="form-label">Nama Template</label>
                                     <input class="form-control" type="text" name="name"
                                         value="{{ old('name', $template->name) }}" required>
                                 </div>
-
                                 <div class="mb-2">
                                     <label class="form-label">Ukuran Kertas</label>
                                     <select class="form-select" name="paper_size_id" required>
@@ -66,16 +64,14 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                {{--
-                                <div class="mb-3">
-                                    <label class="form-label">Ganti Template PNG (opsional)</label>
-                                    <input class="form-control" type="file" name="template" id="templateInput"
-                                        accept="image/png">
-                                    <div class="form-hint">
-                                        Kosongkan jika tidak ingin mengganti gambar
-                                    </div>
-                                </div> --}}
-
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 my-2 w-100">
+                            <div class="col w-50">
+                                <a href="{{ url('/templates') }}" class="btn btn-outline-azure w-100">Cancel</a>
+                            </div>
+                            <div class="col w-50">
+                                <button class="btn btn-primary w-100">Update</button>
                             </div>
                         </div>
                     </div>
@@ -129,14 +125,6 @@
                         </div>
                     </div>
 
-                    {{-- ACTION --}}
-                    <div class="col-12">
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ url('/templates') }}" class="btn btn-link">Batal</a>
-                            <button class="btn btn-primary">💾 Update Template</button>
-                        </div>
-                    </div>
-
                 </div>
             </form>
 
@@ -166,8 +154,8 @@
 
     <script>
         /* ===============================
-                                    FABRIC GLOBAL CONFIG
-                                ================================ */
+                                                                                                                                                        FABRIC GLOBAL CONFIG
+                                                                                                                                                    ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
