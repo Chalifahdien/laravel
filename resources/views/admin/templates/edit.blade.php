@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex gap-2 my-2 w-100">
+                        <div class="d-flex gap-3 my-3 w-100">
                             <div class="col w-50">
                                 <a href="{{ url('/templates') }}" class="btn btn-outline-azure w-100">Cancel</a>
                             </div>
@@ -154,8 +154,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                        FABRIC GLOBAL CONFIG
-                                                                                                                                                    ================================ */
+                                                                                                                                                                FABRIC GLOBAL CONFIG
+                                                                                                                                                            ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
