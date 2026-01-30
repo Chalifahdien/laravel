@@ -79,9 +79,9 @@
                                     </td>
                                     <td>
                                         @if ($machine->is_active)
-                                            <span class="badge bg-green-lt">Aktif</span>
+                                            <span class="badge bg-green-lt">Active</span>
                                         @else
-                                            <span class="badge bg-orange-lt">Nonaktif</span>
+                                            <span class="badge bg-orange-lt">Inactive</span>
                                         @endif
                                     </td>
                                     <td>
