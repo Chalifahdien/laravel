@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Machine;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Machine;
 
 class MachineController extends Controller
 {
