@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\PaperSizeController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\AdminMachineController;
 use App\Http\Controllers\Admin\TemplateUploadController;
+use App\Http\Controllers\Admin\ReportAnalyticController;
+use App\Http\Controllers\Admin\BannerPromoController;
+use App\Http\Controllers\Admin\InvoiceController;
 
 
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
@@ -28,9 +31,17 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/user/reset/{id}', [UserController::class, 'reset'])->name('user.reset');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
+    // REPORT ANALYTICS
+    Route::get('/report-analytics', [ReportAnalyticController::class, 'index'])->name('admin.report-analytics.index');
+
     // TRANSACTIONS
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/{photoSession}', [TransactionController::class, 'show'])->name('transactions.show');
+    Route::get('/transactions/{photoSession}/invoice', [InvoiceController::class, 'show'])->name('transactions.invoice');
+
+    // INVOICES (list + download)
+    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/{photoSession}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 
     // CRUD TEMPLATE
     Route::get('/templates/create', [TemplateUploadController::class, 'create'])->name('admin.templates.create');
@@ -54,6 +65,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/paper-sizes', [PaperSizeController::class, 'store'])->name('admin.paper-sizes.store');
     Route::put('/paper-sizes/{paperSize}', [PaperSizeController::class, 'update'])->name('admin.paper-sizes.update');
     Route::delete('/paper-sizes/{paperSize}', [PaperSizeController::class, 'destroy'])->name('admin.paper-sizes.destroy');
+
+    // CRUD Banner Promo
+    Route::get('/banner-promo', [BannerPromoController::class, 'index'])->name('admin.banner-promo.index');
+    Route::get('/banner-promo/create', [BannerPromoController::class, 'create'])->name('admin.banner-promo.create');
+    Route::post('/banner-promo', [BannerPromoController::class, 'store'])->name('admin.banner-promo.store');
+    Route::get('/banner-promo/{bannerPromo}/edit', [BannerPromoController::class, 'edit'])->name('admin.banner-promo.edit');
+    Route::put('/banner-promo/{bannerPromo}', [BannerPromoController::class, 'update'])->name('admin.banner-promo.update');
+    Route::delete('/banner-promo/{bannerPromo}', [BannerPromoController::class, 'destroy'])->name('admin.banner-promo.destroy');
+    Route::patch('/banner-promo/{bannerPromo}/toggle', [BannerPromoController::class, 'toggle'])->name('admin.banner-promo.toggle');
 
     // Gallery
     Route::get('/gallery', [GalleryController::class, 'index'])->name('admin.gallery.index');

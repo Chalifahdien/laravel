@@ -15,6 +15,9 @@
                 </div>
 
                 <div class="col-auto ms-auto d-print-none">
+                    <a href="{{ route('transactions.invoice', $photoSession) }}" class="btn btn-primary me-2">
+                        View Invoice
+                    </a>
                     <a href="{{ route('transactions.index') }}" class="btn btn-link">
                         ← Back
                     </a>

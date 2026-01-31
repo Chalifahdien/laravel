@@ -27,4 +27,10 @@ class Machine extends Model
     {
         return $this->hasMany(PhotoSession::class);
     }
+
+    public function bannerPromos()
+    {
+        return $this->belongsToMany(BannerPromo::class, 'banner_promo_machine')
+            ->withTimestamps();
+    }
 }

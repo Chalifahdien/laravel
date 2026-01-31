@@ -125,7 +125,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Session</th>
+                                        <th>Order ID</th>
                                         <th>Machine</th>
                                         <th>Payment</th>
                                         <th>Status</th>
@@ -138,7 +138,7 @@
                                         <tr style="cursor:pointer"
                                             onclick="window.location='{{ route('transactions.show', $session) }}'">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td class="fw-semibold">#{{ $session->id }}</td>
+                                            <td class="fw-semibold">#{{ $session->payment->order_id }}</td>
                                             <td>{{ $session->machine->name ?? '-' }}</td>
                                             <td>
                                                 @if ($session->payment)

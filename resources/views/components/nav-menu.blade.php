@@ -13,7 +13,6 @@
         </span>
     </a>
     <a class="nav-link mb-1  {{ Request::is('transactions*') ? 'aktif' : '' }}" href="/transactions">
-        <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-dollar">
@@ -22,24 +21,40 @@
             <path d="M14.8 8a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
             <path d="M12 6v10" />
         </svg>
-        <!-- </span> -->
         <span class="ms-2 nav-link-title">
             Transactions
         </span>
     </a>
-    {{-- <a class="nav-link mb-1  {{ Request::is('banner-promo') ? 'aktif' : '' }}" href="/banner-promo">
-        <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+    <a class="nav-link mb-1  {{ Request::is('invoices*') ? 'aktif' : '' }}" href="/invoices">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-            <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+            <path d="M9 7h1" />
+            <path d="M9 13h1" />
+            <path d="M13 17h1" />
         </svg>
-        <!-- </span> -->
+        <span class="ms-2 nav-link-title">
+            Invoice
+        </span>
+    </a>
+    <a class="nav-link mb-1  {{ Request::is('banner-promo*') ? 'aktif' : '' }}" href="/banner-promo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-ticket">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 5l0 2" />
+            <path d="M15 11l0 2" />
+            <path d="M15 17l0 2" />
+            <path
+                d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-3a2 2 0 0 0 0 -4v-3a2 2 0 0 1 2 -2" />
+        </svg>
         <span class="ms-2 nav-link-title">
             Banner Promo
         </span>
-    </a> --}}
+    </a>
     <a class="nav-link mb-1  {{ Request::is(patterns: 'templates*') ? 'aktif' : '' }}" href="/templates">
         <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -104,6 +119,21 @@
         <!-- </span> -->
         <span class="ms-2 nav-link-title">
             Paper Sizes
+        </span>
+    </a>
+
+    <a class="nav-link mb-1  {{ Request::is('report-analytics*') ? 'aktif' : '' }}" href="/report-analytics">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 12m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+            <path d="M9 8m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+            <path d="M15 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+            <path d="M4 20h14" />
+        </svg>
+        <span class="ms-2 nav-link-title">
+            Report Analytics
         </span>
     </a>
     {{-- <a class="nav-link mb-1  {{ Request::is(patterns: 'users') ? 'aktif' : '' }}" href="/users">
