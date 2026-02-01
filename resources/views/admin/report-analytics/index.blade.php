@@ -151,7 +151,7 @@
                                 </span>
                                 <div>
                                     <div class="subheader">Total Revenue</div>
-                                    <div class="h1 mb-0 text-success">Rp {{ number_format($totalRevenue, 0, ',', '.') }}
+                                    <div class="h1 mb-0">Rp {{ number_format($totalRevenue, 0, ',', '.') }}
                                     </div>
                                 </div>
                             </div>
