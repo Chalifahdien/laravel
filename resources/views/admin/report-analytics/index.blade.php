@@ -260,8 +260,8 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center text-muted">No data</td>
+                                        <tr class="border-bottom-0">
+                                            <td colspan="3" class="text-center text-muted py-4">No data</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -315,8 +315,8 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center text-muted">No data</td>
+                                        <tr class="border-bottom-0">
+                                            <td colspan="3" class="text-center text-muted py-4">No data</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -347,8 +347,8 @@
                                                 {{ number_format($item['usage_count']) }}</td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center text-muted">No data</td>
+                                        <tr class="border-bottom-0">
+                                            <td colspan="3" class="text-center text-muted py-4">No data</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

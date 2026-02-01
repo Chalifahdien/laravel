@@ -118,7 +118,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="border-bottom-0 text-center text-muted">
+                                    <td colspan="7" class="border-bottom-0 text-center text-muted py-4">
                                         Data mesin belum ada
                                     </td>
                                 </tr>

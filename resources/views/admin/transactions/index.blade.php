@@ -105,7 +105,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted">
+                                    <td colspan="8" class="text-center text-muted py-4">
                                         No transactions found
                                     </td>
                                 </tr>

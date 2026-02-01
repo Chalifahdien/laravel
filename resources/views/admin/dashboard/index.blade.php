@@ -351,7 +351,7 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
+                                        <tr class="border-bottom-0">
                                             <td colspan="8" class="text-center text-muted">
                                                 No recent transactions
                                             </td>

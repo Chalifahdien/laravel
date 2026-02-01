@@ -139,7 +139,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="border-bottom-0 text-center text-muted">
+                                    <td colspan="6" class="border-bottom-0 text-center text-muted py-4">
                                         Paper size data not available
                                     </td>
                                 </tr>
