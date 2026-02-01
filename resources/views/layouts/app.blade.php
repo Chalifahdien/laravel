@@ -21,14 +21,19 @@
     <style>
         @import url('https://rsms.me/inter/inter.css');
     </style>
+    @stack('styles')
 </head>
 
 <body>
     <div class="page">
-        @include('components.alert.error')
-        @include('components.alert.success')
+        <div class="d-print-none">
+            @include('components.alert.error')
+            @include('components.alert.success')
+        </div>
         <!-- Sidebar -->
-        @include('components.sidebar')
+        <div class="d-print-none">
+            @include('components.sidebar')
+        </div>
 
         <div class="page-wrapper">
             @yield('content')
@@ -47,6 +52,7 @@
             }
         });
     </script>
+    @stack('scripts')
 </body>
 
 </html>

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\TemplateUploadController;
 use App\Http\Controllers\Admin\ReportAnalyticController;
 use App\Http\Controllers\Admin\BannerPromoController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
@@ -24,6 +25,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware(['auth'])->group(function () {
     // DASHBOARD
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // PROFILE
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::post('/users', [UserController::class, 'store'])->name('user.store');
