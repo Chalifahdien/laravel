@@ -174,7 +174,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($topMachinesData as $index => $item)
-                                        <tr class="border-bottom-0">
+                                        <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item['name'] }}</td>
                                             <td class="text-end">{{ number_format($item['session_count']) }}</td>
