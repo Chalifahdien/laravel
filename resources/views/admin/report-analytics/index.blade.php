@@ -1,86 +1,82 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $preset = [
+            'last_7' => [
+                'label' => 'Last 7 days',
+                'start' => \Carbon\Carbon::now()->subDays(6)->format('Y-m-d'),
+                'end' => \Carbon\Carbon::now()->format('Y-m-d'),
+            ],
+            'last_30' => [
+                'label' => 'Last 30 days',
+                'start' => \Carbon\Carbon::now()->subDays(30)->format('Y-m-d'),
+                'end' => \Carbon\Carbon::now()->format('Y-m-d'),
+            ],
+            'this_month' => [
+                'label' => 'This month',
+                'start' => \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d'),
+                'end' => \Carbon\Carbon::now()->format('Y-m-d'),
+            ],
+            'last_month' => [
+                'label' => 'Last month',
+                'start' => \Carbon\Carbon::now()->subMonthNoOverflow()->startOfMonth()->format('Y-m-d'),
+                'end' => \Carbon\Carbon::now()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d'),
+            ],
+        ];
+
+        $paymentBadge = [
+            'success' => 'bg-green-lt',
+            'settlement' => 'bg-green-lt',
+            'capture' => 'bg-green-lt',
+            'pending' => 'bg-yellow-lt',
+            'deny' => 'bg-red-lt',
+            'cancel' => 'bg-red-lt',
+            'expire' => 'bg-red-lt',
+            'failure' => 'bg-red-lt',
+            'failed' => 'bg-red-lt',
+        ];
+
+        $sessionBadge = [
+            'done' => 'bg-green-lt',
+            'completed' => 'bg-green-lt',
+            'success' => 'bg-green-lt',
+            'pending' => 'bg-yellow-lt',
+            'processing' => 'bg-azure-lt',
+            'failed' => 'bg-red-lt',
+            'canceled' => 'bg-red-lt',
+            'cancelled' => 'bg-red-lt',
+        ];
+
+        $isPresetActive = function ($p) use ($startDate, $endDate) {
+            return $p['start'] === $startDate && $p['end'] === $endDate;
+        };
+    @endphp
+
     <!-- Page header -->
     <div class="page-header d-print-none">
         <div class="container-xl">
-            <div class="row g-2 align-items-center">
+            <div class="row align-items-center">
                 <div class="col">
-                    <div class="page-pretitle">Report</div>
-                    <h2 class="page-title">Report Analytics</h2>
-                    <div class="text-muted mt-1">
-                        Period:
-                        <span class="fw-semibold">{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }}</span>
-                        –
-                        <span class="fw-semibold">{{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</span>
+                    <div class="page-pretitle">Analytics</div>
+                    <h2 class="page-title mb-1">Report Analytics</h2>
+                    <div class="text-muted small">
+                        Period <strong>{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }}</strong> to
+                        <strong>{{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</strong>
+                        <span class="mx-1">·</span>
+                        Generated {{ now()->format('d M Y H:i') }}
                     </div>
                 </div>
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        <a href="{{ route('admin.report-analytics.index') }}" class="btn btn-outline-secondary">
-                            Reset
-                        </a>
-                        <button type="button" class="btn btn-outline-primary" onclick="window.print()">
-                            Print
-                        </button>
-                    </div>
+                <div class="col-auto d-print-none">
+                    <a href="{{ route('admin.report-analytics.index') }}" class="btn btn-outline-secondary me-1">Reset</a>
+                    <button type="button" class="btn btn-indigo" onclick="window.print()">Print</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Page body -->
-    <div class="page-body">
+    <div class="page-body report-analytics">
         <div class="container-xl">
-
-            @php
-                $preset = [
-                    'last_7' => [
-                        'label' => 'Last 7 days',
-                        'start' => \Carbon\Carbon::now()->subDays(6)->format('Y-m-d'),
-                        'end' => \Carbon\Carbon::now()->format('Y-m-d'),
-                    ],
-                    'last_30' => [
-                        'label' => 'Last 30 days',
-                        'start' => \Carbon\Carbon::now()->subDays(30)->format('Y-m-d'),
-                        'end' => \Carbon\Carbon::now()->format('Y-m-d'),
-                    ],
-                    'this_month' => [
-                        'label' => 'This month',
-                        'start' => \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d'),
-                        'end' => \Carbon\Carbon::now()->format('Y-m-d'),
-                    ],
-                    'last_month' => [
-                        'label' => 'Last month',
-                        'start' => \Carbon\Carbon::now()->subMonthNoOverflow()->startOfMonth()->format('Y-m-d'),
-                        'end' => \Carbon\Carbon::now()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d'),
-                    ],
-                ];
-
-                $paymentBadge = [
-                    'success' => 'bg-green-lt',
-                    'settlement' => 'bg-green-lt',
-                    'capture' => 'bg-green-lt',
-                    'pending' => 'bg-yellow-lt',
-                    'deny' => 'bg-red-lt',
-                    'cancel' => 'bg-red-lt',
-                    'expire' => 'bg-red-lt',
-                    'failure' => 'bg-red-lt',
-                    'failed' => 'bg-red-lt',
-                ];
-
-                $sessionBadge = [
-                    'done' => 'bg-green-lt',
-                    'completed' => 'bg-green-lt',
-                    'success' => 'bg-green-lt',
-                    'pending' => 'bg-yellow-lt',
-                    'processing' => 'bg-azure-lt',
-                    'failed' => 'bg-red-lt',
-                    'canceled' => 'bg-red-lt',
-                    'cancelled' => 'bg-red-lt',
-                ];
-            @endphp
-
             {{-- Period filter --}}
             <div class="card mb-3">
                 <div class="card-header">
@@ -117,46 +113,103 @@
                 </div>
             </div>
 
-            {{-- Summary cards --}}
-            <div class="row row-deck row-cards mb-3">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="subheader">Total Sessions</div>
-                            <div class="h1 mb-0">{{ number_format($totalSessions) }}</div>
+            {{-- Stat cards --}}
+            <div class="row row-deck">
+                <div class="col-6 col-xl-3">
+                    <div class="card mb-3">
+                        <div class="card-body py-3">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-blue-lt text-blue avatar me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M3 12h4l3 8l4 -16l3 8h4" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <div class="subheader">Total Sessions</div>
+                                    <div class="h1 mb-0">{{ number_format($totalSessions) }}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="subheader">Total Revenue</div>
-                            <div class="h2 mb-0">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
+                <div class="col-6 col-xl-3">
+                    <div class="card mb-3">
+                        <div class="card-body py-3">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-green-lt text-green avatar me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                        <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                        <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <div class="subheader">Total Revenue</div>
+                                    <div class="h1 mb-0 text-success">Rp {{ number_format($totalRevenue, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="subheader">Successful Transactions</div>
-                            <div class="h1 mb-0">{{ number_format($successfulPayments) }}</div>
+                <div class="col-6 col-xl-3">
+                    <div class="card mb-3">
+                        <div class="card-body py-3">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-cyan-lt text-cyan avatar me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <div class="subheader">Successful Transactions</div>
+                                    <div class="h1 mb-0">{{ number_format($successfulPayments) }}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="subheader">Avg. Revenue per Session</div>
-                            <div class="h2 mb-0">Rp {{ number_format($avgRevenuePerSession, 0, ',', '.') }}</div>
+                <div class="col-6 col-xl-3">
+                    <div class="card mb-3">
+                        <div class="card-body py-3">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-purple-lt text-purple avatar me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+                                        <path
+                                            d="M9 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+                                        <path
+                                            d="M15 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+                                        <path d="M4 20h14" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <div class="subheader">Avg per Session</div>
+                                    <div class="h1 mb-0">Rp {{ number_format($avgRevenuePerSession, 0, ',', '.') }}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{-- Charts --}}
-            <div class="row row-deck row-cards mb-3">
+            <div class="row row-deck">
                 <div class="col-lg-6">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Sessions per Day</h3>
                         </div>
@@ -166,7 +219,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Revenue per Day</h3>
                         </div>
@@ -178,9 +231,9 @@
             </div>
 
             {{-- Payment status & Session status --}}
-            <div class="row row-deck row-cards mb-3">
+            <div class="row row-deck">
                 <div class="col-lg-6">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Payment Status</h3>
                         </div>
@@ -217,7 +270,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Session Status</h3>
                         </div>
@@ -238,9 +291,9 @@
             </div>
 
             {{-- Top machines & Top templates --}}
-            <div class="row row-deck row-cards">
+            <div class="row row-deck">
                 <div class="col-lg-6">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Top Machines (by Sessions)</h3>
                         </div>
@@ -272,7 +325,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Top Templates (by Usage)</h3>
                         </div>
@@ -307,6 +360,7 @@
 
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -314,8 +368,21 @@
             const sessionsData = @json($dateRange->pluck('total'));
             const revenueData = @json($revenueChartData->values());
 
+            const chartDefaults = {
+                chart: {
+                    fontFamily: 'inherit'
+                },
+                grid: {
+                    strokeDashArray: 4
+                },
+                tooltip: {
+                    theme: 'light'
+                }
+            };
+
             if (document.getElementById('chart-sessions') && typeof ApexCharts !== 'undefined') {
                 new ApexCharts(document.getElementById('chart-sessions'), {
+                    ...chartDefaults,
                     chart: {
                         type: 'area',
                         height: 280,
@@ -333,9 +400,6 @@
                         curve: 'smooth',
                         width: 2
                     },
-                    grid: {
-                        strokeDashArray: 4
-                    },
                     series: [{
                         name: 'Sessions',
                         data: sessionsData
@@ -351,11 +415,12 @@
                     fill: {
                         type: 'gradient',
                         gradient: {
-                            opacityFrom: 0.35,
+                            opacityFrom: 0.4,
                             opacityTo: 0.05
                         }
                     },
                     tooltip: {
+                        ...chartDefaults.tooltip,
                         y: {
                             formatter: function(v) {
                                 return v + ' sessions';
@@ -367,6 +432,7 @@
 
             if (document.getElementById('chart-revenue') && typeof ApexCharts !== 'undefined') {
                 new ApexCharts(document.getElementById('chart-revenue'), {
+                    ...chartDefaults,
                     chart: {
                         type: 'bar',
                         height: 280,
@@ -377,14 +443,11 @@
                     plotOptions: {
                         bar: {
                             borderRadius: 6,
-                            columnWidth: '60%'
+                            columnWidth: '65%'
                         }
                     },
                     dataLabels: {
                         enabled: false
-                    },
-                    grid: {
-                        strokeDashArray: 4
                     },
                     series: [{
                         name: 'Revenue (Rp)',
@@ -400,15 +463,17 @@
                     yaxis: {
                         labels: {
                             formatter: function(v) {
-                                return new Intl.NumberFormat('id-ID').format(v);
+                                return v >= 1e6 ? (v / 1e6) + 'M' : new Intl.NumberFormat('en-US')
+                                    .format(v);
                             }
                         }
                     },
                     colors: ['#2fb344'],
                     tooltip: {
+                        ...chartDefaults.tooltip,
                         y: {
                             formatter: function(v) {
-                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(v);
+                                return 'Rp ' + new Intl.NumberFormat('en-US').format(v);
                             }
                         }
                     }

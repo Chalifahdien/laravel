@@ -24,7 +24,7 @@
                             </svg>
                             Report Analytics
                         </a>
-                        <a href="{{ route('transactions.index') }}" class="btn btn-primary">
+                        <a href="{{ route('transactions.index') }}" class="btn btn-indigo">
                             <!-- receipt-dollar -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -76,10 +76,10 @@
             {{-- =====================
                 STAT CARDS
             ===================== --}}
-            <div class="row row-deck row-cards">
+            <div class="row row-deck">
 
                 <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -87,7 +87,7 @@
                                         <!-- activity -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M3 12h4l3 8l4 -16l3 8h4" />
                                         </svg>
@@ -103,22 +103,21 @@
                 </div>
 
                 <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="bg-azure-lt text-azure avatar">
-                                        <!-- calendar -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
-                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                            <path d="M16 3v4" />
-                                            <path d="M8 3v4" />
-                                            <path d="M4 11h16" />
-                                            <path d="M8 15h2v2h-2z" />
+                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
+                                            <path d="M16 3l0 4" />
+                                            <path d="M8 3l0 4" />
+                                            <path d="M4 11l16 0" />
+                                            <path d="M8 15h2v2h-2l0 -2" />
                                         </svg>
                                     </span>
                                 </div>
@@ -132,18 +131,17 @@
                 </div>
 
                 <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="bg-cyan-lt text-cyan avatar">
-                                        <!-- device-desktop -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
-                                                d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                                                d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10" />
                                             <path d="M7 20h10" />
                                             <path d="M9 16v4" />
                                             <path d="M15 16v4" />
@@ -160,7 +158,7 @@
                 </div>
 
                 <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -195,9 +193,9 @@
             {{-- =====================
                 REVENUE
             ===================== --}}
-            <div class="row row-deck row-cards mt-3">
+            <div class="row row-deck row-cards">
                 <div class="col-md-6">
-                    <div class="card card-sm">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -205,11 +203,11 @@
                                         <!-- coin -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 12m-7 0a7 3 0 1 0 14 0a7 3 0 1 0 -14 0" />
-                                            <path d="M5 12v4a7 3 0 0 0 14 0v-4" />
-                                            <path d="M5 16v4a7 3 0 0 0 14 0v-4" />
+                                            <path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
                                         </svg>
                                     </span>
                                 </div>
@@ -221,9 +219,8 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-6">
-                    <div class="card card-sm">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -254,9 +251,9 @@
             {{-- =====================
                 ACTIVITY (7 DAYS) + SESSION STATUS
             ===================== --}}
-            <div class="row row-deck row-cards mt-3">
+            <div class="row row-deck ">
                 <div class="col-lg-8">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Sessions (Last 7 Days)</h3>
                             <div class="card-actions">
@@ -270,7 +267,7 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Session Status</h3>
                         </div>
@@ -287,12 +284,11 @@
                         </div>
                     </div>
                 </div>
-
                 {{-- =====================
                     LATEST TRANSACTIONS
                 ===================== --}}
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Latest Transactions</h3>
                             <div class="card-actions">

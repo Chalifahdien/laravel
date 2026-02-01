@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     // TRANSACTIONS
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/{photoSession}', [TransactionController::class, 'show'])->name('transactions.show');
-    Route::get('/transactions/{photoSession}/invoice', [InvoiceController::class, 'show'])->name('transactions.invoice');
+    Route::get('/invoices/{photoSession}/invoice', [InvoiceController::class, 'show'])->name('transactions.invoice');
 
     // INVOICES (list + download)
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
