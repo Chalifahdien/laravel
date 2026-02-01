@@ -25,9 +25,9 @@
 
             @if ($finalImages->isEmpty())
                 <div class="empty">
-                    <div class="empty-img">
+                    {{-- <div class="empty-img">
                         <img src="{{ asset('static/illustrations/undraw_photograph_re_up3b.svg') }}" height="128">
-                    </div>
+                    </div> --}}
                     <p class="empty-title">No images found</p>
                     <p class="empty-subtitle text-secondary">
                         Final images will appear here after photo sessions.
