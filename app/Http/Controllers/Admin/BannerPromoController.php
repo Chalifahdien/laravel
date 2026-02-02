@@ -62,7 +62,10 @@ class BannerPromoController extends Controller
             'end_at' => $validated['end_at'] ?? null,
         ]);
 
-        $bannerPromo->machines()->sync($request->input('machine_ids', []));
+        $machineIds = $request->input('machine_ids', []);
+        $bannerPromo->machines()->sync(
+            empty($machineIds) ? Machine::pluck('id')->toArray() : $machineIds
+        );
 
         return redirect()
             ->back()
@@ -114,7 +117,10 @@ class BannerPromoController extends Controller
         }
 
         $bannerPromo->update($data);
-        $bannerPromo->machines()->sync($request->input('machine_ids', []));
+        $machineIds = $request->input('machine_ids', []);
+        $bannerPromo->machines()->sync(
+            empty($machineIds) ? Machine::pluck('id')->toArray() : $machineIds
+        );
 
         return redirect()
             ->back()
