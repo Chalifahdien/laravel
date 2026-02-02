@@ -34,7 +34,7 @@ class PaperSizeController extends Controller
             'name' => $validated['name'],
             'width_mm' => $validated['width_mm'],
             'height_mm' => $validated['height_mm'],
-            'is_active' => $request->boolean('is_active'),
+            'is_active' => 1,
         ]);
 
         return redirect()
@@ -58,7 +58,7 @@ class PaperSizeController extends Controller
             'name' => $validated['name'],
             'width_mm' => $validated['width_mm'],
             'height_mm' => $validated['height_mm'],
-            'is_active' => $request->boolean('is_active'),
+            'is_active' => 1,
         ]);
 
         return redirect()
