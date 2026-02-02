@@ -147,7 +147,7 @@
                             @empty
                                 <tr>
                                     <td colspan="8" class="border-bottom-0 text-center text-muted py-4">
-                                        Belum ada template
+                                        No templates have been added yet
                                     </td>
                                 </tr>
                             @endforelse

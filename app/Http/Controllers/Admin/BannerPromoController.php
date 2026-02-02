@@ -62,10 +62,14 @@ class BannerPromoController extends Controller
             'end_at' => $validated['end_at'] ?? null,
         ]);
 
+        // Create: tidak ada yang dicentang = tidak ada mesin yang dipilih
         $machineIds = $request->input('machine_ids', []);
-        $bannerPromo->machines()->sync(
-            empty($machineIds) ? Machine::pluck('id')->toArray() : $machineIds
-        );
+        $machineIds = is_array($machineIds)
+            ? array_values(array_filter($machineIds, function ($id) {
+                return $id !== '' && $id !== null;
+            }))
+            : array_filter([$machineIds]);
+        $bannerPromo->machines()->sync($machineIds);
 
         return redirect()
             ->back()
@@ -117,10 +121,14 @@ class BannerPromoController extends Controller
         }
 
         $bannerPromo->update($data);
+
+        // Edit: hanya mesin yang dicentang yang punya banner; yang tidak dicentang dihapus dari pivot
         $machineIds = $request->input('machine_ids', []);
-        $bannerPromo->machines()->sync(
-            empty($machineIds) ? Machine::pluck('id')->toArray() : $machineIds
-        );
+        $machineIds = is_array($machineIds)
+            ? array_values(array_filter($machineIds, function ($id) {
+                return $id !== '' && $id !== null; }))
+            : array_filter([$machineIds]);
+        $bannerPromo->machines()->sync($machineIds);
 
         return redirect()
             ->back()

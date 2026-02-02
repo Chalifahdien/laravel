@@ -96,8 +96,10 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label class="form-label">Show on Machines</label>
-                                <small class="form-hint d-block mb-2">Select which machines will display this banner. Leave
-                                    empty to show on all machines.</small>
+                                <small class="form-hint d-block mb-2">
+                                    Only the selected machines will display this banner. Unchecked machines will be removed
+                                    from the banner.
+                                </small>
                                 <div class="row g-2">
                                     @forelse ($machines as $machine)
                                         <div class="col-md-6 col-lg-4">

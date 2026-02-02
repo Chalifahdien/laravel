@@ -64,7 +64,7 @@
                                     <td class="fw-semibold">{{ $banner->title }}</td>
                                     <td>
                                         @if ($banner->machines->isEmpty())
-                                            <span class="text-muted">All machines</span>
+                                            <span class="text-muted">No machines available</span>
                                         @else
                                             @foreach ($banner->machines as $m)
                                                 <span class="badge bg-blue-lt me-1">{{ $m->name }}</span>
