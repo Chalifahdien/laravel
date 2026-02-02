@@ -54,7 +54,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Machine Name</th>
-                                <th>Slug</th>
+                                <th>ID</th>
                                 <th>Paper Size</th>
                                 <th>Price</th>
                                 <th>Status</th>
@@ -66,7 +66,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td class="fw-semibold">{{ $machine->name }}</td>
-                                    <td class="text-muted">{{ $machine->slug }}</td>
+                                    <td class="text-muted">{{ $machine->id }}</td>
                                     <td>
                                         <div>{{ $machine->paperSize->name ?? '-' }}</div>
                                         <div class="text-muted small">
