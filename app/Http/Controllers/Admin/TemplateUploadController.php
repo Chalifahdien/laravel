@@ -93,7 +93,7 @@ class TemplateUploadController extends Controller
         $request->validate([
             'name' => 'required|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
-            'template' => 'required|image|mimes:png|max:5120',
+            'template' => 'required|image|mimes:png|max:10240',
             'frames' => 'required|json',
         ]);
 
