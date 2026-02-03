@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login | YASHA SNAP</title>
+    <title>Login | MOOEIN SNAP</title>
 
     {{-- Tabler CSS --}}
     <link href="{{ asset('dist/css/admin.css') }}" rel="stylesheet" />
@@ -64,7 +64,7 @@
                     {{-- LEFT BRAND --}}
                     <div class="col-md-5 d-none d-md-flex login-brand align-items-center justify-content-center">
                         <div class="text-center px-4">
-                            <h1>YASHA SNAP</h1>
+                            <h1>MOOEIN SNAP</h1>
                             <p class="mt-3">
                                 Modern Photobooth System<br>
                                 Fast · Interactive · Professional
@@ -134,7 +134,7 @@
                             </form>
 
                             <div class="text-center text-muted mt-4">
-                                © {{ date('Y') }} YASHA SNAP. All rights reserved.
+                                © {{ date('Y') }} MOOEIN SNAP. All rights reserved.
                             </div>
                         </div>
                     </div>
