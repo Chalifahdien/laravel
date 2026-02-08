@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\TemplateUploadController;
 use App\Http\Controllers\Admin\ReportAnalyticController;
 use App\Http\Controllers\Admin\BannerPromoController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\ProfileController;
 
 
@@ -86,6 +87,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gallery/session/{sessionId}', [GalleryController::class, 'bySession'])->name('admin.gallery.session');
     Route::put('/gallery/{finalImage}/toggle-printed', [GalleryController::class, 'togglePrinted'])->name('admin.gallery.toggle-printed');
     Route::delete('/gallery/{finalImage}', [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
+
+    // SYSTEM SETTINGS
+    Route::get('/settings-system', [SystemSettingController::class, 'edit'])->name('admin.settings.system.edit');
+    Route::put('/settings-system', [SystemSettingController::class, 'update'])->name('admin.settings.system.update');
 });
 
 // PUBLIC ROUETE

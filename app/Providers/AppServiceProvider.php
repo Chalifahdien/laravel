@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\SystemSetting;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Share system settings to all views (safe when migrating)
+        try {
+            $settings = SystemSetting::query()->firstOrCreate([], [
+                'system_name' => 'Photobooth',
+            ]);
+        } catch (\Throwable $e) {
+            $settings = null;
+        }
+
+        View::share('systemSettings', $settings);
     }
 }

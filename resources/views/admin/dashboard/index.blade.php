@@ -352,7 +352,7 @@
                                         </tr>
                                     @empty
                                         <tr class="border-bottom-0">
-                                            <td colspan="8" class="text-center text-muted">
+                                            <td colspan="8" class="text-center text-muted py-4">
                                                 No recent transactions
                                             </td>
                                         </tr>

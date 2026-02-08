@@ -13,9 +13,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>YASHA SNAP</title>
+    <title>{{ $systemSettings?->system_name ?? 'MOOEIN SNAP' }}</title>
     <!-- Favicon -->
-    {{-- <link rel="icon" type="image/png" href="{{ asset('logo/image.png') }}"> --}}
+    @if ($systemSettings?->favicon_path)
+        <link rel="icon" href="{{ asset('storage/' . $systemSettings->favicon_path) }}">
+    @endif
     <!-- CSS files -->
     <link href="{{ asset('dist/css/admin.css') }}" rel="stylesheet" />
     <style>
