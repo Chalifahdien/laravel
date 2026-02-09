@@ -97,3 +97,4 @@ Route::middleware(['auth'])->group(function () {
 Route::get('photo-sessions/{session_id}/download/', [GaleriController::class, 'show'])->name('gallery.show');
 Route::get('/gallery/frame/{photo_id}/download', [GaleriController::class, 'downloadFrame'])->name('gallery.frame.download');
 Route::get('/gallery/{session_id}/final/download', [GaleriController::class, 'downloadFinal'])->name('gallery.final.download');
+Route::get('/gallery/{session_id}/live/download', [GaleriController::class, 'downloadLivePhoto'])->name('gallery.live.download');

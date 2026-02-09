@@ -70,12 +70,28 @@
 
     @if ($session->finalImage)
         <div class="final">
-            <h3>✨ Foto Final</h3>
-            <div class="card">
-                <img src="{{ asset('storage/' . $session->finalImage->image_path) }}">
-                <a class="btn" href="{{ route('gallery.final.download', $session->id) }}">
-                    Download Foto Final
-                </a>
+            <h3>✨ Foto Final & Live Photo</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>Foto Final</h4>
+                    <img src="{{ asset('storage/' . $session->finalImage->image_path) }}">
+                    <a class="btn" href="{{ route('gallery.final.download', $session->id) }}">
+                        Download Foto
+                    </a>
+                </div>
+
+                @if ($session->finalImage->video_path)
+                    <div class="card">
+                        <h4>Live Photo</h4>
+                        <video controls style="width: 100%; border-radius: 6px;">
+                            <source src="{{ asset('storage/' . $session->finalImage->video_path) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <a class="btn" href="{{ route('gallery.live.download', $session->id) }}">
+                            Download Live Photo
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     @endif

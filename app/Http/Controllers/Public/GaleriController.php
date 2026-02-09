@@ -48,4 +48,21 @@ class GaleriController extends Controller
 
         return response()->download($path);
     }
+
+    /**
+     * DOWNLOAD VIDEO / LIVE PHOTO
+     */
+    public function downloadLivePhoto($session_id)
+    {
+        $session = PhotoSession::with('finalImage')
+            ->findOrFail($session_id);
+
+        abort_if(!$session->finalImage || !$session->finalImage->video_path, 404);
+
+        $path = storage_path('app/public/' . $session->finalImage->video_path);
+
+        abort_if(!file_exists($path), 404);
+
+        return response()->download($path);
+    }
 }
