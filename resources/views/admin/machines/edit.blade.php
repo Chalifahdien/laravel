@@ -89,12 +89,22 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <input type="hidden" name="is_active" value="0">
-
                                 <label class="form-check form-switch d-flex align-items-center gap-2">
                                     <input class="form-check-input" type="checkbox" name="is_active" value="1"
                                         {{ $machine->is_active ? 'checked' : '' }}>
                                     <span class="form-check-label">
                                         Active Machine
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="hidden" name="payment_required" value="1">
+                                <label class="form-check form-switch d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_required" value="0"
+                                        {{ !$machine->payment_required ? 'checked' : '' }}>
+                                    <span class="form-check-label">
+                                        Active Free Mode
                                     </span>
                                 </label>
                             </div>

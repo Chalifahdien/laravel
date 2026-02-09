@@ -75,6 +75,7 @@ class AdminMachineController extends Controller
             'paper_size_id' => 'required|exists:paper_sizes,id',
             'price' => 'required|integer|min:1000',
             'is_active' => 'required|boolean',
+            'payment_required' => 'boolean',
         ]);
 
         $machine->update([
@@ -82,6 +83,7 @@ class AdminMachineController extends Controller
             'paper_size_id' => $request->paper_size_id,
             'price' => $request->price,
             'is_active' => $request->is_active,
+            'payment_required' => $request->payment_required ?? true,
         ]);
 
         return redirect()

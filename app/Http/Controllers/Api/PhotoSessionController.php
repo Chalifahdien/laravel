@@ -15,8 +15,9 @@ class PhotoSessionController extends Controller
     {
         $request->validate([
             'frames' => 'required|array',
-            'frames.*' => 'required|image',
-            'final_image' => 'required|image'
+            'frames.*' => 'required',
+            'final_image' => 'required',
+            'live_photo' => 'nullable|file', // Updated validation
         ]);
 
         DB::beginTransaction();
@@ -44,14 +45,21 @@ class PhotoSessionController extends Controller
             }
 
             /* ============================
-               SAVE FINAL IMAGE
+               SAVE FINAL IMAGE & VIDEO
             ============================ */
             $finalPath = $request->file('final_image')
                 ->store("sessions/{$session->id}/final", 'public');
 
+            $videoPath = null;
+            if ($request->hasFile('live_photo')) {
+                $videoPath = $request->file('live_photo')
+                    ->store("sessions/{$session->id}/final", 'public');
+            }
+
             FinalImage::create([
                 'session_id' => $session->id,
-                'image_path' => $finalPath
+                'image_path' => $finalPath,
+                'video_path' => $videoPath,
             ]);
 
             /* ============================
@@ -67,7 +75,8 @@ class PhotoSessionController extends Controller
             return response()->json([
                 'status' => 'SUCCESS',
                 'session_id' => $session->id,
-                'final_image' => $finalPath
+                'final_image' => $finalPath,
+                'live_photo' => $videoPath
             ]);
 
         } catch (\Exception $e) {

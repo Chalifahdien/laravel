@@ -6,16 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Machine extends Model
 {
+
+
     protected $fillable = [
         'name',
         'slug',
         'paper_size_id',
         'price',
-        'is_active'
+        'is_active',
+        'payment_required'
     ];
 
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'payment_required' => 'boolean'
     ];
 
     public function paperSize()

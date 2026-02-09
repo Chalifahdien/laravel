@@ -7,26 +7,24 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\PhotoSession;
 use App\Models\Template;
-use App\Models\SystemSetting;
+
 
 class SessionController extends Controller
 {
     public function start(Request $request)
     {
-        // Get system settings to check if payment is required
-        $settings = SystemSetting::first();
-        $paymentRequired = $settings?->payment_required ?? true;
-
-        // Validate request - order_id is optional if payment not required
-        $rules = [
+        $request->validate([
             'machine_id' => 'required|exists:machines,id',
-        ];
+        ]);
+
+        $machine = \App\Models\Machine::findOrFail($request->machine_id);
+        $paymentRequired = $machine->payment_required;
 
         if ($paymentRequired) {
-            $rules['order_id'] = 'required|string';
+            $request->validate([
+                'order_id' => 'required|string',
+            ]);
         }
-
-        $request->validate($rules);
 
         // Check for active template first
         $template = Template::where('is_active', 1)->first();

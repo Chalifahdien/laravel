@@ -9,6 +9,7 @@ class FinalImage extends Model
     protected $fillable = [
         'session_id',
         'image_path',
+        'video_path',
         'printed'
     ];
 
