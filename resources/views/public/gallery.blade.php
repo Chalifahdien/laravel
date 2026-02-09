@@ -265,7 +265,7 @@
                         lightboxVideo.play();
                     }
 
-                    lightbox.style.display = 'block';
+                    lightbox.style.display = 'flex';
                 });
             });
 
