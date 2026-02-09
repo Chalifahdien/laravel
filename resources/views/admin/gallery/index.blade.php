@@ -49,17 +49,11 @@
                             data-search="session {{ $image->session_id }} {{ $image->created_at->format('d M Y H:i') }}">
                             <div class="card">
 
-                                @if ($image->video_path)
-                                    <video controls class="card-img-top" style="aspect-ratio: 3/4; object-fit: cover;">
-                                        <source src="{{ asset('storage/' . $image->video_path) }}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                @else
-                                    <a href="{{ asset('storage/' . $image->image_path) }}" target="_blank">
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" class="card-img-top"
-                                            style="aspect-ratio: 3/4; object-fit: cover;">
-                                    </a>
-                                @endif
+
+                                <a href="{{ asset('storage/' . $image->image_path) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" class="card-img-top"
+                                        style="aspect-ratio: 3/4; object-fit: cover;">
+                                </a>
 
                                 <div class="card-body">
                                     <div class="fw-semibold">
@@ -72,6 +66,7 @@
                                         {{ $image->created_at->format('d M Y H:i') }}
                                     </div>
                                 </div>
+
 
                                 <div class="card-footer">
                                     <button class="btn btn-ghost-danger w-100" data-bs-toggle="modal"

@@ -192,7 +192,8 @@
 
                         <div class="card-body text-center">
                             @if ($photoSession->finalImage && $photoSession->finalImage->video_path)
-                                <video controls class="img-fluid rounded shadow-sm" style="max-height: 400px; width: 100%;">
+                                <video autoplay loop muted playsinline controls class="img-fluid rounded shadow-sm"
+                                    style="max-height: 400px; width: 100%;">
                                     <source src="{{ asset('storage/' . $photoSession->finalImage->video_path) }}"
                                         type="video/mp4">
                                     Your browser does not support the video tag.
