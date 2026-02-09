@@ -28,77 +28,182 @@
     <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-cards">
-                @forelse ($stickers as $sticker)
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <div class="card">
-                            <div class="card-img-top img-responsive img-responsive-16x9"
-                                style="background: #f5f5f5; display: flex; align-items: center; justify-content: center; padding: 20px;">
-                                <img src="{{ asset('storage/' . $sticker->image_path) }}" alt="{{ $sticker->name }}"
-                                    style="max-width: 100%; max-height: 200px; object-fit: contain;">
-                            </div>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center gap-2">
+                    <input type="text" id="tableSearch" class="form-control w-50" placeholder="Search sticker...">
 
-                            <div class="card-body">
-                                <div class="fw-semibold">
-                                    {{ $sticker->name }}
-                                    @if ($sticker->is_active)
-                                        <span class="badge bg-green-lt ms-1">Active</span>
-                                    @else
-                                        <span class="badge bg-secondary-lt ms-1">Inactive</span>
-                                    @endif
+                    <select id="pageSize" class="form-select w-auto">
+                        <option value="18">18</option>
+                        <option value="36">36</option>
+                        <option value="60">60</option>
+                        <option value="120">120</option>
+                        <option value="all">All</option>
+                    </select>
+                </div>
+                <div class="row g-0" id="stickerGrid">
+                    @forelse ($stickers as $sticker)
+                        <div class="col-4 col-md-2 p-0 border sticker-item" data-name="{{ strtolower($sticker->name) }}">
+                            <a href="{{ route('stickers.edit', $sticker->id) }}" class="d-block text-decoration-none p-1"
+                                title="{{ $sticker->name }}">
+                                <div class="img-responsive img-responsive-1x1 rounded rounded-0 w-100"
+                                    style="background-image: url('{{ asset('storage/' . $sticker->image_path) }}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
                                 </div>
-                                @if ($sticker->category)
-                                    <div class="text-secondary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag"
-                                            width="16" height="16" viewBox="0 0 24 24" stroke-width="2"
-                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M7.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                            <path
-                                                d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z" />
-                                        </svg>
-                                        {{ $sticker->category }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="card-footer d-flex gap-2">
-                                <a href="{{ route('stickers.edit', $sticker->id) }}" class="btn btn-outline-primary w-100">
-                                    Edit
-                                </a>
-                                <form action="{{ route('stickers.destroy', $sticker->id) }}" method="POST" class="w-100"
-                                    onsubmit="return confirm('Are you sure you want to delete this sticker?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger w-100">Delete</button>
-                                </form>
-                            </div>
+                            </a>
                         </div>
-                    </div>
-                @empty
-                    <div class="col-12">
-                        <div class="empty">
+                    @empty
+                        <div class="col-12 text-center p-5">
                             <p class="empty-title">No stickers found</p>
-                            <p class="empty-subtitle text-secondary">
-                                Get started by adding your first sticker.
-                            </p>
-                            <div class="empty-action">
-                                <a href="{{ route('stickers.create') }}" class="btn btn-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
-                                    Add New Sticker
-                                </a>
-                            </div>
+                            <p class="empty-subtitle text-secondary">Get started by adding your first sticker.</p>
                         </div>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center d-none" id="tableFooter">
+                    <div class="text-muted" id="tableInfo"></div>
+
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0" id="pagination"></ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('tableSearch');
+            const pageSizeSelect = document.getElementById('pageSize');
+            const gridContainer = document.getElementById('stickerGrid');
+            const items = Array.from(gridContainer.getElementsByClassName('sticker-item'));
+            const footer = document.getElementById('tableFooter');
+            const info = document.getElementById('tableInfo');
+            const pagination = document.getElementById('pagination');
+
+            const totalItems = items.length;
+            let currentPage = 1;
+
+            function getFilteredItems() {
+                const keyword = searchInput.value.toLowerCase();
+                return items.filter(item =>
+                    item.getAttribute('data-name').includes(keyword)
+                );
+            }
+
+            function renderPagination(totalPages) {
+                pagination.innerHTML = '';
+
+                const windowSize = 5;
+                const half = Math.floor(windowSize / 2);
+
+                const createItem = (label, page = null, disabled = false, active = false) => {
+                    const li = document.createElement('li');
+                    li.className = `page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}`;
+
+                    const a = document.createElement('a');
+                    a.className = 'page-link';
+                    a.href = '#';
+                    a.innerText = label;
+
+                    if (!disabled && page !== null) {
+                        a.addEventListener('click', e => {
+                            e.preventDefault();
+                            currentPage = page;
+                            render();
+                        });
+                    }
+
+                    li.appendChild(a);
+                    return li;
+                };
+
+                // Prev
+                pagination.appendChild(
+                    createItem('Prev', currentPage - 1, currentPage === 1)
+                );
+
+                // First
+                pagination.appendChild(
+                    createItem('First', 1, currentPage === 1)
+                );
+
+                // Calculate sliding window
+                let startPage = currentPage - half;
+                let endPage = currentPage + half;
+
+                // Adjust if hitting left bound
+                if (startPage < 1) {
+                    startPage = 1;
+                    endPage = Math.min(windowSize, totalPages);
+                }
+
+                // Adjust if hitting right bound
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = Math.max(1, totalPages - windowSize + 1);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    pagination.appendChild(
+                        createItem(i, i, false, i === currentPage)
+                    );
+                }
+
+                // Last
+                pagination.appendChild(
+                    createItem('Last', totalPages, currentPage === totalPages)
+                );
+
+                // Next
+                pagination.appendChild(
+                    createItem('Next', currentPage + 1, currentPage === totalPages)
+                );
+            }
+
+            function render() {
+                const filteredItems = getFilteredItems();
+                const total = filteredItems.length;
+
+                const pageSize = pageSizeSelect.value === 'all' ?
+                    total :
+                    parseInt(pageSizeSelect.value);
+
+                const totalPages = Math.ceil(total / pageSize) || 1;
+                // Ensure current page is valid
+                if (currentPage > totalPages) currentPage = 1;
+
+                const start = (currentPage - 1) * pageSize;
+                const end = start + pageSize;
+
+                // Hide all first
+                items.forEach(item => item.style.display = 'none');
+
+                // Show only filtered and paginated items
+                filteredItems.slice(start, end).forEach(item => {
+                    item.style.display = 'block';
+                });
+
+                // Footer visibility
+                footer.classList.remove('d-none');
+
+                // Info
+                info.innerHTML = `
+            Showing <strong>${total === 0 ? 0 : start + 1}</strong>
+            to <strong>${Math.min(end, total)}</strong>
+            of <strong>${total}</strong> entries
+        `;
+
+                renderPagination(totalPages);
+            }
+
+            searchInput.addEventListener('input', () => {
+                currentPage = 1;
+                render();
+            });
+
+            pageSizeSelect.addEventListener('change', () => {
+                currentPage = 1;
+                render();
+            });
+
+            render();
+        });
+    </script>
 @endsection

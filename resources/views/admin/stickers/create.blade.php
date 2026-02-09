@@ -9,6 +9,11 @@
                     <div class="page-pretitle">Management</div>
                     <h2 class="page-title">Add New Sticker</h2>
                 </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <a href="{{ route('stickers.index') }}" class="btn btn-link">
+                        ← Back
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -16,8 +21,8 @@
     <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
+            <div class="row">
+                <div class="col">
                     <form action="{{ route('stickers.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
