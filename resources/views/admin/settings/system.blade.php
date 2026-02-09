@@ -77,7 +77,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-body">
+                    {{-- Payment Mode Toggle --}}
+                    <div class="col-12">
+                        <h4 class="mb-3">Payment Settings</h4>
+                    </div>
 
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-check form-switch">
+                                <input type="hidden" name="payment_required" value="0">
+                                <input class="form-check-input" type="checkbox" name="payment_required" value="1"
+                                    {{ $settings->payment_required ? 'checked' : '' }}>
+                                <span class="form-check-label">Aktifkan Pembayaran</span>
+                            </label>
+                            <div class="text-muted small mt-1">
+                                <strong>Aktif:</strong> User harus bayar manual di lokasi sebelum session dimulai.<br>
+                                <strong>Nonaktif:</strong> Mode gratis untuk event - session langsung dimulai tanpa
+                                pembayaran.
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-footer text-end">
                     <button type="submit" class="btn btn-primary">
                         Save

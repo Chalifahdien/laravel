@@ -10,6 +10,10 @@ class SystemSetting extends Model
         'system_name',
         'logo_path',
         'favicon_path',
+        'payment_required',
+    ];
+
+    protected $casts = [
+        'payment_required' => 'boolean',
     ];
 }
-

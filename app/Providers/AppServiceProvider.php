@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+    //
     }
 
     /**
@@ -25,8 +25,10 @@ class AppServiceProvider extends ServiceProvider
         try {
             $settings = SystemSetting::query()->firstOrCreate([], [
                 'system_name' => 'Photobooth',
+                'payment_required' => true,
             ]);
-        } catch (\Throwable $e) {
+        }
+        catch (\Throwable $e) {
             $settings = null;
         }
 

@@ -10,12 +10,13 @@ use App\Http\Controllers\Api\PhotoSessionController;
 
 // Route::get('/user', function (Request $request) {return $request->user();})->middleware('auth:sanctum');
 
-Route::post('/payments', [PaymentController::class, 'create']);
-Route::get('/payments/{order_id}/check', [PaymentController::class, 'checkStatus']);
-Route::post('/photo-sessions/start', [SessionController::class, 'start']);
-Route::get('/photo-sessions/{id}', [SessionController::class, 'show']);
-Route::get('/templates', [TemplateApiController::class, 'index']);
-Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
-Route::post('/sessions/{session}/complete', [PhotoSessionController::class, 'completeSession']);
-Route::get('/machines/{id}/detail', [MachineController::class, 'detail']);
-Route::get('/machines/{id}/banners', [MachineController::class, 'banners']);
+// Midtrans payment routes - DISABLED (using manual payment)
+// Route::post('/payments', [PaymentController::class, 'create']);
+// Route::get('/payments/{order_id}/check', [PaymentController::class, 'checkStatus']);
+Route::post('/photo-sessions/start', [SessionController::class , 'start']);
+Route::get('/photo-sessions/{id}', [SessionController::class , 'show']);
+Route::get('/templates', [TemplateApiController::class , 'index']);
+Route::get('/templates/{id}', [TemplateApiController::class , 'show']);
+Route::post('/sessions/{session}/complete', [PhotoSessionController::class , 'completeSession']);
+Route::get('/machines/{id}/detail', [MachineController::class , 'detail']);
+Route::get('/machines/{id}/banners', [MachineController::class , 'banners']);

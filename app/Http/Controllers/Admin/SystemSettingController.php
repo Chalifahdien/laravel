@@ -13,6 +13,7 @@ class SystemSettingController extends Controller
     {
         $settings = SystemSetting::query()->firstOrCreate([], [
             'system_name' => 'Photobooth',
+            'payment_required' => true,
         ]);
 
         return view('admin.settings.system', compact('settings'));
@@ -22,15 +23,18 @@ class SystemSettingController extends Controller
     {
         $settings = SystemSetting::query()->firstOrCreate([], [
             'system_name' => 'Photobooth',
+            'payment_required' => true,
         ]);
 
         $validated = $request->validate([
             'system_name' => ['required', 'string', 'max:100'],
             'logo' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
             'favicon' => ['nullable', 'image', 'mimes:png,ico,jpg,jpeg,webp', 'max:1024'],
+            'payment_required' => ['nullable', 'boolean'],
         ]);
 
         $settings->system_name = $validated['system_name'];
+        $settings->payment_required = $request->boolean('payment_required');
 
         if ($request->hasFile('logo')) {
             if ($settings->logo_path) {
@@ -51,4 +55,3 @@ class SystemSettingController extends Controller
         return back()->with('success', 'System settings berhasil disimpan.');
     }
 }
-

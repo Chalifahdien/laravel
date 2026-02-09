@@ -7,42 +7,28 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\PhotoSession;
 use App\Models\Template;
+use App\Models\SystemSetting;
 
 class SessionController extends Controller
 {
     public function start(Request $request)
     {
-        $request->validate([
-            'order_id' => 'required|string',
+        // Get system settings to check if payment is required
+        $settings = SystemSetting::first();
+        $paymentRequired = $settings?->payment_required ?? true;
+
+        // Validate request - order_id is optional if payment not required
+        $rules = [
             'machine_id' => 'required|exists:machines,id',
-        ]);
+        ];
 
-        // 1️⃣ Ambil payment
-        $payment = Payment::where('order_id', $request->order_id)->first();
-
-        if (!$payment) {
-            return response()->json([
-                'status' => 'NOT_FOUND',
-                'message' => 'Payment tidak ditemukan'
-            ], 404);
+        if ($paymentRequired) {
+            $rules['order_id'] = 'required|string';
         }
 
-        if ($payment->transaction_status !== 'PAID') {
-            return response()->json([
-                'status' => 'WAITING_PAYMENT'
-            ], 402);
-        }
+        $request->validate($rules);
 
-        // 2️⃣ Cegah double session
-        $existing = PhotoSession::where('payment_id', $payment->id)->first();
-        if ($existing) {
-            return response()->json([
-                'status' => 'READY',
-                'session_id' => $existing->id,
-            ]);
-        }
-
-        // 3️⃣ Ambil template aktif
+        // Check for active template first
         $template = Template::where('is_active', 1)->first();
 
         if (!$template) {
@@ -52,7 +38,80 @@ class SessionController extends Controller
             ], 500);
         }
 
-        // 4️⃣ Buat session
+        // MODE GRATIS (payment_required = false)
+        if (!$paymentRequired) {
+            // Check if there's already an active session for this machine
+            $existingSession = PhotoSession::where('machine_id', $request->machine_id)
+                ->where('status', 'PAID')
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if ($existingSession) {
+                return response()->json([
+                    'status' => 'READY',
+                    'session_id' => $existingSession->id,
+                    'message' => 'Session aktif ditemukan'
+                ]);
+            }
+
+            // Create session directly without payment
+            $session = PhotoSession::create([
+                'machine_id' => $request->machine_id,
+                'payment_id' => null, // No payment in free mode
+                'template_id' => $template->id,
+                'status' => 'PAID', // Mark as PAID so it can proceed
+                'started_at' => now(),
+                'expires_at' => now()->addMinutes(5),
+            ]);
+
+            // Get frames for the template
+            $frames = $template->frames()->orderBy('frame_order')->get()->map(fn($f) => [
+                'frame_id' => $f->id,
+                'x' => $f->x,
+                'y' => $f->y,
+                'width' => $f->width,
+                'height' => $f->height,
+                'shape' => $f->shape,
+            ]);
+
+            return response()->json([
+                'status' => 'READY',
+                'session_id' => $session->id,
+                'template_id' => $template->id,
+                'expires_at' => $session->expires_at,
+                'frames' => $frames,
+                'payment_mode' => 'FREE'
+            ]);
+        }
+
+        // MODE BERBAYAR MANUAL (payment_required = true)
+        // Cek payment dengan order_id yang diberikan
+        $payment = Payment::where('order_id', $request->order_id)->first();
+
+        if (!$payment) {
+            return response()->json([
+                'status' => 'NOT_FOUND',
+                'message' => 'Payment tidak ditemukan. Silakan lakukan pembayaran manual terlebih dahulu.'
+            ], 404);
+        }
+
+        if ($payment->transaction_status !== 'PAID') {
+            return response()->json([
+                'status' => 'WAITING_PAYMENT',
+                'message' => 'Menunggu konfirmasi pembayaran dari admin.'
+            ], 402);
+        }
+
+        // Cegah double session
+        $existing = PhotoSession::where('payment_id', $payment->id)->first();
+        if ($existing) {
+            return response()->json([
+                'status' => 'READY',
+                'session_id' => $existing->id,
+            ]);
+        }
+
+        // Buat session
         $session = PhotoSession::create([
             'machine_id' => $request->machine_id,
             'payment_id' => $payment->id,
@@ -62,7 +121,7 @@ class SessionController extends Controller
             'expires_at' => now()->addMinutes(5),
         ]);
 
-        // 5️⃣ Kirim frame ke mesin
+        // Kirim frame ke mesin
         $frames = $template->frames()->orderBy('frame_order')->get()->map(fn($f) => [
             'frame_id' => $f->id,
             'x' => $f->x,
@@ -77,7 +136,8 @@ class SessionController extends Controller
             'session_id' => $session->id,
             'template_id' => $template->id,
             'expires_at' => $session->expires_at,
-            'frames' => $frames
+            'frames' => $frames,
+            'payment_mode' => 'MANUAL'
         ]);
     }
 
