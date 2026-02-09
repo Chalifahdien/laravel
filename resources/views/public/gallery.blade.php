@@ -83,8 +83,8 @@
         <header class="navbar navbar-expand-md navbar-dark d-print-none">
             <div class="container-xl">
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="#">
-                        📸 Galeri Foto
+                    <a href="#" class="text-dark">
+                        Galeri Foto
                     </a>
                 </h1>
             </div>
@@ -110,11 +110,8 @@
 
                                     <div class="card-body">
                                         <div class="fw-semibold">
-                                            <span class="badge bg-blue me-1">FINAL</span>
+                                            <span class="badge bg-blue-lt me-1">FINAL</span>
                                             Foto Final
-                                        </div>
-                                        <div class="text-secondary">
-                                            Session #{{ $session->id }}
                                         </div>
                                     </div>
 
@@ -162,11 +159,8 @@
 
                                         <div class="card-body">
                                             <div class="fw-semibold">
-                                                <span class="badge bg-red me-1">LIVE</span>
+                                                <span class="badge bg-red-lt me-1">LIVE</span>
                                                 Live Photo
-                                            </div>
-                                            <div class="text-secondary">
-                                                Session #{{ $session->id }}
                                             </div>
                                         </div>
 
@@ -202,9 +196,6 @@
                                     <div class="card-body">
                                         <div class="fw-semibold">
                                             Frame {{ $index + 1 }}
-                                        </div>
-                                        <div class="text-secondary">
-                                            Session #{{ $session->id }}
                                         </div>
                                     </div>
 
