@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\TemplateApiController;
 use App\Http\Controllers\Api\PhotoSessionController;
+use App\Http\Controllers\Api\StickerController;
 
 // Route::get('/user', function (Request $request) {return $request->user();})->middleware('auth:sanctum');
 
@@ -21,3 +22,4 @@ Route::post('/sessions/{session}/complete', [PhotoSessionController::class, 'com
 Route::post('/sessions/{session}/set-print-quantity', [PhotoSessionController::class, 'setPrintQuantity']);
 Route::get('/machines/{id}/detail', [MachineController::class, 'detail']);
 Route::get('/machines/{id}/banners', [MachineController::class, 'banners']);
+Route::get('/stickers', [StickerController::class, 'index']);

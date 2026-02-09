@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReportAnalyticController;
 use App\Http\Controllers\Admin\BannerPromoController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\SystemSettingController;
+use App\Http\Controllers\Admin\AdminStickerController;
 use App\Http\Controllers\ProfileController;
 
 
@@ -87,6 +88,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gallery/session/{sessionId}', [GalleryController::class, 'bySession'])->name('admin.gallery.session');
     Route::put('/gallery/{finalImage}/toggle-printed', [GalleryController::class, 'togglePrinted'])->name('admin.gallery.toggle-printed');
     Route::delete('/gallery/{finalImage}', [GalleryController::class, 'destroy'])->name('admin.gallery.destroy');
+
+    // STICKERS
+    Route::get('/stickers', [AdminStickerController::class, 'index'])->name('stickers.index');
+    Route::get('/stickers/create', [AdminStickerController::class, 'create'])->name('stickers.create');
+    Route::post('/stickers', [AdminStickerController::class, 'store'])->name('stickers.store');
+    Route::get('/stickers/{sticker}/edit', [AdminStickerController::class, 'edit'])->name('stickers.edit');
+    Route::put('/stickers/{sticker}', [AdminStickerController::class, 'update'])->name('stickers.update');
+    Route::delete('/stickers/{sticker}', [AdminStickerController::class, 'destroy'])->name('stickers.destroy');
 
     // SYSTEM SETTINGS
     Route::get('/settings-system', [SystemSettingController::class, 'edit'])->name('admin.settings.system.edit');
