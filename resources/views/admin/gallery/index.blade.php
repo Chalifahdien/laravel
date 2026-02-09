@@ -70,13 +70,13 @@
 
                                 <div class="card-footer">
                                     <div class="row w-100">
-                                        <div class="col">
+                                        <div class="col-6">
                                             <a href="{{ route('transactions.show', $image->session_id) }}"
                                                 class="btn btn-ghost-primary w-100">
                                                 DETAIL
                                             </a>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-6">
                                             <button class="btn btn-ghost-danger w-100" data-bs-toggle="modal"
                                                 data-bs-target="#delete{{ $image->id }}">
                                                 Delete
