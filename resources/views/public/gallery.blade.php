@@ -33,19 +33,17 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.95);
-            overflow: auto;
+            align-items: center;
+            justify-content: center;
         }
 
         .lightbox-content {
             position: relative;
-            margin: auto;
-            padding: 20px;
-            max-width: 90%;
-            max-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            max-width: 90vw;
+            max-height: 90vh;
         }
 
         .lightbox-img,
