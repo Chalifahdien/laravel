@@ -72,7 +72,7 @@
                                     <div class="col">
                                         <a href="{{ route('transactions.show', $image->session_id) }}"
                                             class="btn btn-outline-primary w-100">
-                                            DETAIL
+                                            Detail
                                         </a>
                                     </div>
                                     <div class="col">
