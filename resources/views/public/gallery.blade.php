@@ -175,15 +175,7 @@
         </a>
     </header>
 
-    <div id="main-viewer">
-        <div class="placeholder-text" id="loading-text">Memuat...</div>
-        <!-- Media will be injected here by JS -->
-        <img id="main-image" class="hidden" src="" alt="Main View">
-        <video id="main-video" class="hidden" controls autoplay loop playsinline>
-            <source src="" type="video/mp4">
-        </video>
-    </div>
-
+    <!-- THUMBNAIL LIST (Moved to Top) -->
     <div id="thumb-list">
         <!-- 1. FINAL PHOTO -->
         @if ($session->finalImage)
@@ -224,6 +216,16 @@
                 <img src="{{ asset('storage/' . $photo->photo_path) }}" loading="lazy">
             </div>
         @endforeach
+    </div>
+
+    <!-- MAIN VIEWER -->
+    <div id="main-viewer">
+        <div class="placeholder-text" id="loading-text">Memuat...</div>
+        <!-- Media will be injected here by JS -->
+        <img id="main-image" class="hidden" src="" alt="Main View">
+        <video id="main-video" class="hidden" controls autoplay loop playsinline>
+            <source src="" type="video/mp4">
+        </video>
     </div>
 
     <script>
