@@ -67,22 +67,19 @@
                                     </div>
                                 </div>
 
+                                <div class="card-footer d-flex gap-3">
 
-                                <div class="card-footer">
-                                    <div class="row w-100">
-                                        <div class="col-6">
-                                            <a href="{{ route('transactions.show', $image->session_id) }}"
-                                                class="btn btn-outline-primary w-100">
-                                                DETAIL
-                                            </a>
-                                        </div>
-                                        <div class="col-6">
-                                            <button class="btn btn-outline-danger w-100" data-bs-toggle="modal"
-                                                data-bs-target="#delete{{ $image->id }}">
-                                                Delete
-                                            </button>
-                                        </div>
-                                        {{-- {{ route('transactions.show', $transaction->id) }} --}}
+                                    <div class="col">
+                                        <a href="{{ route('transactions.show', $image->session_id) }}"
+                                            class="btn btn-outline-primary w-100">
+                                            DETAIL
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-outline-danger w-100" data-bs-toggle="modal"
+                                            data-bs-target="#delete{{ $image->id }}">
+                                            Delete
+                                        </button>
                                     </div>
                                 </div>
                             </div>
