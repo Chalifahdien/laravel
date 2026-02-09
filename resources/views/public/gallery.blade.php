@@ -77,9 +77,12 @@
             overflow: hidden;
         }
 
-        #main-media {
+        #main-image,
+        #main-video {
             max-width: 100%;
             max-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: contain;
             transition: opacity 0.3s;
         }
