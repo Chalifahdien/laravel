@@ -134,7 +134,7 @@
                 </div>
 
                 {{-- FINAL IMAGE --}}
-                <div class="col-12">
+                <div class="col-12 col-md-6">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Final Image</h3>
@@ -147,6 +147,29 @@
                             @else
                                 <div class="text-muted">
                                     Final image not available
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{-- LIVE PHOTO --}}
+                <div class="col-12 col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Live Photo</h3>
+                        </div>
+
+                        <div class="card-body text-center">
+                            @if ($photoSession->finalImage && $photoSession->finalImage->video_path)
+                                <video controls class="img-fluid rounded shadow-sm" style="max-height: 400px; width: 100%;">
+                                    <source src="{{ asset('storage/' . $photoSession->finalImage->video_path) }}"
+                                        type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            @else
+                                <div class="text-muted">
+                                    Live photo not available
                                 </div>
                             @endif
                         </div>
