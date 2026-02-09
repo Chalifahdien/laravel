@@ -77,8 +77,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    {{-- Payment Mode Toggle --}}
+                {{-- Payment Mode Toggle --}}
+                {{-- <div class="card-body">
                     <div class="col-12">
                         <h4 class="mb-3">Payment Settings</h4>
                     </div>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card-footer text-end">
                     <button type="submit" class="btn btn-primary">
                         Save
