@@ -17,262 +17,274 @@
 
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            background-color: #1a1a1a;
         }
 
-        .navbar {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .gallery-card {
+            transition: transform 0.2s;
         }
 
-        /* THUMBNAIL STRIP */
-        .thumb-strip {
-            background: #242424;
-            padding: 10px 0;
-            white-space: nowrap;
-            overflow-x: auto;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            -webkit-overflow-scrolling: touch;
+        .gallery-card:hover {
+            transform: translateY(-4px);
         }
 
-        .thumb-strip::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .thumb-strip::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 2px;
-        }
-
-        .thumb-item {
-            display: inline-block;
-            width: 80px;
-            height: 80px;
-            margin-right: 8px;
-            border-radius: 6px;
-            overflow: hidden;
+        .gallery-img {
             cursor: pointer;
-            position: relative;
-            border: 2px solid transparent;
-            opacity: 0.6;
-            transition: all 0.2s;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
         }
 
-        .thumb-item:first-child {
-            margin-left: 1rem;
-        }
-
-        .thumb-item:last-child {
-            margin-right: 1rem;
-        }
-
-        .thumb-item.active {
-            border-color: #206bc4;
-            opacity: 1;
-            transform: scale(1.05);
+        .badge-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             z-index: 1;
         }
 
-        .thumb-item img,
-        .thumb-item video {
+        /* Lightbox Modal */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            background-color: rgba(0, 0, 0, 0.95);
+            overflow: auto;
         }
 
-        .thumb-badge {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            background: rgba(214, 57, 57, 0.9);
-            color: white;
-            font-size: 9px;
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        /* MAIN VIEWER */
-        .main-viewer {
-            flex: 1;
+        .lightbox-content {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #000;
-            padding: 20px;
-            position: relative;
+            height: 100%;
         }
 
-        #main-image,
-        #main-video {
+        .lightbox-img,
+        .lightbox-video {
             max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
             object-fit: contain;
+            border-radius: 8px;
         }
 
-        .hidden {
-            display: none !important;
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
         }
 
-        .loader {
-            color: #666;
-            font-size: 0.9rem;
+        .lightbox-close:hover {
+            color: #ccc;
         }
     </style>
 </head>
 
 <body class="theme-dark">
-    <!-- Navbar -->
-    <header class="navbar navbar-expand-md navbar-dark d-print-none">
-        <div class="container-xl">
-            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                <a href="#">
-                    <!-- Logo Text -->
-                    Mooein Snap
-                </a>
-            </h1>
-            <div class="navbar-nav flex-row order-md-last">
-                <div class="nav-item">
-                    <a href="#" id="download-link" class="btn btn-primary" download>
-                        <!-- Download SVG Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                            <path d="M7 11l5 5l5 -5" />
-                            <path d="M12 4l0 12" />
-                        </svg>
-                        Unduh Foto
+    <div class="page">
+        <!-- Navbar -->
+        <header class="navbar navbar-expand-md navbar-dark d-print-none">
+            <div class="container-xl">
+                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <a href="#">
+                        📸 Galeri Foto
                     </a>
+                </h1>
+            </div>
+        </header>
+
+        <!-- Page Body -->
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="container-xl">
+                    <div class="row row-deck row-cards">
+
+                        <!-- FINAL PHOTO -->
+                        @if ($session->finalImage)
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card gallery-card">
+                                    <div class="card-body p-3 position-relative">
+                                        <span class="badge bg-blue badge-overlay">FINAL</span>
+                                        <img src="{{ asset('storage/' . $session->finalImage->image_path) }}"
+                                            class="gallery-img" data-type="image"
+                                            data-src="{{ asset('storage/' . $session->finalImage->image_path) }}"
+                                            alt="Final Photo">
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="{{ route('gallery.final.download', $session->id) }}"
+                                            class="btn btn-primary w-100" download>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                            Unduh Foto Final
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- LIVE PHOTO -->
+                            @if ($session->finalImage->video_path)
+                                @php
+                                    $videoPath = $session->finalImage->video_path;
+                                    $ext = strtolower(pathinfo($videoPath, PATHINFO_EXTENSION));
+                                    $isGif = $ext === 'gif';
+                                @endphp
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="card gallery-card">
+                                        <div class="card-body p-3 position-relative">
+                                            <span class="badge bg-red badge-overlay">LIVE</span>
+                                            @if ($isGif)
+                                                <img src="{{ asset('storage/' . $videoPath) }}" class="gallery-img"
+                                                    data-type="image" data-src="{{ asset('storage/' . $videoPath) }}"
+                                                    alt="Live Photo">
+                                            @else
+                                                <video class="gallery-img" muted autoplay loop playsinline
+                                                    data-type="video" data-src="{{ asset('storage/' . $videoPath) }}">
+                                                    <source src="{{ asset('storage/' . $videoPath) }}"
+                                                        type="video/{{ $ext }}">
+                                                </video>
+                                            @endif
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{{ route('gallery.live.download', $session->id) }}"
+                                                class="btn btn-primary w-100" download>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                    <path d="M7 11l5 5l5 -5" />
+                                                    <path d="M12 4l0 12" />
+                                                </svg>
+                                                Unduh Live Photo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
+
+                        <!-- FRAME PHOTOS -->
+                        @foreach ($session->photos as $index => $photo)
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card gallery-card">
+                                    <div class="card-body p-3">
+                                        <img src="{{ asset('storage/' . $photo->photo_path) }}" class="gallery-img"
+                                            data-type="image" data-src="{{ asset('storage/' . $photo->photo_path) }}"
+                                            alt="Frame {{ $index + 1 }}">
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="{{ route('gallery.frame.download', $photo->id) }}"
+                                            class="btn btn-outline-primary w-100" download>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                            Unduh Frame {{ $index + 1 }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Thumbnail Strip (Below Navbar) -->
-    <div class="thumb-strip">
-        <div class="d-flex align-items-center h-100">
-            <!-- 1. FINAL PHOTO -->
-            @if ($session->finalImage)
-                <div class="thumb-item active" data-type="image"
-                    data-src="{{ asset('storage/' . $session->finalImage->image_path) }}"
-                    data-download="{{ route('gallery.final.download', $session->id) }}">
-                    <div class="thumb-badge">Final</div>
-                    <img src="{{ asset('storage/' . $session->finalImage->image_path) }}">
-                </div>
-
-                <!-- 2. LIVE PHOTO -->
-                @if ($session->finalImage->video_path)
-                    @php
-                        $videoPath = $session->finalImage->video_path;
-                        $ext = strtolower(pathinfo($videoPath, PATHINFO_EXTENSION));
-                        $isGif = $ext === 'gif';
-                    @endphp
-                    <div class="thumb-item" data-type="{{ $isGif ? 'image' : 'video' }}"
-                        data-src="{{ asset('storage/' . $videoPath) }}"
-                        data-download="{{ route('gallery.live.download', $session->id) }}">
-                        <div class="thumb-badge">Live</div>
-                        @if ($isGif)
-                            <img src="{{ asset('storage/' . $videoPath) }}">
-                        @else
-                            <video muted>
-                                <source src="{{ asset('storage/' . $videoPath) }}" type="video/{{ $ext }}">
-                            </video>
-                        @endif
-                    </div>
-                @endif
-            @endif
-
-            <!-- 3. FRAME PHOTOS -->
-            @foreach ($session->photos as $photo)
-                <div class="thumb-item" data-type="image" data-src="{{ asset('storage/' . $photo->photo_path) }}"
-                    data-download="{{ route('gallery.frame.download', $photo->id) }}">
-                    <img src="{{ asset('storage/' . $photo->photo_path) }}">
-                </div>
-            @endforeach
-        </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-viewer">
-        <div class="loader" id="loading-text">Memuat media...</div>
-
-        <img id="main-image" class="hidden" src="" alt="View">
-        <video id="main-video" class="hidden" controls autoplay loop playsinline>
-            <source src="" type="video/mp4">
-        </video>
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" class="lightbox-img hidden" src="" alt="">
+            <video id="lightbox-video" class="lightbox-video hidden" controls autoplay loop playsinline>
+                <source src="" type="video/mp4">
+            </video>
+        </div>
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('dist/js/tabler.min.js') }}" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const thumbs = document.querySelectorAll('.thumb-item');
-            const mainImage = document.getElementById('main-image');
-            const mainVideo = document.getElementById('main-video');
-            const downloadLink = document.getElementById('download-link');
-            const loadingText = document.getElementById('loading-text');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-image');
+            const lightboxVideo = document.getElementById('lightbox-video');
+            const closeBtn = document.querySelector('.lightbox-close');
 
-            function updateView(thumb) {
-                // Active class
-                thumbs.forEach(t => t.classList.remove('active'));
-                thumb.classList.add('active');
+            // Get all gallery items
+            const galleryItems = document.querySelectorAll('.gallery-img, .gallery-img[data-type="video"]');
 
-                // Get Data
-                const type = thumb.dataset.type;
-                const src = thumb.dataset.src;
-                const downloadUrl = thumb.dataset.download;
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const type = item.dataset.type;
+                    const src = item.dataset.src;
 
-                // Update Button
-                downloadLink.href = downloadUrl;
+                    if (type === 'image') {
+                        lightboxVideo.classList.add('hidden');
+                        lightboxVideo.pause();
 
-                // Hide loader
-                loadingText.style.display = 'none';
+                        lightboxImg.src = src;
+                        lightboxImg.classList.remove('hidden');
+                    } else if (type === 'video') {
+                        lightboxImg.classList.add('hidden');
 
-                // Display Logic
-                if (type === 'image') {
-                    // Hide Video, Show Image
-                    mainVideo.classList.add('hidden');
-                    mainVideo.pause();
-
-                    mainImage.src = src;
-                    mainImage.classList.remove('hidden');
-                } else {
-                    // Hide Image, Show Video
-                    mainImage.classList.add('hidden');
-
-                    mainVideo.src = src;
-                    mainVideo.classList.remove('hidden');
-                    // Attempt autoplay
-                    const playPromise = mainVideo.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(error => {
-                            console.log('Autoplay prevented');
-                        });
+                        lightboxVideo.querySelector('source').src = src;
+                        lightboxVideo.load();
+                        lightboxVideo.classList.remove('hidden');
+                        lightboxVideo.play();
                     }
-                }
-            }
 
-            // Click Listeners
-            thumbs.forEach(thumb => {
-                thumb.addEventListener('click', () => updateView(thumb));
+                    lightbox.style.display = 'block';
+                });
             });
 
-            // Initialize first item
-            if (thumbs.length > 0) {
-                updateView(thumbs[0]);
-            } else {
-                loadingText.textContent = "Tidak ada foto tersedia.";
-            }
+            // Close lightbox
+            closeBtn.addEventListener('click', () => {
+                lightbox.style.display = 'none';
+                lightboxVideo.pause();
+            });
+
+            // Close on background click
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                    lightboxVideo.pause();
+                }
+            });
+
+            // Close on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.style.display === 'block') {
+                    lightbox.style.display = 'none';
+                    lightboxVideo.pause();
+                }
+            });
         });
     </script>
 </body>
