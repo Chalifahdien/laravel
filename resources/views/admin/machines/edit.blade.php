@@ -86,6 +86,16 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Additional Print Cost (IDR)</label>
+                                <input type="number" name="additional_print_cost" class="form-control"
+                                    value="{{ old('additional_print_cost', $machine->additional_print_cost) }}"
+                                    min="0">
+                                <small class="form-hint">Cost per additional print beyond the first free print</small>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <input type="hidden" name="is_active" value="0">

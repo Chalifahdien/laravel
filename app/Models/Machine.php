@@ -13,6 +13,7 @@ class Machine extends Model
         'slug',
         'paper_size_id',
         'price',
+        'additional_print_cost',
         'is_active',
         'payment_required'
     ];

@@ -10,6 +10,7 @@ class FinalImage extends Model
         'session_id',
         'image_path',
         'video_path',
+        'print_quantity',
         'printed'
     ];
 

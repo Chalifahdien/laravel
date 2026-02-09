@@ -18,5 +18,6 @@ Route::get('/photo-sessions/{id}', [SessionController::class, 'show']);
 Route::get('/templates', [TemplateApiController::class, 'index']);
 Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
 Route::post('/sessions/{session}/complete', [PhotoSessionController::class, 'completeSession']);
+Route::post('/sessions/{session}/set-print-quantity', [PhotoSessionController::class, 'setPrintQuantity']);
 Route::get('/machines/{id}/detail', [MachineController::class, 'detail']);
 Route::get('/machines/{id}/banners', [MachineController::class, 'banners']);

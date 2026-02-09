@@ -123,6 +123,36 @@
                                             {{ optional($photoSession->payment->paid_at)->format('d M Y H:i') ?? '-' }}
                                         </td>
                                     </tr>
+
+                                    @php
+                                        $printQty = $photoSession->finalImage->print_quantity ?? 1;
+                                        $basePrice = $photoSession->machine->price ?? 0;
+                                        $additionalPrintCost = $photoSession->machine->additional_print_cost ?? 0;
+                                        $additionalPrints = max(0, $printQty - 1);
+                                        $totalCost = $basePrice + $additionalPrints * $additionalPrintCost;
+                                    @endphp
+
+                                    <tr>
+                                        <td class="text-muted">Print Quantity</td>
+                                        <td class="fw-semibold">
+                                            {{ $printQty }} print(s)
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-muted">Total Cost</td>
+                                        <td class="fw-semibold text-primary">
+                                            Rp {{ number_format($totalCost, 0, ',', '.') }}
+                                            @if ($additionalPrints > 0)
+                                                <br>
+                                                <small class="text-muted">
+                                                    (Base: Rp {{ number_format($basePrice, 0, ',', '.') }} +
+                                                    {{ $additionalPrints }} extra print(s): Rp
+                                                    {{ number_format($additionalPrints * $additionalPrintCost, 0, ',', '.') }})
+                                                </small>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 </table>
                             @else
                                 <div class="text-muted text-center">

@@ -26,6 +26,7 @@ class MachineController extends Controller
                 'id' => $machine->id,
                 'name' => $machine->name,
                 'price' => $machine->price,
+                'additional_print_cost' => $machine->additional_print_cost,
                 'payment_required' => $machine->payment_required,
                 'is_free' => !$machine->payment_required,
                 'paper_size' => [

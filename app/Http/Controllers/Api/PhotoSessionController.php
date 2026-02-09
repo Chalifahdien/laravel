@@ -17,7 +17,7 @@ class PhotoSessionController extends Controller
             'frames' => 'required|array',
             'frames.*' => 'required',
             'final_image' => 'required',
-            'live_photo' => 'nullable|file', // Updated validation
+            'live_photo' => 'nullable|file',
         ]);
 
         DB::beginTransaction();
@@ -60,6 +60,7 @@ class PhotoSessionController extends Controller
                 'session_id' => $session->id,
                 'image_path' => $finalPath,
                 'video_path' => $videoPath,
+                'print_quantity' => 1,
             ]);
 
             /* ============================
@@ -87,5 +88,43 @@ class PhotoSessionController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Set print quantity for a session
+     */
+    public function setPrintQuantity(Request $request, PhotoSession $session)
+    {
+        $request->validate([
+            'print_quantity' => 'required|integer|min:1',
+        ]);
+
+        if (!$session->finalImage) {
+            return response()->json([
+                'status' => 'ERROR',
+                'message' => 'Final image not found for this session'
+            ], 404);
+        }
+
+        $session->finalImage->update([
+            'print_quantity' => $request->print_quantity
+        ]);
+
+        // Calculate total cost
+        $basePrice = $session->machine->price ?? 0;
+        $additionalPrintCost = $session->machine->additional_print_cost ?? 0;
+        $additionalPrints = max(0, $request->print_quantity - 1);
+        $totalCost = $basePrice + ($additionalPrints * $additionalPrintCost);
+
+        return response()->json([
+            'status' => 'SUCCESS',
+            'data' => [
+                'print_quantity' => $request->print_quantity,
+                'base_price' => $basePrice,
+                'additional_print_cost' => $additionalPrintCost,
+                'additional_prints' => $additionalPrints,
+                'total_cost' => $totalCost,
+            ]
+        ]);
     }
 }
