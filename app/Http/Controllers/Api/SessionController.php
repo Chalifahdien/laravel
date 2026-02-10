@@ -55,7 +55,7 @@ class SessionController extends Controller
             // Create session directly without payment
             $session = PhotoSession::create([
                 'machine_id' => $request->machine_id,
-                'payment_id' => null, // No payment in free mode
+                'payment_id' => $request->order_id, // No payment in free mode
                 'template_id' => $template->id,
                 'status' => 'PAID', // Mark as PAID so it can proceed
                 'started_at' => now(),
