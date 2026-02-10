@@ -146,7 +146,8 @@
                                     <tr>
                                         <td class="text-muted">Total Cost</td>
                                         <td class="fw-semibold text-primary">
-                                            Rp {{ number_format($photoSession->payment->amount, 0, ',', '.') }}
+                                            Rp
+                                            {{ number_format($photoSession->payment->amount + $additionalPrints * $additionalPrintCost, 0, ',', '.') }}
                                             @if ($additionalPrints > 0)
                                                 <br>
                                                 <small class="text-muted">
