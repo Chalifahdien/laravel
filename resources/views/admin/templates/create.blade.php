@@ -77,7 +77,7 @@
                                 <div class="mb-2">
                                     <label class="form-label">Template PNG</label>
                                     <input class="form-control" type="file" name="template" id="templateInput"
-                                        accept="image/png" required>
+                                        accept="image/*" required>
                                     <div class="form-hint">
                                         Gunakan resolusi besar untuk kualitas cetak
                                     </div>
@@ -172,8 +172,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                    FABRIC CONFIG
-                                                                                                                                                                                ================================ */
+                                                                                                                                                                                                                        FABRIC CONFIG
+                                                                                                                                                                                                                    ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
