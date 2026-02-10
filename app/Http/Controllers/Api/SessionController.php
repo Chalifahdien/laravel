@@ -36,51 +36,51 @@ class SessionController extends Controller
             ], 500);
         }
 
-        // MODE GRATIS (payment_required = false)
-        if (!$paymentRequired) {
-            // Check if there's already an active session for this machine
-            $existingSession = PhotoSession::where('machine_id', $request->machine_id)
-                ->where('status', 'PAID')
-                ->where('expires_at', '>', now())
-                ->first();
+        // // MODE GRATIS (payment_required = false)
+        // if (!$paymentRequired) {
+        //     // Check if there's already an active session for this machine
+        //     $existingSession = PhotoSession::where('machine_id', $request->machine_id)
+        //         ->where('status', 'PAID')
+        //         ->where('expires_at', '>', now())
+        //         ->first();
 
-            if ($existingSession) {
-                return response()->json([
-                    'status' => 'READY',
-                    'session_id' => $existingSession->id,
-                    'message' => 'Session aktif ditemukan'
-                ]);
-            }
+        //     if ($existingSession) {
+        //         return response()->json([
+        //             'status' => 'READY',
+        //             'session_id' => $existingSession->id,
+        //             'message' => 'Session aktif ditemukan'
+        //         ]);
+        //     }
 
-            // Create session directly without payment
-            $session = PhotoSession::create([
-                'machine_id' => $request->machine_id,
-                'payment_id' => $request->payment_id, // No payment in free mode
-                'template_id' => $template->id,
-                'status' => 'PAID', // Mark as PAID so it can proceed
-                'started_at' => now(),
-                'expires_at' => now()->addMinutes(5),
-            ]);
+        //     // Create session directly without payment
+        //     $session = PhotoSession::create([
+        //         'machine_id' => $request->machine_id,
+        //         'payment_id' => $request->payment_id, // No payment in free mode
+        //         'template_id' => $template->id,
+        //         'status' => 'PAID', // Mark as PAID so it can proceed
+        //         'started_at' => now(),
+        //         'expires_at' => now()->addMinutes(5),
+        //     ]);
 
-            // Get frames for the template
-            $frames = $template->frames()->orderBy('frame_order')->get()->map(fn($f) => [
-                'frame_id' => $f->id,
-                'x' => $f->x,
-                'y' => $f->y,
-                'width' => $f->width,
-                'height' => $f->height,
-                'shape' => $f->shape,
-            ]);
+        //     // Get frames for the template
+        //     $frames = $template->frames()->orderBy('frame_order')->get()->map(fn($f) => [
+        //         'frame_id' => $f->id,
+        //         'x' => $f->x,
+        //         'y' => $f->y,
+        //         'width' => $f->width,
+        //         'height' => $f->height,
+        //         'shape' => $f->shape,
+        //     ]);
 
-            return response()->json([
-                'status' => 'READY',
-                'session_id' => $session->id,
-                'template_id' => $template->id,
-                'expires_at' => $session->expires_at,
-                'frames' => $frames,
-                'payment_mode' => 'FREE'
-            ]);
-        }
+        //     return response()->json([
+        //         'status' => 'READY',
+        //         'session_id' => $session->id,
+        //         'template_id' => $template->id,
+        //         'expires_at' => $session->expires_at,
+        //         'frames' => $frames,
+        //         'payment_mode' => 'FREE'
+        //     ]);
+        // }
 
         // MODE BERBAYAR MANUAL (payment_required = true)
         // Cek payment dengan order_id yang diberikan
