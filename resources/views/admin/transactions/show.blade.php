@@ -126,7 +126,7 @@
 
                                     @php
                                         $printQty = $photoSession->finalImage->print_quantity ?? 1;
-                                        $basePrice = $photoSession->machine->price ?? 0;
+                                        $basePrice = $photoSession->payment->amount ?? 0;
                                         if ($photoSession->payment->amount == 0) {
                                             $additionalPrintCost = 0;
                                         } else {
