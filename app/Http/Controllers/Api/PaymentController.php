@@ -14,7 +14,7 @@ class PaymentController extends Controller
     {
         $request->validate([
             'order_id' => 'required|unique:payments,order_id',
-            'amount' => 'required|integer|min:1000',
+            'amount' => 'required|integer',
         ]);
 
         // Config::$serverKey = config('midtrans.server_key');
