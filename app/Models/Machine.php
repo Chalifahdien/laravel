@@ -15,13 +15,25 @@ class Machine extends Model
         'price',
         'additional_print_cost',
         'is_active',
-        'payment_required'
+        'payment_required',
+        'api_token'
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'payment_required' => 'boolean'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($machine) {
+            if (empty($machine->api_token)) {
+                $machine->api_token = \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
 
     public function paperSize()
     {

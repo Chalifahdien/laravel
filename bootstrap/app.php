@@ -12,8 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
+    ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'machine.token' => \App\Http\Middleware\CheckMachineToken::class,
             'role' => RoleMiddleware::class, // Middleware role
         ]);
     })

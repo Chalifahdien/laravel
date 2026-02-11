@@ -64,6 +64,21 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">API Token</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{ $machine->api_token }}" readonly>
+                                    <button class="btn" type="button"
+                                        onclick="navigator.clipboard.writeText('{{ $machine->api_token }}'); alert('Token copied!');">
+                                        Copy
+                                    </button>
+                                </div>
+                                <small class="form-hint">Use this token in the X-Machine-Token header for API
+                                    requests.</small>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Paper Size</label>
