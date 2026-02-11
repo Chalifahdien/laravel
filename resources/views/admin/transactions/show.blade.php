@@ -228,7 +228,7 @@
                                     </video>
                                 @endif
                                 <div class="mt-3">
-                                    {{-- <a href="{{ route('gallery.live.download', $photoSession->download->token ?? '') }}"
+                                    <a href="/gallery/{{ $photoSession->download->token }}/live/download"
                                         class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -239,7 +239,7 @@
                                             <path d="M12 4l0 12" />
                                         </svg>
                                         Download Live Photo
-                                    </a> --}}
+                                    </a>
                                 </div>
                             @else
                                 <div class="text-muted">
