@@ -44,6 +44,6 @@ class PhotoSession extends Model
 
     public function download()
     {
-        return $this->hasOne(Download::class);
+        return $this->hasOne(Download::class, 'session_id');
     }
 }

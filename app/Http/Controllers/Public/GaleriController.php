@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Models\PhotoSession;
 use App\Models\SessionPhoto;
+use App\Models\Download;
 use App\Http\Controllers\Controller;
 
 class GaleriController extends Controller
@@ -11,20 +12,25 @@ class GaleriController extends Controller
     /**
      * HALAMAN GALERI FOTO
      */
-    public function show($session_id)
+    public function show($token)
     {
+        $download = Download::where('token', $token)->firstOrFail();
         $session = PhotoSession::with(['photos', 'finalImage'])
-            ->findOrFail($session_id);
+            ->findOrFail($download->session_id);
 
-        return view('public.gallery', compact('session'));
+        return view('public.gallery', compact('session', 'token'));
     }
 
     /**
      * DOWNLOAD FOTO FRAME
      */
-    public function downloadFrame($photo_id)
+    public function downloadFrame($token, $photo_id)
     {
-        $photo = SessionPhoto::findOrFail($photo_id);
+        $download = Download::where('token', $token)->firstOrFail();
+
+        $photo = SessionPhoto::where('session_id', $download->session_id)
+            ->findOrFail($photo_id);
+
         $path = storage_path('app/public/' . $photo->photo_path);
 
         abort_if(!file_exists($path), 404);
@@ -35,10 +41,12 @@ class GaleriController extends Controller
     /**
      * DOWNLOAD FOTO FINAL
      */
-    public function downloadFinal($session_id)
+    public function downloadFinal($token)
     {
+        $download = Download::where('token', $token)->firstOrFail();
+
         $session = PhotoSession::with('finalImage')
-            ->findOrFail($session_id);
+            ->findOrFail($download->session_id);
 
         abort_if(!$session->finalImage, 404);
 
@@ -52,10 +60,12 @@ class GaleriController extends Controller
     /**
      * DOWNLOAD VIDEO / LIVE PHOTO
      */
-    public function downloadLivePhoto($session_id)
+    public function downloadLivePhoto($token)
     {
+        $download = Download::where('token', $token)->firstOrFail();
+
         $session = PhotoSession::with('finalImage')
-            ->findOrFail($session_id);
+            ->findOrFail($download->session_id);
 
         abort_if(!$session->finalImage || !$session->finalImage->video_path, 404);
 

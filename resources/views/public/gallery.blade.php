@@ -114,7 +114,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <a href="{{ route('gallery.final.download', $session->id) }}"
+                                        <a href="{{ route('gallery.final.download', $token) }}"
                                             class="btn btn-primary w-100" download>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -163,7 +163,7 @@
                                         </div>
 
                                         <div class="card-footer">
-                                            <a href="{{ route('gallery.live.download', $session->id) }}"
+                                            <a href="{{ route('gallery.live.download', $token) }}"
                                                 class="btn btn-primary w-100" download>
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -198,7 +198,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <a href="{{ route('gallery.frame.download', $photo->id) }}"
+                                        <a href="{{ route('gallery.frame.download', ['token' => $token, 'photo_id' => $photo->id]) }}"
                                             class="btn btn-outline-primary w-100" download>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"

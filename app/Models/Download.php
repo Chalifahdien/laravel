@@ -22,4 +22,15 @@ class Download extends Model
     {
         return $this->belongsTo(PhotoSession::class, 'session_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($download) {
+            if (empty($download->token)) {
+                $download->token = \Illuminate\Support\Str::random(10);
+            }
+        });
+    }
 }

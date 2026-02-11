@@ -102,8 +102,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/settings-system', [SystemSettingController::class, 'update'])->name('admin.settings.system.update');
 });
 
+
 // PUBLIC ROUETE
-Route::get('photo-sessions/{session_id}/download/', [GaleriController::class, 'show'])->name('gallery.show');
-Route::get('/gallery/frame/{photo_id}/download', [GaleriController::class, 'downloadFrame'])->name('gallery.frame.download');
-Route::get('/gallery/{session_id}/final/download', [GaleriController::class, 'downloadFinal'])->name('gallery.final.download');
-Route::get('/gallery/{session_id}/live/download', [GaleriController::class, 'downloadLivePhoto'])->name('gallery.live.download');
+Route::get('gallery/{token}', [GaleriController::class, 'show'])->name('gallery.show');
+Route::get('/gallery/{token}/frame/{photo_id}/download', [GaleriController::class, 'downloadFrame'])->name('gallery.frame.download');
+Route::get('/gallery/{token}/final/download', [GaleriController::class, 'downloadFinal'])->name('gallery.final.download');
+Route::get('/gallery/{token}/live/download', [GaleriController::class, 'downloadLivePhoto'])->name('gallery.live.download');
