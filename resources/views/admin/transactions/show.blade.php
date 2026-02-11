@@ -264,7 +264,7 @@
                                         <img src="{{ asset('storage/' . $photo->photo_path) }}"
                                             class="img-fluid rounded mb-2">
                                         <a href="{{ route('gallery.frame.download', ['token' => $photoSession->download->token ?? '', 'photo_id' => $photo->id]) }}"
-                                            class="btn btn-sm btn-outline-primary w-100">
+                                            class="btn btn-outline-primary w-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
