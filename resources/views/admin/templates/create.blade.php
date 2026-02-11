@@ -63,6 +63,15 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label class="form-label">Kategori</label>
+                                    <input class="form-control" type="text" name="category"
+                                        placeholder="Example: Holiday, Birthday, Wedding">
+                                    <div class="form-hint">
+                                        Optional category to organize templates
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
                                     <label class="form-label">Ukuran Kertas</label>
                                     <select class="form-select" name="paper_size_id" required>
                                         @foreach ($paperSizes as $p)
@@ -172,8 +181,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                        FABRIC CONFIG
-                                                                                                                                                                                                                    ================================ */
+                                                                                                                                                                                                                            FABRIC CONFIG
+                                                                                                                                                                                                                        ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;

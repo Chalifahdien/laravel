@@ -9,6 +9,7 @@ class Template extends Model
     protected $fillable = [
         'paper_size_id',
         'name',
+        'category',
         'preview_image',
         'template_image',
         'frame_count',

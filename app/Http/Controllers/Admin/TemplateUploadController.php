@@ -55,6 +55,7 @@ class TemplateUploadController extends Controller
         $request->validate([
             'frames' => 'required|json',
             'name' => 'required|string|max:100',
+            'category' => 'nullable|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
         ]);
 
@@ -78,6 +79,7 @@ class TemplateUploadController extends Controller
             'frame_count' => count($frames),
             'paper_size_id' => $request->paper_size_id,
             'name' => $request->name,
+            'category' => $request->category,
         ]);
 
         return redirect()
@@ -92,6 +94,7 @@ class TemplateUploadController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:100',
+            'category' => 'nullable|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
             'template' => 'required|image|max:10240',
             'frames' => 'required|json',
@@ -110,6 +113,7 @@ class TemplateUploadController extends Controller
         $template = Template::create([
             'paper_size_id' => $request->paper_size_id,
             'name' => $request->name,
+            'category' => $request->category,
             'template_image' => $path,
             'frame_count' => count($frames),
             'is_active' => 1,

@@ -23,6 +23,7 @@ class TemplateApiController extends Controller
             $templates->map(fn($t) => [
                 'id' => $t->id,
                 'name' => $t->name,
+                'category' => $t->category,
                 'template_image' => $t->template_image
                     ? asset('storage/' . $t->template_image)
                     : null,
@@ -60,6 +61,7 @@ class TemplateApiController extends Controller
         return response()->json([
             'id' => $template->id,
             'name' => $template->name,
+            'category' => $template->category,
             'template_image' => asset('storage/' . $template->template_image),
             'frame_count' => $template->frame_count,
             'paper_size' => [

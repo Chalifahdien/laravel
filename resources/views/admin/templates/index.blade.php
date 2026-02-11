@@ -55,6 +55,7 @@
                                 <th>#</th>
                                 <th>Preview</th>
                                 <th>Name</th>
+                                <th>Category</th>
                                 <th>Paper Size</th>
                                 <th>Frame</th>
                                 <th>Status</th>
@@ -75,6 +76,14 @@
                                     </td>
                                     <td class="fw-semibold">
                                         {{ $t->name }}
+                                    </td>
+
+                                    <td>
+                                        @if ($t->category)
+                                            <span class="badge bg-indigo-lt">{{ $t->category }}</span>
+                                        @else
+                                            <span class="text-muted">-</span>
+                                        @endif
                                     </td>
 
                                     <td>
