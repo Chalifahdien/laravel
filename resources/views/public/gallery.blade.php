@@ -72,19 +72,61 @@
         .hidden {
             display: none !important;
         }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            background-color: #03045e;
+        }
+
+        /* tombol download overlay */
+        .download-overlay {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 10;
+        }
+
+        .label-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+        }
+
+
+        .download-overlay .btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            padding: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* optional hover effect */
+        .download-overlay .btn:hover {
+            transform: scale(1.08);
+            transition: 0.2s;
+        }
     </style>
 </head>
 
-<body class="theme-dark">
+<body class="theme-dark" style="background-color: #B8FB3C;">
     <div class="page">
         <!-- Navbar -->
-        <header class="navbar navbar-expand-md navbar-dark d-print-none">
-            <div class="container-xl">
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="#" class="text-dark">
-                        Galeri Foto
-                    </a>
-                </h1>
+        <header class="navbar navbar-expand-md navbar-dark d-print-none border-0" style="background-color: #03045e;">
+            <div class="container-xl d-flex justify-content-center text-center py-5 border-0" style="color: #B8FB3C;">
+                <div class="">
+                    <h1 class="mb-1 mt-0">
+                        Your Memories
+                    </h1>
+                    <h3 class="mb-0">
+                        Treasure your special moments forever
+                    </h3>
+                </div>
             </div>
         </header>
 
@@ -94,132 +136,207 @@
                 <div class="container-xl">
 
                     <!-- Gallery Grid -->
-                    <div class="row row-cards">
+                    <div class="card mb-4">
+                        <!-- CARD HEADER -->
+                        <div class="card-header">
+                            <h2 class="mb-0" style="color: #B8FB3C;">
+                                Featured Photos
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-center">
 
-                        <!-- FINAL PHOTO -->
-                        @if ($session->finalImage)
-                            <div class="col-sm-6 col-md-4 col-lg-3">
-                                <div class="card">
-                                    <img src="{{ asset('storage/' . $session->finalImage->image_path) }}"
-                                        class="card-img-top gallery-img" style="aspect-ratio: 3/4; object-fit: cover;"
-                                        data-type="image"
-                                        data-src="{{ asset('storage/' . $session->finalImage->image_path) }}"
-                                        alt="Final Photo">
+                                <!-- FINAL PHOTO -->
+                                @if ($session->finalImage)
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="card">
 
-                                    <div class="card-body">
-                                        <div class="fw-semibold">
-                                            <span class="badge bg-blue-lt me-1">FINAL</span>
-                                            Foto Final
+                                            <!-- LABEL kiri atas -->
+                                            <div class="label-overlay">
+                                                <span class="badge bg-blue-lt">
+                                                    FINAL
+                                                </span>
+                                            </div>
+
+
+                                            <!-- tombol download kanan atas -->
+                                            <div class="download-overlay">
+                                                <a href="{{ route('gallery.final.download', $token) }}"
+                                                    class="btn btn-primary" download>
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
+                                                        width="20" height="20" viewBox="0 0 24 24"
+                                                        stroke-width="2" stroke="currentColor" fill="none"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                        <path d="M7 11l5 5l5 -5" />
+                                                        <path d="M12 4l0 12" />
+
+                                                    </svg>
+
+                                                </a>
+                                            </div>
+
+
+                                            <!-- IMAGE -->
+                                            <img src="{{ asset('storage/' . $session->finalImage->image_path) }}"
+                                                class="card-img-top gallery-img"
+                                                style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                data-src="{{ asset('storage/' . $session->finalImage->image_path) }}"
+                                                alt="Final Photo">
+
                                         </div>
                                     </div>
 
-                                    <div class="card-footer">
-                                        <a href="{{ route('gallery.final.download', $token) }}"
-                                            class="btn btn-primary w-100" download>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                <path d="M7 11l5 5l5 -5" />
-                                                <path d="M12 4l0 12" />
-                                            </svg>
-                                            Download
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- LIVE PHOTO -->
-                            @if ($session->finalImage->video_path)
-                                @php
-                                    $videoPath = $session->finalImage->video_path;
-                                    $ext = strtolower(pathinfo($videoPath, PATHINFO_EXTENSION));
-                                    $isGif = $ext === 'gif';
-                                @endphp
-                                <div class="col-sm-6 col-md-4 col-lg-3">
-                                    <div class="card">
-                                        @if ($isGif)
-                                            <img src="{{ asset('storage/' . $videoPath) }}"
-                                                class="card-img-top gallery-img"
-                                                style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
-                                                data-src="{{ asset('storage/' . $videoPath) }}" alt="Live Photo">
-                                        @else
-                                            <video class="card-img-top gallery-img"
-                                                style="aspect-ratio: 3/4; object-fit: cover;" muted autoplay loop
-                                                playsinline data-type="video"
-                                                data-src="{{ asset('storage/' . $videoPath) }}">
-                                                <source src="{{ asset('storage/' . $videoPath) }}"
-                                                    type="video/{{ $ext }}">
-                                            </video>
-                                        @endif
+                                    <!-- LIVE PHOTO -->
+                                    @if ($session->finalImage->video_path)
+                                        @php
+                                            $videoPath = $session->finalImage->video_path;
+                                            $ext = strtolower(pathinfo($videoPath, PATHINFO_EXTENSION));
+                                            $isGif = $ext === 'gif';
+                                        @endphp
+                                        <div class="col-sm-12 col-md-6 mt-3 mt-md-0">
+                                            <div class="card">
 
-                                        <div class="card-body">
-                                            <div class="fw-semibold">
-                                                <span class="badge bg-red-lt me-1">LIVE</span>
-                                                Live Photo
+                                                <!-- LABEL kiri atas -->
+                                                <div class="label-overlay">
+                                                    <span class="badge bg-red-lt">
+                                                        LIVE
+                                                    </span>
+                                                </div>
+
+
+                                                <!-- tombol download kanan atas -->
+                                                <div class="download-overlay">
+                                                    <a href="{{ route('gallery.live.download', $token) }}"
+                                                        class="btn btn-primary" download>
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
+                                                            width="20" height="20" viewBox="0 0 24 24"
+                                                            stroke-width="2" stroke="currentColor" fill="none"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                            <path d="M7 11l5 5l5 -5" />
+                                                            <path d="M12 4l0 12" />
+
+                                                        </svg>
+
+                                                    </a>
+                                                </div>
+
+
+                                                <!-- MEDIA -->
+                                                @if ($isGif)
+                                                    <img src="{{ asset('storage/' . $videoPath) }}"
+                                                        class="card-img-top gallery-img"
+                                                        style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                        data-src="{{ asset('storage/' . $videoPath) }}"
+                                                        alt="Live Photo">
+                                                @else
+                                                    <video class="card-img-top gallery-img"
+                                                        style="aspect-ratio: 3/4; object-fit: cover;" muted autoplay
+                                                        loop playsinline data-type="video"
+                                                        data-src="{{ asset('storage/' . $videoPath) }}">
+
+                                                        <source src="{{ asset('storage/' . $videoPath) }}"
+                                                            type="video/{{ $ext }}">
+
+                                                    </video>
+                                                @endif
+
                                             </div>
                                         </div>
 
-                                        <div class="card-footer">
-                                            <a href="{{ route('gallery.live.download', $token) }}"
-                                                class="btn btn-primary w-100" download>
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                    <path d="M7 11l5 5l5 -5" />
-                                                    <path d="M12 4l0 12" />
-                                                </svg>
-                                                Download
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-
-                        <!-- FRAME PHOTOS -->
-                        @foreach ($session->photos as $index => $photo)
-                            <div class="col-sm-6 col-md-4 col-lg-3">
-                                <div class="card">
-                                    <img src="{{ asset('storage/' . $photo->photo_path) }}"
-                                        class="card-img-top gallery-img" style="aspect-ratio: 3/4; object-fit: cover;"
-                                        data-type="image" data-src="{{ asset('storage/' . $photo->photo_path) }}"
-                                        alt="Frame {{ $index + 1 }}">
-
-                                    <div class="card-body">
-                                        <div class="fw-semibold">
-                                            Frame {{ $index + 1 }}
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <a href="{{ route('gallery.frame.download', ['token' => $token, 'photo_id' => $photo->id]) }}"
-                                            class="btn btn-outline-primary w-100" download>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                <path d="M7 11l5 5l5 -5" />
-                                                <path d="M12 4l0 12" />
-                                            </svg>
-                                            Download
-                                        </a>
-                                    </div>
-                                </div>
+                                    @endif
+                                @endif
                             </div>
-                        @endforeach
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="mb-0" style="color: #B8FB3C;">
+                                Frame Photos
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row d-flex">
+                                <!-- FRAME PHOTOS -->
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @foreach ($session->photos as $index => $photo)
+                                        <div class="col-sm-6 col-md-4 mb-3">
+                                            <div class="card">
 
+                                                <!-- LABEL kiri atas -->
+                                                <div class="label-overlay">
+                                                    <span class="badge bg-dark-lt">
+                                                        FRAME
+                                                    </span>
+                                                </div>
+
+
+                                                <!-- tombol download kanan atas -->
+                                                <div class="download-overlay">
+                                                    <a href="{{ route('gallery.frame.download', ['token' => $token, 'photo_id' => $photo->id]) }}"
+                                                        class="btn btn-primary" download>
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
+                                                            width="20" height="20" viewBox="0 0 24 24"
+                                                            stroke-width="2" stroke="currentColor" fill="none"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                            <path d="M7 11l5 5l5 -5" />
+                                                            <path d="M12 4l0 12" />
+
+                                                        </svg>
+
+                                                    </a>
+                                                </div>
+
+
+                                                <!-- IMAGE -->
+                                                <img src="{{ asset('storage/' . $photo->photo_path) }}"
+                                                    class="card-img-top gallery-img"
+                                                    style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                    data-src="{{ asset('storage/' . $photo->photo_path) }}"
+                                                    alt="Frame {{ $index + 1 }}">
+
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endfor
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- FOOTER -->
+        <footer class="navbar navbar-expand-md navbar-dark d-print-none border-0" style="background-color: #03045e;">
+
+            <div class="container-xl d-flex justify-content-center text-center border-0" style="color: #B8FB3C;">
+
+                <div>
+                    <div class="mb-0" style="font-size:14px;">
+                        © 2026 MooeinSnap. All rights reserved.
+                    </div>
+
+                    <div style="font-size:13px; opacity:0.8;">
+                        Capture. Keep. Relive.
+                    </div>
+                </div>
+
+            </div>
+
+        </footer>
+
+
     </div>
 
     <!-- Lightbox Modal -->
