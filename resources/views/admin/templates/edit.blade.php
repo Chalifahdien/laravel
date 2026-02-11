@@ -58,13 +58,76 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Kategori</label>
-                                    <input class="form-control" type="text" name="category"
-                                        value="{{ old('category', $template->category) }}"
-                                        placeholder="Example: Holiday, Birthday, Wedding">
+                                    <div class="position-relative">
+                                        <input class="form-control" type="text" name="category" id="categoryInputEdit"
+                                            value="{{ old('category', $template->category) }}"
+                                            placeholder="Pilih kategori atau ketik baru" autocomplete="off">
+                                        <div id="categoryDropdownEdit" class="dropdown-menu w-100"
+                                            style="max-height: 200px; overflow-y: auto; display: none;">
+                                            @foreach ($existingCategories as $cat)
+                                                <a class="dropdown-item" href="#"
+                                                    data-value="{{ $cat }}">{{ $cat }}</a>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                     <div class="form-hint">
-                                        Optional category to organize templates
+                                        Pilih dari kategori yang ada atau masukkan kategori baru
                                     </div>
                                 </div>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const input = document.getElementById('categoryInputEdit');
+                                        const dropdown = document.getElementById('categoryDropdownEdit');
+                                        const items = dropdown.querySelectorAll('.dropdown-item');
+
+                                        // Show dropdown on focus/click
+                                        input.addEventListener('focus', function() {
+                                            filterItems('');
+                                            dropdown.style.display = 'block';
+                                        });
+
+                                        // Filter items as user types
+                                        input.addEventListener('input', function() {
+                                            filterItems(this.value.toLowerCase());
+                                            dropdown.style.display = 'block';
+                                        });
+
+                                        // Handle item selection
+                                        items.forEach(item => {
+                                            item.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                input.value = this.dataset.value;
+                                                dropdown.style.display = 'none';
+                                            });
+                                        });
+
+                                        // Close dropdown when clicking outside
+                                        document.addEventListener('click', function(e) {
+                                            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                                                dropdown.style.display = 'none';
+                                            }
+                                        });
+
+                                        // Filter function
+                                        function filterItems(query) {
+                                            let hasVisible = false;
+                                            items.forEach(item => {
+                                                const text = item.textContent.toLowerCase();
+                                                if (text.includes(query)) {
+                                                    item.style.display = 'block';
+                                                    hasVisible = true;
+                                                } else {
+                                                    item.style.display = 'none';
+                                                }
+                                            });
+                                            // Hide dropdown if no matches
+                                            if (!hasVisible && query !== '') {
+                                                dropdown.style.display = 'none';
+                                            }
+                                        }
+                                    });
+                                </script>
 
                                 <div class="mb-2">
                                     <label class="form-label">Ukuran Kertas</label>
@@ -167,8 +230,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                            FABRIC GLOBAL CONFIG
-                                                                                                                                                                                                                        ================================ */
+                                                                                                                                                                                                                                    FABRIC GLOBAL CONFIG
+                                                                                                                                                                                                                                ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;

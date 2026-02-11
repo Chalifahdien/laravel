@@ -266,51 +266,51 @@
                         <div class="card-body">
                             <div class="row d-flex">
                                 <!-- FRAME PHOTOS -->
-                                @for ($i = 1; $i <= 5; $i++)
-                                    @foreach ($session->photos as $index => $photo)
-                                        <div class="col-sm-6 col-md-4 mb-3">
-                                            <div class="card">
+                                {{-- @for ($i = 1; $i <= 5; $i++) --}}
+                                @foreach ($session->photos as $index => $photo)
+                                    <div class="col-sm-6 col-md-4 mb-3">
+                                        <div class="card">
 
-                                                <!-- LABEL kiri atas -->
-                                                <div class="label-overlay">
-                                                    <span class="badge bg-dark-lt">
-                                                        FRAME
-                                                    </span>
-                                                </div>
-
-
-                                                <!-- tombol download kanan atas -->
-                                                <div class="download-overlay">
-                                                    <a href="{{ route('gallery.frame.download', ['token' => $token, 'photo_id' => $photo->id]) }}"
-                                                        class="btn btn-primary" download>
-
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
-                                                            width="20" height="20" viewBox="0 0 24 24"
-                                                            stroke-width="2" stroke="currentColor" fill="none"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                            <path d="M7 11l5 5l5 -5" />
-                                                            <path d="M12 4l0 12" />
-
-                                                        </svg>
-
-                                                    </a>
-                                                </div>
-
-
-                                                <!-- IMAGE -->
-                                                <img src="{{ asset('storage/' . $photo->photo_path) }}"
-                                                    class="card-img-top gallery-img"
-                                                    style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
-                                                    data-src="{{ asset('storage/' . $photo->photo_path) }}"
-                                                    alt="Frame {{ $index + 1 }}">
-
+                                            <!-- LABEL kiri atas -->
+                                            <div class="label-overlay">
+                                                <span class="badge bg-dark-lt">
+                                                    FRAME
+                                                </span>
                                             </div>
+
+
+                                            <!-- tombol download kanan atas -->
+                                            <div class="download-overlay">
+                                                <a href="{{ route('gallery.frame.download', ['token' => $token, 'photo_id' => $photo->id]) }}"
+                                                    class="btn btn-primary" download>
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
+                                                        width="20" height="20" viewBox="0 0 24 24"
+                                                        stroke-width="2" stroke="currentColor" fill="none"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                        <path d="M7 11l5 5l5 -5" />
+                                                        <path d="M12 4l0 12" />
+
+                                                    </svg>
+
+                                                </a>
+                                            </div>
+
+
+                                            <!-- IMAGE -->
+                                            <img src="{{ asset('storage/' . $photo->photo_path) }}"
+                                                class="card-img-top gallery-img"
+                                                style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                data-src="{{ asset('storage/' . $photo->photo_path) }}"
+                                                alt="Frame {{ $index + 1 }}">
+
                                         </div>
-                                    @endforeach
-                                @endfor
+                                    </div>
+                                @endforeach
+                                {{-- @endfor --}}
                             </div>
                         </div>
                     </div>

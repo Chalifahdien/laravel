@@ -28,8 +28,14 @@ class TemplateUploadController extends Controller
      */
     public function create()
     {
+        $existingCategories = Template::whereNotNull('category')
+            ->distinct()
+            ->pluck('category')
+            ->toArray();
+
         return view('admin.templates.create', [
-            'paperSizes' => PaperSize::where('is_active', 1)->get()
+            'paperSizes' => PaperSize::where('is_active', 1)->get(),
+            'existingCategories' => $existingCategories
         ]);
     }
 
@@ -40,10 +46,16 @@ class TemplateUploadController extends Controller
     {
         $template->load('frames', 'paperSize');
 
+        $existingCategories = Template::whereNotNull('category')
+            ->distinct()
+            ->pluck('category')
+            ->toArray();
+
         return view('admin.templates.edit', [
             'template' => $template,
             'frames' => $template->frames,
-            'paperSizes' => PaperSize::where('is_active', 1)->get()
+            'paperSizes' => PaperSize::where('is_active', 1)->get(),
+            'existingCategories' => $existingCategories
         ]);
     }
 
