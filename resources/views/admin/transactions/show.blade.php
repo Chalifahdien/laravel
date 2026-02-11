@@ -180,7 +180,7 @@
                                 <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
                                     class="img-fluid rounded shadow-sm" style="max-height: 400px">
                                 <div class="mt-3">
-                                    <a href="{{ route('gallery.final.download', $photoSession->id) }}"
+                                    <a href="{{ route('gallery.final.download', $photoSession->download->token ?? '') }}"
                                         class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -228,7 +228,7 @@
                                     </video>
                                 @endif
                                 <div class="mt-3">
-                                    <a href="{{ route('gallery.live.download', $photoSession->id) }}"
+                                    {{-- <a href="{{ route('gallery.live.download', $photoSession->download->token ?? '') }}"
                                         class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -239,7 +239,7 @@
                                             <path d="M12 4l0 12" />
                                         </svg>
                                         Download Live Photo
-                                    </a>
+                                    </a> --}}
                                 </div>
                             @else
                                 <div class="text-muted">
@@ -263,7 +263,7 @@
                                     <div class="col-md-3 col-sm-4 col-6">
                                         <img src="{{ asset('storage/' . $photo->photo_path) }}"
                                             class="img-fluid rounded mb-2">
-                                        <a href="{{ route('gallery.frame.download', $photo->id) }}"
+                                        <a href="{{ route('gallery.frame.download', ['token' => $photoSession->download->token ?? '', 'photo_id' => $photo->id]) }}"
                                             class="btn btn-sm btn-outline-primary w-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"

@@ -61,6 +61,7 @@ class TransactionController extends Controller
             'template',
             'photos',
             'finalImage',
+            'download',
         ]);
 
         return view('admin.transactions.show', compact('photoSession'));
