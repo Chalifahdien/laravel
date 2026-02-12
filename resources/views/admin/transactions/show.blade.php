@@ -18,6 +18,12 @@
                     <a href="{{ route('transactions.invoice', $photoSession) }}" class="btn btn-primary me-2">
                         View Invoice
                     </a>
+                    @if ($photoSession->download)
+                        <a href="{{ route('gallery.show', $photoSession->download->token) }}" class="btn btn-secondary me-2"
+                            target="_blank">
+                            View Gallery
+                        </a>
+                    @endif
                     <a href="{{ route('transactions.index') }}" class="btn btn-link">
                         ← Back
                     </a>
