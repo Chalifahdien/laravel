@@ -39,7 +39,9 @@ class AdminMachineController extends Controller
             'name' => 'required|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
             'price' => 'required|integer|min:1000',
+            'additional_print_cost' => 'nullable|integer|min:0',
             'is_active' => 'required|boolean',
+            'payment_required' => 'boolean',
         ]);
 
         Machine::create([
@@ -47,7 +49,9 @@ class AdminMachineController extends Controller
             'slug' => Str::slug($request->name) . '-' . time(),
             'paper_size_id' => $request->paper_size_id,
             'price' => $request->price,
+            'additional_print_cost' => $request->additional_print_cost ?? 0,
             'is_active' => $request->is_active,
+            'payment_required' => $request->payment_required ?? true,
         ]);
 
         return redirect()

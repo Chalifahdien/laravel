@@ -81,12 +81,33 @@
                             </div>
                         </div>
 
-                        {{-- Active --}}
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Additional Print Cost (IDR)</label>
+                                <input type="number" name="additional_print_cost" class="form-control"
+                                    value="{{ old('additional_print_cost') }}" min="0">
+                                <small class="form-hint">Cost per additional print beyond the first free print</small>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-check form-switch">
+                                <input type="hidden" name="is_active" value="0">
+                                <label class="form-check form-switch d-flex align-items-center gap-2">
                                     <input class="form-check-input" type="checkbox" name="is_active" value="1" checked>
-                                    <span class="form-check-label">Active Machine</span>
+                                    <span class="form-check-label">
+                                        Active Machine
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="hidden" name="payment_required" value="1">
+                                <label class="form-check form-switch d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="checkbox" name="payment_required" value="0">
+                                    <span class="form-check-label">
+                                        Active Free Mode
+                                    </span>
                                 </label>
                             </div>
                         </div>
