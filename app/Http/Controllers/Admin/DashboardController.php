@@ -27,12 +27,53 @@ class DashboardController extends Controller
         // =====================
         // REVENUE
         // =====================
-        $totalRevenue = Payment::where('transaction_status', 'success')
-            ->sum('amount');
+        // =====================
+        // REVENUE
+        // =====================
+        // Calculate Total Revenue
+        $totalSessionsData = PhotoSession::with(['payment', 'finalImage', 'machine'])
+            ->whereHas('payment', function ($q) {
+                $q->where('transaction_status', 'success');
+            })
+            ->get();
 
-        $todayRevenue = Payment::where('transaction_status', 'success')
-            ->whereDate('created_at', today())
-            ->sum('amount');
+        $totalRevenue = $totalSessionsData->reduce(function ($carry, $session) {
+            $paymentAmount = $session->payment->amount ?? 0;
+
+            // If payment is 0 (Free Mode), total check is 0
+            if ($paymentAmount == 0) {
+                return $carry + 0;
+            }
+
+            $printQty = $session->finalImage->print_quantity ?? 1;
+            $additionalPrints = max(0, $printQty - 1);
+            $additionalCost = $session->machine->additional_print_cost ?? 0;
+
+            return $carry + $paymentAmount + ($additionalPrints * $additionalCost);
+        }, 0);
+
+        // Calculate Today Revenue
+        $todaySessionsData = PhotoSession::with(['payment', 'finalImage', 'machine'])
+            ->whereHas('payment', function ($q) {
+                $q->where('transaction_status', 'success')
+                    ->whereDate('created_at', today());
+            })
+            ->get();
+
+        $todayRevenue = $todaySessionsData->reduce(function ($carry, $session) {
+            $paymentAmount = $session->payment->amount ?? 0;
+
+            // If payment is 0 (Free Mode), total check is 0
+            if ($paymentAmount == 0) {
+                return $carry + 0;
+            }
+
+            $printQty = $session->finalImage->print_quantity ?? 1;
+            $additionalPrints = max(0, $printQty - 1);
+            $additionalCost = $session->machine->additional_print_cost ?? 0;
+
+            return $carry + $paymentAmount + ($additionalPrints * $additionalCost);
+        }, 0);
 
         // =====================
         // SESSION STATUS COUNT

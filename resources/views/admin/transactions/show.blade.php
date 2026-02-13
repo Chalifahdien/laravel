@@ -1,5 +1,49 @@
 @extends('layouts.app')
 
+<style>
+    .gallery-img {
+        cursor: pointer;
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* tombol download overlay */
+    .download-overlay {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 10;
+    }
+
+    .label-overlay {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 10;
+    }
+
+
+    .download-overlay .btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* optional hover effect */
+    .download-overlay .btn:hover {
+        transform: scale(1.08);
+        transition: 0.2s;
+    }
+</style>
+
 @section('content')
     <!-- Page header -->
     <div class="page-header d-print-none">
@@ -265,23 +309,40 @@
 
                         <div class="card-body">
                             <div class="row g-3">
-                                @forelse ($photoSession->photos as $photo)
+                                @forelse ($photoSession->photos as $index => $photo)
                                     <div class="col-md-3 col-sm-4 col-6">
-                                        <img src="{{ asset('storage/' . $photo->photo_path) }}"
-                                            class="img-fluid rounded mb-2">
-                                        <a href="{{ route('gallery.frame.download', ['token' => $photoSession->download->token ?? '', 'photo_id' => $photo->id]) }}"
-                                            class="btn btn-outline-primary w-100">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="icon icon-sm">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                <path d="M7 11l5 5l5 -5" />
-                                                <path d="M12 4l0 12" />
-                                            </svg>
-                                            Download
-                                        </a>
+                                        <div class="card">
+
+                                            <!-- LABEL kiri atas -->
+                                            <div class="label-overlay">
+                                                <span class="badge bg-dark-lt">
+                                                    FRAME
+                                                </span>
+                                            </div>
+
+                                            <!-- tombol download kanan atas -->
+                                            <div class="download-overlay">
+                                                <a href="{{ route('gallery.frame.download', ['token' => $photoSession->download->token ?? '', 'photo_id' => $photo->id]) }}"
+                                                    class="btn btn-primary" download>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
+                                                        width="20" height="20" viewBox="0 0 24 24"
+                                                        stroke-width="2" stroke="currentColor" fill="none"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                        <path d="M7 11l5 5l5 -5" />
+                                                        <path d="M12 4l0 12" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+
+                                            <!-- IMAGE -->
+                                            <img src="{{ asset('storage/' . $photo->photo_path) }}"
+                                                class="card-img-top gallery-img"
+                                                style="aspect-ratio: 3/4; object-fit: cover;"
+                                                alt="Frame {{ $index + 1 }}">
+
+                                        </div>
                                     </div>
                                 @empty
                                     <div class="text-muted text-center">
