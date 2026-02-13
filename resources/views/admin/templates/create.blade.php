@@ -244,8 +244,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                    FABRIC CONFIG
-                                                                                                                                                                                                                                ================================ */
+                                                                                                                                                                                                                                            FABRIC CONFIG
+                                                                                                                                                                                                                                        ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
@@ -348,8 +348,8 @@
             const frames = objects.map(o => ({
                 x: Math.round(o.left / SCALE),
                 y: Math.round(o.top / SCALE),
-                width: Math.round(o.getScaledWidth() / SCALE),
-                height: Math.round(o.getScaledHeight() / SCALE),
+                width: Math.round((o.width * o.scaleX) / SCALE),
+                height: Math.round((o.height * o.scaleY) / SCALE),
                 shape: o.data.shape
             }));
 

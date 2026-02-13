@@ -230,8 +230,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                    FABRIC GLOBAL CONFIG
-                                                                                                                                                                                                                                ================================ */
+                                                                                                                                                                                                                                        FABRIC GLOBAL CONFIG
+                                                                                                                                                                                                                                    ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
