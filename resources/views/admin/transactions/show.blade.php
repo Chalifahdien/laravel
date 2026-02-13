@@ -270,8 +270,8 @@
                                     <img src="{{ asset('storage/' . $videoPath) }}" class="img-fluid rounded shadow-sm"
                                         style="max-height: 400px;">
                                 @else
-                                    <video autoplay loop muted playsinline controls class="img-fluid rounded shadow-sm"
-                                        style="max-height: 400px; width: 100%;">
+                                    <video autoplay loop muted playsinline class="img-fluid rounded shadow-sm"
+                                        style="max-height: 400px;">
                                         <source src="{{ asset('storage/' . $videoPath) }}"
                                             type="video/{{ $extension }}">
                                         Your browser does not support the video tag.
