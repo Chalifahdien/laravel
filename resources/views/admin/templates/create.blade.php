@@ -43,17 +43,14 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.templates.upload') }}" enctype="multipart/form-data"
-                onsubmit="return prepareFrames()">
+            <form method="POST" action="{{ route('admin.templates.upload') }}" enctype="multipart/form-data">
                 @csrf
-
-                <input type="hidden" name="frames" id="framesInput">
 
                 <div class="row g-3">
 
                     {{-- FORM INFO --}}
                     <div class="col-lg-4">
-                        <div class="card">
+                        <div class="card mb-3">
                             <div class="card-body">
 
                                 <div class="mb-3">
@@ -146,215 +143,75 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <label class="form-label">Template PNG</label>
                                     <input class="form-control" type="file" name="template" id="templateInput"
                                         accept="image/*" required>
                                     <div class="form-hint">
-                                        Gunakan resolusi besar untuk kualitas cetak
+                                        Gunakan resolusi besar untuk kualitas cetak. Anda akan mengatur frame di halaman
+                                        berikutnya.
                                     </div>
                                 </div>
 
+
+
                             </div>
                         </div>
-                        <div class="d-flex gap-3 my-3 w-100">
-                            <div class="col w-50">
-                                <a href="{{ url('/templates') }}" class="btn btn-outline-azure w-100">Cancel</a>
-                            </div>
-                            <div class="col w-50">
-                                <button class="btn btn-primary w-100">Save</button>
-                            </div>
+                        <div class="d-flex gap-3">
+                            <a href="{{ url('/templates') }}" class="btn btn-outline-azure w-50">Cancel</a>
+                            <button class="btn btn-primary w-50">Upload & Continue</button>
                         </div>
                     </div>
 
-                    {{-- CANVAS EDITOR --}}
+                    {{-- IMAGE PREVIEW --}}
                     <div class="col-lg-8">
                         <div class="card">
-
-                            {{-- TOOLBAR --}}
                             <div class="card-header">
-                                <div class="btn-list">
-                                    <button type="button" class="btn btn-outline-purple" onclick="addRect()">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                <h3 class="card-title">Preview</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="previewContainer" class="text-center text-muted"
+                                    style="min-height: 400px; display: flex; align-items: center; justify-content: center;">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0 me-2">
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon mb-3">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M15 8h.01" />
                                             <path
-                                                d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
-                                        </svg>Reactangle
-                                    </button>
-
-                                    <button type="button" class="btn btn-outline-indigo" onclick="addCircle()">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0 me-2">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                        </svg>Circle
-                                    </button>
-
-                                    <button type="button" class="btn btn-outline-danger" onclick="removeSelected()">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0 me-2">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M20 13v-4a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v5a2 2 0 0 0 2 2h7" />
-                                            <path d="M22 22l-5 -5" />
-                                            <path d="M17 22l5 -5" />
-                                        </svg>Remove
-                                    </button>
+                                                d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z" />
+                                            <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />
+                                            <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
+                                        </svg>
+                                        <p>Pilih gambar untuk melihat preview</p>
+                                    </div>
                                 </div>
+                                <img id="previewImage" style="display: none; max-width: 100%; height: auto;" />
                             </div>
-
-                            {{-- CANVAS --}}
-                            <div class="card-body p-2">
-                                <div class="canvas-wrapper">
-                                    <canvas id="canvas"></canvas>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </form>
 
+            <script>
+                document.getElementById('templateInput').addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    const previewContainer = document.getElementById('previewContainer');
+                    const previewImage = document.getElementById('previewImage');
+
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            previewImage.src = event.target.result;
+                            previewContainer.style.display = 'none';
+                            previewImage.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            </script>
+
         </div>
     </div>
 
-    {{-- STYLE --}}
-    <style>
-        .canvas-wrapper {
-            max-width: 100%;
-            max-height: 70vh;
-            overflow: auto;
-            border: 1px dashed var(--tblr-border-color);
-            background: #f8fafc;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        canvas {
-            display: block;
-        }
-    </style>
-
-    {{-- Fabric.js --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
-
-    <script>
-        /* ===============================
-                                                                                                                                                                                                                                            FABRIC CONFIG
-                                                                                                                                                                                                                                        ================================ */
-        fabric.Object.prototype.originX = 'left';
-        fabric.Object.prototype.originY = 'top';
-        fabric.Object.prototype.transparentCorners = false;
-        fabric.Object.prototype.cornerColor = 'green';
-        fabric.Object.prototype.borderColor = 'green';
-        fabric.Object.prototype.cornerSize = 10;
-
-        const canvas = new fabric.Canvas('canvas');
-        let SCALE = 1;
-
-        /* ===============================
-            LOAD IMAGE
-        ================================ */
-        document.getElementById('templateInput').addEventListener('change', e => {
-            const reader = new FileReader();
-
-            reader.onload = ev => {
-                fabric.Image.fromURL(ev.target.result, img => {
-
-                    canvas.clear();
-
-                    const maxWidth = 900;
-                    const maxHeight = 600;
-
-                    SCALE = Math.min(
-                        maxWidth / img.width,
-                        maxHeight / img.height,
-                        1
-                    );
-
-                    canvas.setWidth(img.width * SCALE);
-                    canvas.setHeight(img.height * SCALE);
-
-                    img.set({
-                        scaleX: SCALE,
-                        scaleY: SCALE,
-                        selectable: false,
-                        evented: false
-                    });
-
-                    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-                });
-            };
-
-            reader.readAsDataURL(e.target.files[0]);
-        });
-
-        /* ===============================
-            ADD FRAMES
-        ================================ */
-        function addRect() {
-            const o = new fabric.Rect({
-                left: 30,
-                top: 30,
-                width: 300 * SCALE,
-                height: 200 * SCALE,
-                fill: 'rgba(0,255,0,0.35)',
-                data: {
-                    shape: 'rect'
-                }
-            });
-
-            canvas.add(o).setActiveObject(o);
-        }
-
-        function addCircle() {
-            const o = new fabric.Ellipse({
-                left: 30,
-                top: 30,
-                rx: 150 * SCALE,
-                ry: 150 * SCALE,
-                fill: 'rgba(0,255,0,0.35)',
-                data: {
-                    shape: 'circle'
-                }
-            });
-
-            canvas.add(o).setActiveObject(o);
-        }
-
-        /* ===============================
-            REMOVE
-        ================================ */
-        function removeSelected() {
-            const o = canvas.getActiveObject();
-            if (o) canvas.remove(o);
-        }
-
-        /* ===============================
-            PREPARE FRAMES
-        ================================ */
-        function prepareFrames() {
-            const objects = canvas.getObjects();
-
-            if (objects.length === 0) {
-                alert('Minimal 1 frame harus dibuat');
-                return false;
-            }
-
-            const frames = objects.map(o => ({
-                x: Math.round(o.left / SCALE),
-                y: Math.round(o.top / SCALE),
-                width: Math.round((o.width * o.scaleX) / SCALE),
-                height: Math.round((o.height * o.scaleY) / SCALE),
-                shape: o.data.shape
-            }));
-
-            document.getElementById('framesInput').value = JSON.stringify(frames);
-            return true;
-        }
-    </script>
 @endsection

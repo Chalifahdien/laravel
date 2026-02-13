@@ -92,6 +92,7 @@ class TemplateUploadController extends Controller
             'paper_size_id' => $request->paper_size_id,
             'name' => $request->name,
             'category' => $request->category,
+            'is_active' => 1, // Activate template when frames are set
         ]);
 
         return redirect()
@@ -109,16 +110,7 @@ class TemplateUploadController extends Controller
             'category' => 'nullable|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
             'template' => 'required|image|max:10240',
-            'frames' => 'required|json',
         ]);
-
-        $frames = json_decode($request->frames, true);
-
-        if (!is_array($frames) || count($frames) === 0) {
-            return back()->withErrors([
-                'frames' => 'At least 1 frame must be created'
-            ]);
-        }
 
         $path = $request->file('template')->store('templates', 'public');
 
@@ -127,25 +119,13 @@ class TemplateUploadController extends Controller
             'name' => $request->name,
             'category' => $request->category,
             'template_image' => $path,
-            'frame_count' => count($frames),
-            'is_active' => 1,
+            'frame_count' => 0, // Will be updated when frames are added
+            'is_active' => 0, // Inactive until frames are set
         ]);
 
-        foreach ($frames as $i => $f) {
-            TemplateFrame::create([
-                'template_id' => $template->id,
-                'frame_order' => $i + 1,
-                'x' => intval($f['x']),
-                'y' => intval($f['y']),
-                'width' => intval($f['width']),
-                'height' => intval($f['height']),
-                'shape' => $f['shape'],
-            ]);
-        }
-
         return redirect()
-            ->route('admin.templates.create')
-            ->with('success', 'Template successfully saved');
+            ->route('admin.templates.edit', $template->id)
+            ->with('success', 'Template image uploaded. Please set up the frames.');
     }
 
     /**

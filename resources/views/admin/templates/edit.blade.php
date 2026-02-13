@@ -37,6 +37,16 @@
                 </div>
             @endif
 
+            {{-- NEW TEMPLATE ALERT --}} @if ($template->frame_count == 0)
+                <div class="card card bg-primary-lt mb-3">
+                    <div class="card-body">
+                        <h4 class="alert-title">Template Baru!</h4>
+                        <div class="text-secondary">Silakan tambahkan frame ke template ini menggunakan tools di bawah.
+                            Minimal 1 frame harus dibuat agar template bisa diaktifkan.</div>
+                    </div>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('admin.templates.update', $template->id) }}" enctype="multipart/form-data"
                 onsubmit="return prepareFrames()">
                 @csrf
@@ -230,14 +240,14 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                        FABRIC GLOBAL CONFIG
-                                                                                                                                                                                                                                    ================================ */
+                                                                                                                                                                                                                                                                    FABRIC GLOBAL CONFIG
+                                                                                                                                                                                                                                                                ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
         fabric.Object.prototype.cornerColor = 'green';
         fabric.Object.prototype.borderColor = 'green';
-        fabric.Object.prototype.cornerSize = 10;
+        fabric.Object.prototype.cornerSize = 7;
 
         const canvas = new fabric.Canvas('canvas');
         let SCALE = 1;
@@ -257,33 +267,43 @@
         });
 
         function loadImage(src, reset = false) {
-            fabric.Image.fromURL(src, img => {
+            const tempImg = new Image();
 
-                if (reset) canvas.clear();
+            tempImg.onload = function() {
+                fabric.Image.fromURL(src, img => {
 
-                const maxWidth = 900;
-                const maxHeight = 600;
+                    if (reset) canvas.clear();
 
-                SCALE = Math.min(
-                    maxWidth / img.width,
-                    maxHeight / img.height,
-                    1
-                );
+                    const maxWidth = 900;
+                    const maxHeight = 600;
 
-                canvas.setWidth(img.width * SCALE);
-                canvas.setHeight(img.height * SCALE);
+                    // Use the natural dimensions from the Image element
+                    const originalWidth = tempImg.naturalWidth || tempImg.width;
+                    const originalHeight = tempImg.naturalHeight || tempImg.height;
 
-                img.set({
-                    scaleX: SCALE,
-                    scaleY: SCALE,
-                    selectable: false,
-                    evented: false
+                    SCALE = Math.min(
+                        maxWidth / originalWidth,
+                        maxHeight / originalHeight,
+                        1
+                    );
+
+                    canvas.setWidth(originalWidth * SCALE);
+                    canvas.setHeight(originalHeight * SCALE);
+
+                    img.set({
+                        scaleX: SCALE,
+                        scaleY: SCALE,
+                        selectable: false,
+                        evented: false
+                    });
+
+                    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+
+                    if (!reset) loadFrames();
                 });
+            };
 
-                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-
-                if (!reset) loadFrames();
-            });
+            tempImg.src = src;
         }
 
         /* ===============================
@@ -297,7 +317,11 @@
                         top: {{ $f->y }} * SCALE,
                         rx: ({{ $f->width }} / 2) * SCALE,
                         ry: ({{ $f->height }} / 2) * SCALE,
-                        fill: 'rgba(0,255,0,0.35)',
+                        fill: 'rgba(40, 167, 69, 0.15)',
+                        stroke: '#1e4620',
+                        strokeWidth: 2,
+                        strokeDashArray: [5, 5],
+                        strokeUniform: true,
                         data: {
                             shape: 'circle'
                         }
@@ -308,7 +332,11 @@
                         top: {{ $f->y }} * SCALE,
                         width: {{ $f->width }} * SCALE,
                         height: {{ $f->height }} * SCALE,
-                        fill: 'rgba(0,255,0,0.35)',
+                        fill: 'rgba(40, 167, 69, 0.15)',
+                        stroke: '#1e4620',
+                        strokeWidth: 2,
+                        strokeDashArray: [5, 5],
+                        strokeUniform: true,
                         data: {
                             shape: 'rect'
                         }
@@ -326,7 +354,11 @@
                 top: 30,
                 width: 300 * SCALE,
                 height: 200 * SCALE,
-                fill: 'rgba(0,255,0,0.35)',
+                fill: 'rgba(40, 167, 69, 0.15)',
+                stroke: '#1e4620',
+                strokeWidth: 2,
+                strokeDashArray: [5, 5],
+                strokeUniform: true,
                 data: {
                     shape: 'rect'
                 }
@@ -340,7 +372,11 @@
                 top: 30,
                 rx: 150 * SCALE,
                 ry: 150 * SCALE,
-                fill: 'rgba(0,255,0,0.35)',
+                fill: 'rgba(40, 167, 69, 0.15)',
+                stroke: '#1e4620',
+                strokeWidth: 2,
+                strokeDashArray: [5, 5],
+                strokeUniform: true,
                 data: {
                     shape: 'circle'
                 }
@@ -363,8 +399,8 @@
             const frames = canvas.getObjects().map(o => ({
                 x: Math.round(o.left / SCALE),
                 y: Math.round(o.top / SCALE),
-                width: Math.round(o.getScaledWidth() / SCALE),
-                height: Math.round(o.getScaledHeight() / SCALE),
+                width: Math.round((o.width * o.scaleX) / SCALE),
+                height: Math.round((o.height * o.scaleY) / SCALE),
                 shape: o.data.shape
             }));
 
