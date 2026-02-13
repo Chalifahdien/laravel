@@ -27,13 +27,10 @@ class DashboardController extends Controller
         // =====================
         // REVENUE
         // =====================
-        // =====================
-        // REVENUE
-        // =====================
         // Calculate Total Revenue
         $totalSessionsData = PhotoSession::with(['payment', 'finalImage', 'machine'])
             ->whereHas('payment', function ($q) {
-                $q->where('transaction_status', 'success');
+                $q->where('transaction_status', 'PAID');
             })
             ->get();
 
@@ -55,7 +52,7 @@ class DashboardController extends Controller
         // Calculate Today Revenue
         $todaySessionsData = PhotoSession::with(['payment', 'finalImage', 'machine'])
             ->whereHas('payment', function ($q) {
-                $q->where('transaction_status', 'success')
+                $q->where('transaction_status', 'PAID')
                     ->whereDate('created_at', today());
             })
             ->get();

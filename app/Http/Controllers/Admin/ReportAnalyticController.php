@@ -26,9 +26,25 @@ class ReportAnalyticController extends Controller
         // =====================
         $totalSessions = PhotoSession::whereBetween('created_at', [$start, $end])->count();
 
-        $totalRevenue = Payment::where('transaction_status', 'success')
+        $totalRevenue = PhotoSession::with(['payment', 'finalImage', 'machine'])
             ->whereBetween('created_at', [$start, $end])
-            ->sum('amount');
+            ->whereHas('payment', function ($q) {
+                $q->where('transaction_status', 'PAID');
+            })
+            ->get()
+            ->reduce(function ($carry, $session) {
+                $paymentAmount = $session->payment->amount ?? 0;
+
+                if ($paymentAmount == 0) {
+                    return $carry + 0;
+                }
+
+                $printQty = $session->finalImage->print_quantity ?? 1;
+                $additionalPrints = max(0, $printQty - 1);
+                $additionalCost = $session->machine->additional_print_cost ?? 0;
+
+                return $carry + $paymentAmount + ($additionalPrints * $additionalCost);
+            }, 0);
 
         $successfulPayments = Payment::where('transaction_status', 'success')
             ->whereBetween('created_at', [$start, $end])
@@ -75,16 +91,36 @@ class ReportAnalyticController extends Controller
         // =====================
         // REVENUE PER DAY (untuk chart)
         // =====================
-        $revenuePerDay = Payment::where('transaction_status', 'success')
+        $revenuePerDayData = PhotoSession::with(['payment', 'finalImage', 'machine'])
             ->whereBetween('created_at', [$start, $end])
-            ->selectRaw('DATE(created_at) as date, COALESCE(SUM(amount), 0) as total')
-            ->groupBy('date')
-            ->orderBy('date')
+            ->whereHas('payment', function ($q) {
+                $q->where('transaction_status', 'PAID');
+            })
             ->get()
-            ->keyBy('date');
+            ->groupBy(function ($date) {
+                return Carbon::parse($date->created_at)->format('Y-m-d');
+            });
 
-        $revenueChartData = $dateRange->map(function ($row) use ($revenuePerDay) {
-            return $revenuePerDay->get($row['date'])?->total ?? 0;
+        $revenueChartData = $dateRange->map(function ($row) use ($revenuePerDayData) {
+            $sessions = $revenuePerDayData->get($row['date']);
+
+            if (!$sessions) {
+                return 0;
+            }
+
+            return $sessions->reduce(function ($carry, $session) {
+                $paymentAmount = $session->payment->amount ?? 0;
+
+                if ($paymentAmount == 0) {
+                    return $carry + 0;
+                }
+
+                $printQty = $session->finalImage->print_quantity ?? 1;
+                $additionalPrints = max(0, $printQty - 1);
+                $additionalCost = $session->machine->additional_print_cost ?? 0;
+
+                return $carry + $paymentAmount + ($additionalPrints * $additionalCost);
+            }, 0);
         });
 
         // =====================

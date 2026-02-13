@@ -45,12 +45,32 @@ class GalleryController extends Controller
      */
     public function destroy(FinalImage $finalImage)
     {
+        // 1. Ambil session terkait
+        $session = $finalImage->session;
+
+        // 2. Jika session ada, hapus foto-fotonya (file & record) tapi JANGAN hapus session-nya
+        if ($session) {
+            foreach ($session->photos as $photo) {
+                if ($photo->photo_path) {
+                    Storage::disk('public')->delete($photo->photo_path);
+                }
+                $photo->delete();
+            }
+        }
+
+        // 3. Hapus file final image
         if ($finalImage->image_path) {
             Storage::disk('public')->delete($finalImage->image_path);
         }
 
+        // 4. Hapus video jika ada
+        if ($finalImage->video_path) {
+            Storage::disk('public')->delete($finalImage->video_path);
+        }
+
+        // 5. Hapus record final image
         $finalImage->delete();
 
-        return back()->with('success', 'Image deleted successfully');
+        return back()->with('success', 'Image and Session Photos deleted successfully');
     }
 }
