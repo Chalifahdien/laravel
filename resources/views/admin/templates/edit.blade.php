@@ -189,7 +189,7 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="shapeDropdown">
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col pe-0">
                                                     <a class="btn w-100 btn-ghost-dark" href="#"
                                                         onclick="addShape('rect')">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -224,7 +224,7 @@
                                                     </a>
 
                                                 </div>
-                                                <div class="col-6">
+                                                <div class="col ps-1">
                                                     <a class="btn w-100 btn-ghost-dark" href="#"
                                                         onclick="addShape('star')">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -389,8 +389,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            FABR    IC GLOBAL CONFIG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ================================ */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        FABR    IC GLOBAL CONFIG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
