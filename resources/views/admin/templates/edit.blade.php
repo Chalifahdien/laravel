@@ -152,7 +152,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xl-3 col-lg-12">
-                                        <label class="form-label transparent" style="color: transparent">Aksi</label>
+                                        <label class="form-label transparent" style="color: transparent">.</label>
                                         <div class="d-flex gap-3">
                                             <div class="col w-50">
                                                 <a href="{{ url('/templates') }}"
@@ -190,8 +190,11 @@
                                         <ul class="dropdown-menu" aria-labelledby="shapeDropdown">
                                             <div class="row">
                                                 <div class="col pe-0">
+
                                                     <a class="btn w-100 btn-ghost-dark" href="#"
-                                                        onclick="addShape('rect')">
+                                                        onclick="addShape('rect')" data-bs-toggle="tooltip"
+                                                        data-bs-placement="left" aria-label="Rectangle"
+                                                        data-bs-original-title="Rectangle">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -202,7 +205,9 @@
                                                         </svg>
                                                     </a>
                                                     <a class="btn w-100 btn-ghost-dark mt-1" href="#"
-                                                        onclick="addShape('circle')">
+                                                        onclick="addShape('circle')" data-bs-toggle="tooltip"
+                                                        data-bs-placement="left" aria-label="Circle"
+                                                        data-bs-original-title="Circle">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -212,7 +217,9 @@
                                                         </svg>
                                                     </a>
                                                     <a class="btn w-100 btn-ghost-dark mt-1" href="#"
-                                                        onclick="addShape('heart')">
+                                                        onclick="addShape('heart')" data-bs-toggle="tooltip"
+                                                        data-bs-placement="left" aria-label="Heart"
+                                                        data-bs-original-title="Heart">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -226,7 +233,9 @@
                                                 </div>
                                                 <div class="col ps-1">
                                                     <a class="btn w-100 btn-ghost-dark" href="#"
-                                                        onclick="addShape('star')">
+                                                        onclick="addShape('star')" data-bs-toggle="tooltip"
+                                                        data-bs-placement="right" aria-label="Star"
+                                                        data-bs-original-title="Star">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -237,8 +246,10 @@
                                                         </svg>
                                                     </a>
                                                     <a class="btn w-100 btn-ghost-dark mt-1" href="#"
-                                                        onclick="addShape('triangle')"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        onclick="addShape('triangle')" data-bs-toggle="tooltip"
+                                                        data-bs-placement="right" aria-label="Triangle"
+                                                        data-bs-original-title="Triangle">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                             stroke-linejoin="round" class="icon m-0 p-0">
@@ -248,8 +259,10 @@
                                                         </svg>
                                                     </a>
                                                     <a class="btn w-100 btn-ghost-dark mt-1" href="#"
-                                                        onclick="addShape('hexagon')"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        onclick="addShape('hexagon')" data-bs-toggle="tooltip"
+                                                        data-bs-placement="right" aria-label="Hexagon"
+                                                        data-bs-original-title="Hexagon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                             stroke-linejoin="round" class="icon m-0 p-0">
@@ -287,7 +300,9 @@
                                         </svg>Finish
                                     </button>
 
-                                    <button type="button" class="btn btn-ghost-yellow btn-icon" onclick="copyObject()">
+                                    <button type="button" class="btn btn-ghost-yellow btn-icon" onclick="copyObject()"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Copy"
+                                        data-bs-original-title="Copy">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0">
@@ -296,7 +311,9 @@
                                             <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" />
                                         </svg>
                                     </button>
-                                    <button type="button" class="btn btn-ghost-yellow btn-icon" onclick="pasteObject()">
+                                    <button type="button" class="btn btn-ghost-yellow btn-icon" onclick="pasteObject()"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Paste"
+                                        data-bs-original-title="Paste">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0">
@@ -308,7 +325,8 @@
                                     </button>
 
                                     <button type="button" class="btn btn-ghost-danger btn-icon"
-                                        onclick="removeSelected()">
+                                        onclick="removeSelected()" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        aria-label="Delete" data-bs-original-title="Delete">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0">
@@ -346,7 +364,6 @@
                                         onclick="resetZoom()">Reset</button>
                                 </div>
                             </div>
-
                             {{-- CANVAS --}}
                             <div class="card-body p-2">
                                 <div class="canvas-wrapper">
@@ -389,8 +406,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        FABR    IC GLOBAL CONFIG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ================================ */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    FABR    IC GLOBAL CONFIG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
