@@ -18,7 +18,6 @@ class TemplateApiController extends Controller
             ->with('paperSize')
             ->orderBy('id', 'desc')
             ->get();
-
         return response()->json(
             $templates->map(fn($t) => [
                 'id' => $t->id,
