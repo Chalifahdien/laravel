@@ -14,7 +14,8 @@ class TemplateFrame extends Model
         'width',
         'height',
         'mask_path',
-        'shape'
+        'shape',
+        'path_data'
     ];
 
     public function template()
