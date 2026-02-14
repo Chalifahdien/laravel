@@ -20,6 +20,7 @@
     @endif
     <!-- CSS files -->
     <link href="{{ asset('dist/css/admin.css') }}" rel="stylesheet" />
+    <link href="{{ asset('dist/css/demo.css') }}" rel="stylesheet" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
     </style>
