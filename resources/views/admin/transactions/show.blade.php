@@ -230,25 +230,25 @@
                                 @if ($photoSession->finalImage->image_path)
                                     <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
                                         class="img-fluid rounded shadow-sm" style="max-height: 400px">
+                                    <div class="mt-3">
+                                        <a href="{{ route('gallery.final.download', $photoSession->download->token ?? '') }}"
+                                            class="btn btn-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M7 11l5 5l5 -5" />
+                                                <path d="M12 4l0 12" />
+                                            </svg>
+                                            Download
+                                        </a>
+                                    </div>
                                 @else
                                     <div class="text-muted">
                                         Final image not available
                                     </div>
                                 @endif
-                                <div class="mt-3">
-                                    <a href="{{ route('gallery.final.download', $photoSession->download->token ?? '') }}"
-                                        class="btn btn-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                            <path d="M7 11l5 5l5 -5" />
-                                            <path d="M12 4l0 12" />
-                                        </svg>
-                                        Download
-                                    </a>
-                                </div>
                             @else
                                 <div class="text-muted">
                                     Final image not available
