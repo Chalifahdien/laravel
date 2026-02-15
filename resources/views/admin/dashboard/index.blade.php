@@ -94,7 +94,7 @@
                                     </span>
                                 </div>
                                 <div class="col">
-                                    <div class="subheader">Total Sessions</div>
+                                    <div class="subheader">Today Sessions</div>
                                     <div class="h1 mb-0">{{ number_format($totalSessions) }}</div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                                     </span>
                                 </div>
                                 <div class="col">
-                                    <div class="subheader">Today Sessions</div>
+                                    <div class="subheader">Successful Sessions</div>
                                     <div class="h1 mb-0">{{ number_format($todaySessions) }}</div>
                                 </div>
                             </div>

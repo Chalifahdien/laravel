@@ -16,9 +16,9 @@ class DashboardController extends Controller
         // =====================
         // BASIC STATS
         // =====================
-        $totalSessions = PhotoSession::count();
+        $totalSessions = PhotoSession::whereDate('created_at', today())->count();
 
-        $todaySessions = PhotoSession::whereDate('created_at', today())->count();
+        $todaySessions = PhotoSession::whereDate('created_at', today())->has('finalImage')->count();
 
         $activeMachines = Machine::where('is_active', true)->count();
 
@@ -29,6 +29,7 @@ class DashboardController extends Controller
         // =====================
         // Calculate Total Revenue
         $totalSessionsData = PhotoSession::with(['payment', 'finalImage', 'machine'])
+            ->has('finalImage')
             ->whereHas('payment', function ($q) {
                 $q->where('transaction_status', 'PAID');
             })
@@ -51,6 +52,7 @@ class DashboardController extends Controller
 
         // Calculate Today Revenue
         $todaySessionsData = PhotoSession::with(['payment', 'finalImage', 'machine'])
+            ->has('finalImage')
             ->whereHas('payment', function ($q) {
                 $q->where('transaction_status', 'PAID')
                     ->whereDate('created_at', today());

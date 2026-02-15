@@ -15,6 +15,7 @@ class GalleryController extends Controller
     public function index(Request $request)
     {
         $query = FinalImage::with('session')
+            ->whereNotNull('image_path')
             ->orderBy('created_at', 'desc');
 
         // optional filter printed
@@ -61,16 +62,18 @@ class GalleryController extends Controller
         // 3. Hapus file final image
         if ($finalImage->image_path) {
             Storage::disk('public')->delete($finalImage->image_path);
+            $finalImage->image_path = null;
         }
 
         // 4. Hapus video jika ada
         if ($finalImage->video_path) {
             Storage::disk('public')->delete($finalImage->video_path);
+            $finalImage->video_path = null;
         }
 
-        // 5. Hapus record final image
-        $finalImage->delete();
+        // 5. Simpan perubahan record final image (tidak menghapus record)
+        $finalImage->save();
 
-        return back()->with('success', 'Image and Session Photos deleted successfully');
+        return back()->with('success', 'Files deleted successfully, record preserved.');
     }
 }

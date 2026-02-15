@@ -28,6 +28,7 @@ class ReportAnalyticController extends Controller
 
         $totalRevenue = PhotoSession::with(['payment', 'finalImage', 'machine'])
             ->whereBetween('created_at', [$start, $end])
+            ->has('finalImage')
             ->whereHas('payment', function ($q) {
                 $q->where('transaction_status', 'PAID');
             })
@@ -46,8 +47,11 @@ class ReportAnalyticController extends Controller
                 return $carry + $paymentAmount + ($additionalPrints * $additionalCost);
             }, 0);
 
-        $successfulPayments = Payment::where('transaction_status', 'success')
-            ->whereBetween('created_at', [$start, $end])
+        $successfulPayments = PhotoSession::whereBetween('created_at', [$start, $end])
+            ->has('finalImage')
+            ->whereHas('payment', function ($q) {
+                $q->where('transaction_status', 'PAID');
+            })
             ->count();
 
         $avgRevenuePerSession = $totalSessions > 0
@@ -93,6 +97,7 @@ class ReportAnalyticController extends Controller
         // =====================
         $revenuePerDayData = PhotoSession::with(['payment', 'finalImage', 'machine'])
             ->whereBetween('created_at', [$start, $end])
+            ->has('finalImage')
             ->whereHas('payment', function ($q) {
                 $q->where('transaction_status', 'PAID');
             })

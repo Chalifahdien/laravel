@@ -93,7 +93,11 @@
 
                                     <td>
                                         @if ($transaction->finalImage)
-                                            <span class="badge bg-success-lt">YES</span>
+                                            @if ($transaction->finalImage->image_path)
+                                                <span class="badge bg-success-lt">YES</span>
+                                            @else
+                                                <span class="badge bg-danger-lt">EXPIRED</span>
+                                            @endif
                                         @else
                                             <span class="badge bg-secondary-lt">NO</span>
                                         @endif
