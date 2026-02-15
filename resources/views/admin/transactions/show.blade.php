@@ -227,8 +227,14 @@
 
                         <div class="card-body text-center">
                             @if ($photoSession->finalImage)
-                                <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
-                                    class="img-fluid rounded shadow-sm" style="max-height: 400px">
+                                @if ($photoSession->finalImage->image_path)
+                                    <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
+                                        class="img-fluid rounded shadow-sm" style="max-height: 400px">
+                                @else
+                                    <div class="text-muted">
+                                        Final image not available
+                                    </div>
+                                @endif
                                 <div class="mt-3">
                                     <a href="{{ route('gallery.final.download', $photoSession->download->token ?? '') }}"
                                         class="btn btn-primary">
