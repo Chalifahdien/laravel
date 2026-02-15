@@ -55,7 +55,7 @@ class ReportAnalyticController extends Controller
             ->count();
 
         $avgRevenuePerSession = $totalSessions > 0
-            ? round($totalRevenue / $totalSessions, 0)
+            ? round($totalRevenue / $successfulPayments, 0)
             : 0;
 
         // =====================

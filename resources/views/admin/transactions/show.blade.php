@@ -226,7 +226,7 @@
                         </div>
 
                         <div class="card-body text-center">
-                            @if ($photoSession->finalImage->image_path)
+                            @if ($photoSession->finalImage)
                                 <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
                                     class="img-fluid rounded shadow-sm" style="max-height: 400px">
                                 <div class="mt-3">
