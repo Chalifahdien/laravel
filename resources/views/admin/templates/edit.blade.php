@@ -406,8 +406,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    FABR    IC GLOBAL CONFIG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ================================ */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                FABR    IC GLOBAL CONFIG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
@@ -555,51 +555,74 @@
             let shapeObj;
             const config = SHAPES[type] || SHAPES['rect'];
 
-            const defaultOptions = {
-                left: 30,
-                top: 30,
+            // Separate spatial properties from other styles
+            const {
+                left,
+                top,
+                width,
+                height,
+                ...otherStyles
+            } = options;
+
+            const finalStyles = {
                 ...COMMON_STYLES,
+                ...otherStyles,
                 data: {
                     shape: type
                 }
             };
 
-            const finalOptions = {
-                ...defaultOptions,
-                ...options
-            };
+            const initialLeft = left !== undefined ? left : 30;
+            const initialTop = top !== undefined ? top : 30;
 
             if (type === 'rect') {
                 shapeObj = new fabric.Rect({
-                    width: finalOptions.width || (300 * SCALE),
-                    height: finalOptions.height || (200 * SCALE),
-                    ...finalOptions
+                    left: initialLeft,
+                    top: initialTop,
+                    width: width || (300 * SCALE),
+                    height: height || (200 * SCALE),
+                    ...finalStyles
                 });
             } else if (type === 'circle') {
-                const w = finalOptions.width || (300 * SCALE);
-                const h = finalOptions.height || (300 * SCALE);
+                const w = width || (300 * SCALE);
+                const h = height || (300 * SCALE);
                 shapeObj = new fabric.Ellipse({
+                    left: initialLeft,
+                    top: initialTop,
                     rx: w / 2,
                     ry: h / 2,
-                    ...finalOptions
+                    ...finalStyles
                 });
             } else {
                 const pathData = config.path;
                 shapeObj = new fabric.Path(pathData, {
-                    ...finalOptions
+                    ...finalStyles
                 });
 
                 if (!isLoading) {
                     shapeObj.scaleToWidth(200 * SCALE);
-                    shapeObj.scaleToHeight(200 * SCALE);
                 } else {
-                    // For paths, we trust finalOptions (which are passed to constructor for Path)
-                    // But if scaleToWidth is better:
-                    if (finalOptions.width) shapeObj.scaleToWidth(finalOptions.width);
-                    if (finalOptions.height) shapeObj.scaleToHeight(finalOptions.height);
+                    // Restore exact dimensions (allows non-uniform scaling)
+                    if (width && height) {
+                        shapeObj.set({
+                            scaleX: width / shapeObj.width,
+                            scaleY: height / shapeObj.height
+                        });
+                    } else if (width) {
+                        shapeObj.scaleToWidth(width);
+                    } else if (height) {
+                        shapeObj.scaleToHeight(height);
+                    }
                 }
+
+                // Apply position AFTER scaling to ensure accuracy
+                shapeObj.set({
+                    left: initialLeft,
+                    top: initialTop
+                });
             }
 
+            shapeObj.setCoords();
             canvas.add(shapeObj);
             if (!isLoading) canvas.setActiveObject(shapeObj);
         }
@@ -730,28 +753,44 @@
         function addCustomShape(pointsData, options = {}, isLoading = false) {
             let points = typeof pointsData === 'string' ? JSON.parse(pointsData) : pointsData;
 
-            // Separate width/height/left/top from other options specifically for Polygon constructor
-            // to avoid overriding calculated dimensions incorrectly
             const {
                 width,
                 height,
+                left,
+                top,
                 ...polyOptions
             } = options;
 
             const shapeObj = new fabric.Polygon(points, {
                 ...COMMON_STYLES,
-                ...polyOptions, // Pass everything except width/height to constructor
+                ...polyOptions,
                 data: {
                     shape: 'custom',
                     path_data: pointsData
                 }
             });
 
-            // For custom shapes on load, we MUST rely on scaleToWidth/Height to resize the polygon
-            // from its initial points-based size to the saved visual size.
-            if (options.width) shapeObj.scaleToWidth(options.width);
-            if (options.height) shapeObj.scaleToHeight(options.height);
+            if (isLoading) {
+                // Restore exact dimensions (allows non-uniform scaling)
+                if (width && height) {
+                    shapeObj.set({
+                        scaleX: width / shapeObj.width,
+                        scaleY: height / shapeObj.height
+                    });
+                } else if (width) {
+                    shapeObj.scaleToWidth(width);
+                } else if (height) {
+                    shapeObj.scaleToHeight(height);
+                }
 
+                // Apply position AFTER scaling
+                shapeObj.set({
+                    left: left !== undefined ? left : 30,
+                    top: top !== undefined ? top : 30
+                });
+            }
+
+            shapeObj.setCoords();
             canvas.add(shapeObj);
             if (!isLoading) canvas.setActiveObject(shapeObj);
         }
