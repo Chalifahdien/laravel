@@ -75,7 +75,8 @@ class TemplateApiController extends Controller
                 'y' => $f->y,
                 'width' => $f->width,
                 'height' => $f->height,
-                'shape' => 'rect',          // rect | circle | custom | heart | star | ...
+                'angle' => $f->angle ?? 0,
+                'shape' => $f->shape,          // rect | circle | custom | heart | star | ...
                 'path_data' => $f->path_data,  // JSON points / string
                 'mask' => $f->mask_path
                     ? asset('storage/' . $f->mask_path)

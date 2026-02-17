@@ -406,8 +406,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                FABR    IC GLOBAL CONFIG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ================================ */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                FABR    IC GLOBAL CONFIG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;
@@ -536,6 +536,7 @@
                         top: {{ $f->y }} * SCALE,
                         width: {{ $f->width }} * SCALE,
                         height: {{ $f->height }} * SCALE,
+                        angle: {{ $f->angle ?? 0 }},
                     }, true);
                 @else
                     addShape('{{ $f->shape }}', {
@@ -543,6 +544,7 @@
                         top: {{ $f->y }} * SCALE,
                         width: {{ $f->width }} * SCALE,
                         height: {{ $f->height }} * SCALE,
+                        angle: {{ $f->angle ?? 0 }},
                     }, true);
                 @endif
             @endforeach
@@ -561,12 +563,16 @@
                 top,
                 width,
                 height,
+                angle,
                 ...otherStyles
             } = options;
 
             const finalStyles = {
                 ...COMMON_STYLES,
                 ...otherStyles,
+                originX: 'center',
+                originY: 'center',
+                centeredRotation: true,
                 data: {
                     shape: type
                 }
@@ -574,11 +580,10 @@
 
             const initialLeft = left !== undefined ? left : 30;
             const initialTop = top !== undefined ? top : 30;
+            const initialAngle = angle !== undefined ? angle : 0;
 
             if (type === 'rect') {
                 shapeObj = new fabric.Rect({
-                    left: initialLeft,
-                    top: initialTop,
                     width: width || (300 * SCALE),
                     height: height || (200 * SCALE),
                     ...finalStyles
@@ -587,8 +592,6 @@
                 const w = width || (300 * SCALE);
                 const h = height || (300 * SCALE);
                 shapeObj = new fabric.Ellipse({
-                    left: initialLeft,
-                    top: initialTop,
                     rx: w / 2,
                     ry: h / 2,
                     ...finalStyles
@@ -614,11 +617,24 @@
                         shapeObj.scaleToHeight(height);
                     }
                 }
+            }
 
-                // Apply position AFTER scaling to ensure accuracy
+            // Apply position and angle
+            // If isLoading is true, initialLeft/Top are the saved top-left coords.
+            // We need to move them to center because our origin is center.
+            if (isLoading) {
+                const w = shapeObj.width * shapeObj.scaleX;
+                const h = shapeObj.height * shapeObj.scaleY;
+                shapeObj.set({
+                    left: initialLeft + w / 2,
+                    top: initialTop + h / 2,
+                    angle: initialAngle
+                });
+            } else {
                 shapeObj.set({
                     left: initialLeft,
-                    top: initialTop
+                    top: initialTop,
+                    angle: initialAngle
                 });
             }
 
@@ -758,12 +774,16 @@
                 height,
                 left,
                 top,
+                angle,
                 ...polyOptions
             } = options;
 
             const shapeObj = new fabric.Polygon(points, {
                 ...COMMON_STYLES,
                 ...polyOptions,
+                originX: 'center',
+                originY: 'center',
+                centeredRotation: true,
                 data: {
                     shape: 'custom',
                     path_data: pointsData
@@ -784,9 +804,19 @@
                 }
 
                 // Apply position AFTER scaling
+                // Convert top-left to center
+                const w = shapeObj.width * shapeObj.scaleX;
+                const h = shapeObj.height * shapeObj.scaleY;
+                shapeObj.set({
+                    left: (left !== undefined ? left : 30) + w / 2,
+                    top: (top !== undefined ? top : 30) + h / 2,
+                    angle: angle !== undefined ? angle : 0
+                });
+            } else {
                 shapeObj.set({
                     left: left !== undefined ? left : 30,
-                    top: top !== undefined ? top : 30
+                    top: top !== undefined ? top : 30,
+                    angle: angle !== undefined ? angle : 0
                 });
             }
 
@@ -898,11 +928,14 @@
                 const w = o.width * o.scaleX;
                 const h = o.height * o.scaleY;
 
+                // Since we use originX/Y: 'center', o.left/top is the center.
+                // We save x/y as the top-left of the unrotated bounding box.
                 let frameData = {
-                    x: Math.round(o.left / SCALE),
-                    y: Math.round(o.top / SCALE),
+                    x: Math.round((o.left - w / 2) / SCALE),
+                    y: Math.round((o.top - h / 2) / SCALE),
                     width: Math.round(w / SCALE),
                     height: Math.round(h / SCALE),
+                    angle: Math.round(o.angle || 0),
                     shape: o.data.shape || 'rect'
                 };
 

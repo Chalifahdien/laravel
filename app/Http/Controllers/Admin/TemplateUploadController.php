@@ -83,6 +83,7 @@ class TemplateUploadController extends Controller
                 'y' => $f['y'],
                 'width' => $f['width'],
                 'height' => $f['height'],
+                'angle' => $f['angle'] ?? 0,
                 'shape' => $f['shape'],
                 'path_data' => $f['path_data'] ?? null,
             ]);

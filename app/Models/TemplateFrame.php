@@ -13,6 +13,7 @@ class TemplateFrame extends Model
         'y',
         'width',
         'height',
+        'angle',
         'mask_path',
         'shape',
         'path_data'
