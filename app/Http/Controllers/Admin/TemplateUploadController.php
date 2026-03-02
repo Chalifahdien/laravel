@@ -82,7 +82,6 @@ class TemplateUploadController extends Controller
             'name' => 'required|string|max:100',
             'category' => 'nullable|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
-            'orientation' => 'required|in:portrait,landscape',
         ]);
 
         $frames = json_decode($request->frames, true);
@@ -106,7 +105,7 @@ class TemplateUploadController extends Controller
         $template->update([
             'frame_count' => count($frames),
             'paper_size_id' => $request->paper_size_id,
-            'orientation' => $request->orientation,
+            'orientation' => 'portrait',
             'name' => $request->name,
             'category' => $request->category,
             'is_active' => 1, // Activate template when frames are set
@@ -126,7 +125,6 @@ class TemplateUploadController extends Controller
             'name' => 'required|string|max:100',
             'category' => 'nullable|string|max:100',
             'paper_size_id' => 'required|exists:paper_sizes,id',
-            'orientation' => 'required|in:portrait,landscape',
             'template' => 'required|image|max:10240',
         ]);
 
@@ -134,7 +132,7 @@ class TemplateUploadController extends Controller
 
         $template = Template::create([
             'paper_size_id' => $request->paper_size_id,
-            'orientation' => $request->orientation,
+            'orientation' => 'portrait',
             'name' => $request->name,
             'category' => $request->category,
             'template_image' => $path,

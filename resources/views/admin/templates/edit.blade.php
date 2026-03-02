@@ -152,7 +152,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-xl-3 col-lg-6 mt-3 mt-xl-0">
+                                    {{-- <div class="col-xl-3 col-lg-6 mt-3 mt-xl-0">
                                         <label class="form-label">Orientation</label>
                                         <div class="form-selectgroup d-flex">
                                             <label class="form-selectgroup-item col">
@@ -186,7 +186,7 @@
                                                 </span>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-xl-3 col-lg-12">
                                         <label class="form-label transparent" style="color: transparent">.</label>
                                         <div class="d-flex gap-3">
@@ -215,9 +215,8 @@
                                         <button class="btn btn-outline-indigo dropdown-toggle" type="button"
                                             id="shapeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="icon m-0 p-0 me-2">
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="icon m-0 p-0 me-2">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path
                                                     d="M12 3l-4 7h8zM7 14l-4 7h8zM17 14l-4 7h8zM12 3l-4 7h8zM7 14l-4 7h8zM17 14l-4 7h8z" />
@@ -449,8 +448,8 @@
 
     <script>
         /* ===============================
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    FABR    IC GLOBAL CONFIG
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ================================ */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        FABR    IC GLOBAL CONFIG
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ================================ */
         fabric.Object.prototype.originX = 'left';
         fabric.Object.prototype.originY = 'top';
         fabric.Object.prototype.transparentCorners = false;

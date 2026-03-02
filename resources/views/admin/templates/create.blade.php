@@ -143,7 +143,7 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label class="form-label">Orientation</label>
                                     <div class="form-selectgroup d-flex">
                                         <label class="form-selectgroup-item col">
@@ -177,7 +177,7 @@
                                             </span>
                                         </label>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="mb-3">
                                     <label class="form-label">Template PNG</label>
