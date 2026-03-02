@@ -22,17 +22,21 @@
         <div class="container-xl">
 
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center gap-2">
-                    <input type="text" id="tableSearch" class="form-control w-50" placeholder="Search transaction...">
+                <form action="{{ route('transactions.index') }}" method="GET"
+                    class="card-header d-flex justify-content-between align-items-center gap-2" id="filterForm">
+                    <input type="text" name="search" id="tableSearch" class="form-control w-50"
+                        placeholder="Search transaction..." value="{{ request('search') }}"
+                        oninput="clearTimeout(this.delay); this.delay = setTimeout(() => document.getElementById('filterForm').submit(), 500);">
 
-                    <select id="pageSize" class="form-select w-auto">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        <option value="all">All</option>
+                    <select name="per_page" id="pageSize" class="form-select w-auto"
+                        onchange="document.getElementById('filterForm').submit()">
+                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                        <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
                     </select>
-                </div>
+                </form>
 
                 <div class="table-responsive">
                     <table class="table table-vcenter table-bordered card-table">
@@ -52,10 +56,11 @@
                             @forelse ($transactions as $transaction)
                                 <tr class="table-row" data-url="{{ route('transactions.show', $transaction->id) }}"
                                     style="cursor: pointer;">
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ ($transactions->currentPage() - 1) * $transactions->perPage() + $loop->iteration }}
+                                    </td>
 
                                     <td class="fw-semibold">
-                                        #{{ $transaction->payment->order_id }}
+                                        #{{ $transaction->payment->order_id ?? '-' }}
                                     </td>
 
                                     <td>
@@ -119,11 +124,15 @@
                 </div>
 
                 <!-- Footer Pagination -->
-                <div class="card-footer d-flex justify-content-between align-items-center d-none" id="tableFooter">
-                    <div class="text-muted" id="tableInfo"></div>
+                <div class="card-footer d-flex justify-content-between align-items-center" id="tableFooter">
+                    <div class="text-muted" id="tableInfo">
+                        Showing <strong>{{ $transactions->firstItem() ?? 0 }}</strong>
+                        to <strong>{{ $transactions->lastItem() ?? 0 }}</strong>
+                        of <strong>{{ $transactions->total() }}</strong> entries
+                    </div>
 
                     <nav>
-                        <ul class="pagination pagination-sm mb-0" id="pagination"></ul>
+                        {{ $transactions->links('vendor.pagination.custom') }}
                     </nav>
                 </div>
             </div>
@@ -134,131 +143,6 @@
                             window.location.href = row.dataset.url;
                         });
                     });
-                });
-            </script>
-            {{-- JS SEARCH + PAGINATION --}}
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const searchInput = document.getElementById('tableSearch');
-                    const pageSizeSelect = document.getElementById('pageSize');
-                    const table = document.querySelector('table tbody');
-                    const rows = Array.from(table.querySelectorAll('tr'));
-                    const footer = document.getElementById('tableFooter');
-                    const info = document.getElementById('tableInfo');
-                    const pagination = document.getElementById('pagination');
-
-                    let currentPage = 1;
-
-                    function getFilteredRows() {
-                        const keyword = searchInput.value.toLowerCase();
-                        return rows.filter(row =>
-                            row.innerText.toLowerCase().includes(keyword)
-                        );
-                    }
-
-                    function renderPagination(totalPages) {
-                        pagination.innerHTML = '';
-
-                        const windowSize = 5;
-                        const half = Math.floor(windowSize / 2);
-
-                        const createItem = (label, page = null, disabled = false, active = false) => {
-                            const li = document.createElement('li');
-                            li.className = `page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}`;
-
-                            const a = document.createElement('a');
-                            a.className = 'page-link';
-                            a.href = '#';
-                            a.innerText = label;
-
-                            if (!disabled && page !== null) {
-                                a.addEventListener('click', e => {
-                                    e.preventDefault();
-                                    currentPage = page;
-                                    render();
-                                });
-                            }
-
-                            li.appendChild(a);
-                            return li;
-                        };
-
-                        pagination.appendChild(
-                            createItem('Prev', currentPage - 1, currentPage === 1)
-                        );
-
-                        pagination.appendChild(
-                            createItem('First', 1, currentPage === 1)
-                        );
-
-                        let startPage = currentPage - half;
-                        let endPage = currentPage + half;
-
-                        if (startPage < 1) {
-                            startPage = 1;
-                            endPage = Math.min(windowSize, totalPages);
-                        }
-
-                        if (endPage > totalPages) {
-                            endPage = totalPages;
-                            startPage = Math.max(1, totalPages - windowSize + 1);
-                        }
-
-                        for (let i = startPage; i <= endPage; i++) {
-                            pagination.appendChild(
-                                createItem(i, i, false, i === currentPage)
-                            );
-                        }
-
-                        pagination.appendChild(
-                            createItem('Last', totalPages, currentPage === totalPages)
-                        );
-
-                        pagination.appendChild(
-                            createItem('Next', currentPage + 1, currentPage === totalPages)
-                        );
-                    }
-
-                    function render() {
-                        const filteredRows = getFilteredRows();
-                        const total = filteredRows.length;
-
-                        const pageSize = pageSizeSelect.value === 'all' ?
-                            total :
-                            parseInt(pageSizeSelect.value);
-
-                        const totalPages = Math.ceil(total / pageSize) || 1;
-                        const start = (currentPage - 1) * pageSize;
-                        const end = start + pageSize;
-
-                        rows.forEach(row => row.style.display = 'none');
-
-                        filteredRows.slice(start, end).forEach(row => {
-                            row.style.display = '';
-                        });
-
-                        footer.classList.remove('d-none');
-
-                        info.innerHTML = `
-                            Showing <strong>${total === 0 ? 0 : start + 1}</strong>
-                            to <strong>${Math.min(end, total)}</strong>
-                            of <strong>${total}</strong> entries
-                        `;
-
-                        renderPagination(totalPages);
-                    }
-
-                    searchInput.addEventListener('input', () => {
-                        currentPage = 1;
-                        render();
-                    });
-
-                    pageSizeSelect.addEventListener('change', () => {
-                        currentPage = 1;
-                        render();
-                    });
-
-                    render();
                 });
             </script>
 

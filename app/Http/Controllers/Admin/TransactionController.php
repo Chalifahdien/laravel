@@ -45,10 +45,20 @@ class TransactionController extends Controller
             });
         }
 
-        $transactions = $query->get();
+        $perPage = $request->input('per_page', 10);
+
+        if ($perPage === 'all') {
+            $total = $query->count();
+            $transactions = $query->paginate($total > 0 ? $total : 1);
+        } else {
+            $transactions = $query->paginate((int) $perPage);
+        }
+
+        $transactions->appends($request->except('page'));
 
         return view('admin.transactions.index', compact('transactions'));
     }
+
 
     /**
      * Show transaction detail

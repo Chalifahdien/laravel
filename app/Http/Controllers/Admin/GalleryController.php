@@ -23,7 +23,30 @@ class GalleryController extends Controller
             $query->where('printed', $request->printed);
         }
 
-        $finalImages = $query->get();
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            // Search by session ID or formatted date
+            $query->where(function ($q) use ($search) {
+                $q->where('session_id', 'like', "%{$search}%")
+                    // Add a way to search if needed, usually we just do session_id 
+                    // or filter by created_at. Filtering by formatted date is tricky in DB
+                    // so let's stick to session_id for simplicity as dataset search was just session_id and date.
+                    // We'll primarily search by session_id since it's the most common search, 
+                    // or raw date if it matches the DB format.
+                    ->orWhere('created_at', 'like', "%{$search}%");
+            });
+        }
+
+        $perPage = $request->input('per_page', 12);
+
+        if ($perPage === 'all') {
+            $total = $query->count();
+            $finalImages = $query->paginate($total > 0 ? $total : 1);
+        } else {
+            $finalImages = $query->paginate((int) $perPage);
+        }
+
+        $finalImages->appends($request->except('page'));
 
         return view('admin.gallery.index', compact('finalImages'));
     }

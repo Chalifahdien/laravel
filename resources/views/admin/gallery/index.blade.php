@@ -35,12 +35,22 @@
                 </div>
             @else
                 <!-- SEARCH -->
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="col-md-5">
-                        <input type="text" id="tableSearch" class="form-control"
-                            placeholder="Search by session or date...">
+                <form action="{{ route('admin.gallery.index') }}" method="GET" class="d-flex justify-content-center mb-4"
+                    id="filterForm">
+                    <div class="col-md-5 d-flex gap-2">
+                        <input type="text" name="search" id="tableSearch" class="form-control"
+                            placeholder="Search by session..." value="{{ request('search') }}"
+                            oninput="clearTimeout(this.delay); this.delay = setTimeout(() => document.getElementById('filterForm').submit(), 500);">
+
+                        <select name="per_page" class="form-select w-auto"
+                            onchange="document.getElementById('filterForm').submit()">
+                            <option value="12" {{ request('per_page') == 12 ? 'selected' : '' }}>12</option>
+                            <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
+                            <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
+                            <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
+                        </select>
                     </div>
-                </div>
+                </form>
 
                 <!-- GALLERY -->
                 <div class="row row-cards" id="galleryContainer">
@@ -136,131 +146,19 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="d-flex justify-content-between align-items-center d-none mt-4" id="galleryFooter">
+                <div class="mt-4 mb-4 d-flex justify-content-between align-items-center" id="galleryFooter">
 
-                    <div class="text-muted" id="galleryInfo"></div>
+                    <div class="text-muted" id="galleryInfo">
+                        Showing <strong>{{ $finalImages->firstItem() ?? 0 }}</strong>
+                        to <strong>{{ $finalImages->lastItem() ?? 0 }}</strong>
+                        of <strong>{{ $finalImages->total() }}</strong> images
+                    </div>
 
                     <nav>
-                        <ul class="pagination pagination-sm mb-0" id="pagination"></ul>
+                        {{ $finalImages->links('vendor.pagination.custom') }}
                     </nav>
                 </div>
             @endif
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('tableSearch');
-            const items = Array.from(document.querySelectorAll('.gallery-item'));
-
-            const footer = document.getElementById('galleryFooter');
-            const info = document.getElementById('galleryInfo');
-            const pagination = document.getElementById('pagination');
-
-            const pageSize = 12; // jumlah card per halaman
-            let currentPage = 1;
-
-            function getFilteredItems() {
-                const keyword = searchInput.value.toLowerCase();
-                return items.filter(item =>
-                    item.dataset.search.toLowerCase().includes(keyword)
-                );
-            }
-
-            function renderPagination(totalPages) {
-                pagination.innerHTML = '';
-
-                const windowSize = 5;
-                const half = Math.floor(windowSize / 2);
-
-                const createItem = (label, page = null, disabled = false, active = false) => {
-                    const li = document.createElement('li');
-                    li.className = `page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}`;
-
-                    const a = document.createElement('a');
-                    a.className = 'page-link';
-                    a.href = '#';
-                    a.innerText = label;
-
-                    if (!disabled && page !== null) {
-                        a.addEventListener('click', e => {
-                            e.preventDefault();
-                            currentPage = page;
-                            render();
-                        });
-                    }
-
-                    li.appendChild(a);
-                    return li;
-                };
-
-                pagination.appendChild(
-                    createItem('Prev', currentPage - 1, currentPage === 1)
-                );
-
-                pagination.appendChild(
-                    createItem('First', 1, currentPage === 1)
-                );
-
-                let startPage = currentPage - half;
-                let endPage = currentPage + half;
-
-                if (startPage < 1) {
-                    startPage = 1;
-                    endPage = Math.min(windowSize, totalPages);
-                }
-
-                if (endPage > totalPages) {
-                    endPage = totalPages;
-                    startPage = Math.max(1, totalPages - windowSize + 1);
-                }
-
-                for (let i = startPage; i <= endPage; i++) {
-                    pagination.appendChild(
-                        createItem(i, i, false, i === currentPage)
-                    );
-                }
-
-                pagination.appendChild(
-                    createItem('Last', totalPages, currentPage === totalPages)
-                );
-
-                pagination.appendChild(
-                    createItem('Next', currentPage + 1, currentPage === totalPages)
-                );
-            }
-
-            function render() {
-                const filtered = getFilteredItems();
-                const total = filtered.length;
-                const totalPages = Math.ceil(total / pageSize) || 1;
-
-                const start = (currentPage - 1) * pageSize;
-                const end = start + pageSize;
-
-                items.forEach(item => item.style.display = 'none');
-
-                filtered.slice(start, end).forEach(item => {
-                    item.style.display = '';
-                });
-
-                footer.classList.remove('d-none');
-
-                info.innerHTML = `
-            Showing <strong>${total === 0 ? 0 : start + 1}</strong>
-            to <strong>${Math.min(end, total)}</strong>
-            of <strong>${total}</strong> images
-        `;
-
-                renderPagination(totalPages);
-            }
-
-            searchInput.addEventListener('input', () => {
-                currentPage = 1;
-                render();
-            });
-
-            render();
-        });
-    </script>
 @endsection

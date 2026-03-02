@@ -12,9 +12,25 @@ class AdminStickerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $stickers = Sticker::latest()->get();
+        $query = Sticker::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $perPage = $request->input('per_page', 18);
+
+        if ($perPage === 'all') {
+            $total = $query->count();
+            $stickers = $query->latest()->paginate($total > 0 ? $total : 1);
+        } else {
+            $stickers = $query->latest()->paginate((int) $perPage);
+        }
+
+        $stickers->appends($request->except('page'));
+
         return view('admin.stickers.index', compact('stickers'));
     }
 

@@ -29,17 +29,21 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center gap-2">
-                    <input type="text" id="tableSearch" class="form-control w-50" placeholder="Search sticker...">
+                <form action="{{ route('stickers.index') }}" method="GET"
+                    class="card-header d-flex justify-content-between align-items-center gap-2" id="filterForm">
+                    <input type="text" name="search" id="tableSearch" class="form-control w-50"
+                        placeholder="Search sticker..." value="{{ request('search') }}"
+                        oninput="clearTimeout(this.delay); this.delay = setTimeout(() => document.getElementById('filterForm').submit(), 500);">
 
-                    <select id="pageSize" class="form-select w-auto">
-                        <option value="18">18</option>
-                        <option value="36">36</option>
-                        <option value="60">60</option>
-                        <option value="120">120</option>
-                        <option value="all">All</option>
+                    <select name="per_page" id="pageSize" class="form-select w-auto"
+                        onchange="document.getElementById('filterForm').submit()">
+                        <option value="18" {{ request('per_page') == 18 ? 'selected' : '' }}>18</option>
+                        <option value="36" {{ request('per_page') == 36 ? 'selected' : '' }}>36</option>
+                        <option value="60" {{ request('per_page') == 60 ? 'selected' : '' }}>60</option>
+                        <option value="120" {{ request('per_page') == 120 ? 'selected' : '' }}>120</option>
+                        <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
                     </select>
-                </div>
+                </form>
                 <div class="row g-0" id="stickerGrid">
                     @forelse ($stickers as $sticker)
                         <div class="col-4 col-md-2 p-0 border sticker-item" data-name="{{ strtolower($sticker->name) }}">
@@ -57,153 +61,18 @@
                         </div>
                     @endforelse
                 </div>
-                <div class="card-footer d-flex justify-content-between align-items-center d-none" id="tableFooter">
-                    <div class="text-muted" id="tableInfo"></div>
+                <div class="card-footer d-flex justify-content-between align-items-center" id="tableFooter">
+                    <div class="text-muted" id="tableInfo">
+                        Showing <strong>{{ $stickers->firstItem() ?? 0 }}</strong>
+                        to <strong>{{ $stickers->lastItem() ?? 0 }}</strong>
+                        of <strong>{{ $stickers->total() }}</strong> entries
+                    </div>
 
                     <nav>
-                        <ul class="pagination pagination-sm mb-0" id="pagination"></ul>
+                        {{ $stickers->links('vendor.pagination.custom') }}
                     </nav>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('tableSearch');
-            const pageSizeSelect = document.getElementById('pageSize');
-            const gridContainer = document.getElementById('stickerGrid');
-            const items = Array.from(gridContainer.getElementsByClassName('sticker-item'));
-            const footer = document.getElementById('tableFooter');
-            const info = document.getElementById('tableInfo');
-            const pagination = document.getElementById('pagination');
-
-            const totalItems = items.length;
-            let currentPage = 1;
-
-            function getFilteredItems() {
-                const keyword = searchInput.value.toLowerCase();
-                return items.filter(item =>
-                    item.getAttribute('data-name').includes(keyword)
-                );
-            }
-
-            function renderPagination(totalPages) {
-                pagination.innerHTML = '';
-
-                const windowSize = 5;
-                const half = Math.floor(windowSize / 2);
-
-                const createItem = (label, page = null, disabled = false, active = false) => {
-                    const li = document.createElement('li');
-                    li.className = `page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}`;
-
-                    const a = document.createElement('a');
-                    a.className = 'page-link';
-                    a.href = '#';
-                    a.innerText = label;
-
-                    if (!disabled && page !== null) {
-                        a.addEventListener('click', e => {
-                            e.preventDefault();
-                            currentPage = page;
-                            render();
-                        });
-                    }
-
-                    li.appendChild(a);
-                    return li;
-                };
-
-                // Prev
-                pagination.appendChild(
-                    createItem('Prev', currentPage - 1, currentPage === 1)
-                );
-
-                // First
-                pagination.appendChild(
-                    createItem('First', 1, currentPage === 1)
-                );
-
-                // Calculate sliding window
-                let startPage = currentPage - half;
-                let endPage = currentPage + half;
-
-                // Adjust if hitting left bound
-                if (startPage < 1) {
-                    startPage = 1;
-                    endPage = Math.min(windowSize, totalPages);
-                }
-
-                // Adjust if hitting right bound
-                if (endPage > totalPages) {
-                    endPage = totalPages;
-                    startPage = Math.max(1, totalPages - windowSize + 1);
-                }
-
-                for (let i = startPage; i <= endPage; i++) {
-                    pagination.appendChild(
-                        createItem(i, i, false, i === currentPage)
-                    );
-                }
-
-                // Last
-                pagination.appendChild(
-                    createItem('Last', totalPages, currentPage === totalPages)
-                );
-
-                // Next
-                pagination.appendChild(
-                    createItem('Next', currentPage + 1, currentPage === totalPages)
-                );
-            }
-
-            function render() {
-                const filteredItems = getFilteredItems();
-                const total = filteredItems.length;
-
-                const pageSize = pageSizeSelect.value === 'all' ?
-                    total :
-                    parseInt(pageSizeSelect.value);
-
-                const totalPages = Math.ceil(total / pageSize) || 1;
-                // Ensure current page is valid
-                if (currentPage > totalPages) currentPage = 1;
-
-                const start = (currentPage - 1) * pageSize;
-                const end = start + pageSize;
-
-                // Hide all first
-                items.forEach(item => item.style.display = 'none');
-
-                // Show only filtered and paginated items
-                filteredItems.slice(start, end).forEach(item => {
-                    item.style.display = 'block';
-                });
-
-                // Footer visibility
-                footer.classList.remove('d-none');
-
-                // Info
-                info.innerHTML = `
-            Showing <strong>${total === 0 ? 0 : start + 1}</strong>
-            to <strong>${Math.min(end, total)}</strong>
-            of <strong>${total}</strong> entries
-        `;
-
-                renderPagination(totalPages);
-            }
-
-            searchInput.addEventListener('input', () => {
-                currentPage = 1;
-                render();
-            });
-
-            pageSizeSelect.addEventListener('change', () => {
-                currentPage = 1;
-                render();
-            });
-
-            render();
-        });
-    </script>
 @endsection

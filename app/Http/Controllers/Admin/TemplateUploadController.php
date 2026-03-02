@@ -14,11 +14,25 @@ class TemplateUploadController extends Controller
     /**
      * LIST TEMPLATES
      */
-    public function index()
+    public function index(Request $request)
     {
-        $templates = Template::with('paperSize')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Template::with('paperSize');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('category', 'like', '%' . $request->search . '%');
+        }
+
+        $perPage = $request->input('per_page', 12);
+
+        if ($perPage === 'all') {
+            $total = $query->count();
+            $templates = $query->orderBy('created_at', 'desc')->paginate($total > 0 ? $total : 1);
+        } else {
+            $templates = $query->orderBy('created_at', 'desc')->paginate((int) $perPage);
+        }
+
+        $templates->appends($request->except('page'));
 
         return view('admin.templates.index', compact('templates'));
     }
