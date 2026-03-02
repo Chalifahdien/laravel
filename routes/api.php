@@ -18,7 +18,7 @@ Route::middleware('machine.token')->group(function () {
     Route::post('/photo-sessions/start', [SessionController::class, 'start']);
     Route::get('/photo-sessions/{id}', [SessionController::class, 'show']);
     Route::get('/templates', [TemplateApiController::class, 'index']);
-    // Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
+    Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
     Route::post('/sessions/{session}/complete', [PhotoSessionController::class, 'completeSession']);
     Route::post('/sessions/{session}/set-print-quantity', [PhotoSessionController::class, 'setPrintQuantity']);
     Route::get('/machines/{id}/detail', [MachineController::class, 'detail']);
@@ -26,4 +26,4 @@ Route::middleware('machine.token')->group(function () {
     Route::get('/stickers', [StickerController::class, 'index']);
 });
 
-Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
+// Route::get('/templates/{id}', [TemplateApiController::class, 'show']);
