@@ -183,7 +183,8 @@
                                             <!-- IMAGE -->
                                             <img src="{{ asset('storage/' . $session->finalImage->image_path) }}"
                                                 class="card-img-top gallery-img"
-                                                style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                style="aspect-ratio: {{ ($session->template->orientation ?? 'portrait') == 'landscape' ? '4/3' : '3/4' }}; object-fit: cover;"
+                                                data-type="image"
                                                 data-src="{{ asset('storage/' . $session->finalImage->image_path) }}"
                                                 alt="Final Photo">
 
@@ -234,13 +235,14 @@
                                                 @if ($isGif)
                                                     <img src="{{ asset('storage/' . $videoPath) }}"
                                                         class="card-img-top gallery-img"
-                                                        style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                        style="aspect-ratio: {{ ($session->template->orientation ?? 'portrait') == 'landscape' ? '4/3' : '3/4' }}; object-fit: cover;"
+                                                        data-type="image"
                                                         data-src="{{ asset('storage/' . $videoPath) }}"
                                                         alt="Live Photo">
                                                 @else
                                                     <video class="card-img-top gallery-img"
-                                                        style="aspect-ratio: 3/4; object-fit: cover;" muted autoplay
-                                                        loop playsinline data-type="video"
+                                                        style="aspect-ratio: {{ ($session->template->orientation ?? 'portrait') == 'landscape' ? '4/3' : '3/4' }}; object-fit: cover;"
+                                                        muted autoplay loop playsinline data-type="video"
                                                         data-src="{{ asset('storage/' . $videoPath) }}">
 
                                                         <source src="{{ asset('storage/' . $videoPath) }}"
@@ -303,7 +305,8 @@
                                             <!-- IMAGE -->
                                             <img src="{{ asset('storage/' . $photo->photo_path) }}"
                                                 class="card-img-top gallery-img"
-                                                style="aspect-ratio: 3/4; object-fit: cover;" data-type="image"
+                                                style="aspect-ratio: {{ ($session->template->orientation ?? 'portrait') == 'landscape' ? '4/3' : '3/4' }}; object-fit: cover;"
+                                                data-type="image"
                                                 data-src="{{ asset('storage/' . $photo->photo_path) }}"
                                                 alt="Frame {{ $index + 1 }}">
 

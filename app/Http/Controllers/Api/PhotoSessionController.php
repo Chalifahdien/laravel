@@ -8,6 +8,7 @@ use App\Models\PhotoSession;
 use App\Models\SessionPhoto;
 use App\Models\FinalImage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PhotoSessionController extends Controller
 {
@@ -20,18 +21,23 @@ class PhotoSessionController extends Controller
             'live_photo' => 'nullable|file',
         ]);
 
+        $start = microtime(true);
+        Log::info("Session completion started for session: {$session->id}");
+
         DB::beginTransaction();
 
         try {
+            Log::info("Transaction started. Memory usage: " . memory_get_usage());
             /* ============================
                SAVE FRAME PHOTOS
             ============================ */
             foreach ($request->file('frames') as $frameId => $file) {
-
+                $loopStart = microtime(true);
                 $path = $file->store(
                     "sessions/{$session->id}/frames",
                     'public'
                 );
+                Log::info("Frame {$frameId} stored in " . (microtime(true) - $loopStart) . "s");
 
                 SessionPhoto::updateOrCreate(
                     [
@@ -42,26 +48,33 @@ class PhotoSessionController extends Controller
                         'photo_path' => $path
                     ]
                 );
+                Log::info("Frame {$frameId} database updated in " . (microtime(true) - $loopStart) . "s");
             }
 
             /* ============================
                SAVE FINAL IMAGE & VIDEO
             ============================ */
+            $finalStoreStart = microtime(true);
             $finalPath = $request->file('final_image')
                 ->store("sessions/{$session->id}/final", 'public');
+            Log::info("Final image stored in " . (microtime(true) - $finalStoreStart) . "s");
 
             $videoPath = null;
             if ($request->hasFile('live_photo')) {
+                $videoStoreStart = microtime(true);
                 $videoPath = $request->file('live_photo')
                     ->store("sessions/{$session->id}/final", 'public');
+                Log::info("Live photo stored in " . (microtime(true) - $videoStoreStart) . "s");
             }
 
-            FinalImage::create([
-                'session_id' => $session->id,
-                'image_path' => $finalPath,
-                'video_path' => $videoPath,
-                'print_quantity' => 1,
-            ]);
+            FinalImage::updateOrCreate(
+                ['session_id' => $session->id],
+                [
+                    'image_path' => $finalPath,
+                    'video_path' => $videoPath,
+                    'print_quantity' => 1,
+                ]
+            );
 
             /* ============================
                UPDATE SESSION
@@ -74,12 +87,15 @@ class PhotoSessionController extends Controller
             /* ============================
                CREATE DOWNLOAD TOKEN
             ============================ */
-            $download = \App\Models\Download::create([
-                'session_id' => $session->id,
-                'expired_at' => now()->addDays(7),
-            ]);
+            $download = \App\Models\Download::updateOrCreate(
+                ['session_id' => $session->id],
+                [
+                    'expired_at' => now()->addDays(7),
+                ]
+            );
 
             DB::commit();
+            Log::info("Transaction committed. Total execution time: " . (microtime(true) - $start) . "s");
 
             return response()->json([
                 'status' => 'SUCCESS',

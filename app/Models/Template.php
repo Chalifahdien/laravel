@@ -8,6 +8,7 @@ class Template extends Model
 {
     protected $fillable = [
         'paper_size_id',
+        'orientation',
         'name',
         'category',
         'preview_image',

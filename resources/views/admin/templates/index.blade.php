@@ -60,6 +60,7 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Paper Size</th>
+                                <th>Orientation</th>
                                 <th>Frame</th>
                                 <th>Status</th>
                                 <th>Created At</th>
@@ -96,6 +97,14 @@
                                             {{ $t->paperSize->width_mm ?? '' }} ×
                                             {{ $t->paperSize->height_mm ?? '' }} mm
                                         </div>
+                                    </td>
+
+                                    <td>
+                                        @if ($t->orientation == 'landscape')
+                                            <span class="badge bg-purple-lt">Landscape</span>
+                                        @else
+                                            <span class="badge bg-azure-lt">Portrait</span>
+                                        @endif
                                     </td>
 
                                     <td>

@@ -144,6 +144,42 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label class="form-label">Orientation</label>
+                                    <div class="form-selectgroup d-flex">
+                                        <label class="form-selectgroup-item col">
+                                            <input type="radio" name="orientation" value="portrait"
+                                                class="form-selectgroup-input" checked>
+                                            <span class="form-selectgroup-label">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon me-1">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path
+                                                        d="M6 3m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
+                                                </svg>
+                                                Portrait
+                                            </span>
+                                        </label>
+                                        <label class="form-selectgroup-item col">
+                                            <input type="radio" name="orientation" value="landscape"
+                                                class="form-selectgroup-input">
+                                            <span class="form-selectgroup-label">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon me-1">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path
+                                                        d="M3 6m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                                                </svg>
+                                                Landscape
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
                                     <label class="form-label">Template PNG</label>
                                     <input class="form-control" type="file" name="template" id="templateInput"
                                         accept="image/*" required>
