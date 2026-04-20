@@ -90,7 +90,7 @@ class PhotoSessionController extends Controller
             $download = \App\Models\Download::updateOrCreate(
                 ['session_id' => $session->id],
                 [
-                    'expired_at' => now()->addDays(7),
+                    'expired_at' => now()->addDays(3),
                 ]
             );
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\PaperSize;
 use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +14,7 @@ class TemplateUploadController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Template::with('paperSize');
+        $query = Template::query();
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%')
@@ -47,7 +46,6 @@ class TemplateUploadController extends Controller
             ->toArray();
 
         return view('admin.templates.create', [
-            'paperSizes' => PaperSize::where('is_active', 1)->get(),
             'existingCategories' => $existingCategories
         ]);
     }
@@ -57,7 +55,7 @@ class TemplateUploadController extends Controller
      */
     public function edit(Template $template)
     {
-        $template->load('frames', 'paperSize');
+        $template->load('frames');
 
         $existingCategories = Template::whereNotNull('category')
             ->distinct()
@@ -67,7 +65,6 @@ class TemplateUploadController extends Controller
         return view('admin.templates.edit', [
             'template' => $template,
             'frames' => $template->frames,
-            'paperSizes' => PaperSize::where('is_active', 1)->get(),
             'existingCategories' => $existingCategories
         ]);
     }
@@ -81,7 +78,6 @@ class TemplateUploadController extends Controller
             'frames' => 'required|json',
             'name' => 'required|string|max:100',
             'category' => 'nullable|string|max:100',
-            'paper_size_id' => 'required|exists:paper_sizes,id',
         ]);
 
         $frames = json_decode($request->frames, true);
@@ -104,7 +100,6 @@ class TemplateUploadController extends Controller
 
         $template->update([
             'frame_count' => count($frames),
-            'paper_size_id' => $request->paper_size_id,
             'orientation' => 'portrait',
             'name' => $request->name,
             'category' => $request->category,
@@ -124,14 +119,12 @@ class TemplateUploadController extends Controller
         $request->validate([
             'name' => 'required|string|max:100',
             'category' => 'nullable|string|max:100',
-            'paper_size_id' => 'required|exists:paper_sizes,id',
             'template' => 'required|image|max:10240',
         ]);
 
         $path = $request->file('template')->store('templates', 'public');
 
         $template = Template::create([
-            'paper_size_id' => $request->paper_size_id,
             'orientation' => 'portrait',
             'name' => $request->name,
             'category' => $request->category,

@@ -10,7 +10,7 @@ Artisan::command('inspire', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Scheduler: Auto-hapus foto galeri setelah 24 jam
+| Scheduler: Auto-hapus foto galeri setelah 3 hari (72 jam)
 |--------------------------------------------------------------------------
 | Jalankan: php artisan schedule:work (development)
 | Production: Tambahkan ke crontab: * * * * * cd /path && php artisan schedule:run >> /dev/null 2>&1

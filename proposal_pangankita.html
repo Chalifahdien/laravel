@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Hackathon dan Digdaya 2026 — PanganKita</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Calibri:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 2.5cm 2.5cm 2.5cm 2.5cm;
+        }
+
+        body {
+            font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+            font-size: 11.5pt;
+            line-height: 1.15;
+            color: #1a1a1a;
+            background: #fff;
+            padding: 40px 60px;
+            max-width: 210mm;
+            margin: 0 auto;
+        }
+
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+            padding: 60px 20px;
+            page-break-after: always;
+        }
+
+        .cover-page .title-main {
+            font-size: 28pt;
+            font-weight: 700;
+            color: #1a5632;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .cover-page .subtitle {
+            font-size: 13pt;
+            color: #2d7a4f;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .cover-page .proposal-label {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cover-page .hackathon-name {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #1a5632;
+            margin-bottom: 50px;
+        }
+
+        .cover-page .team-info {
+            text-align: center;
+            font-size: 11pt;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .cover-page .team-info strong {
+            color: #1a1a1a;
+        }
+
+        .cover-page .divider-line {
+            width: 120px;
+            height: 3px;
+            background: #1a5632;
+            margin: 30px auto;
+        }
+
+        .cover-page .year {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #1a5632;
+            margin-top: 30px;
+        }
+
+        /* Section Header forces new page */
+        h1 {
+            font-size: 18pt;
+            font-weight: 700;
+            color: #1a5632;
+            margin: 0 0 15px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #1a5632;
+            page-break-before: always;
+        }
+
+        /* Give some space at the top of a new page if opened in browser without printing */
+        h1:not(:first-of-type) {
+            margin-top: 30px;
+        }
+
+        .section-number {
+            display: inline-block;
+            background: #1a5632;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 12pt;
+            font-weight: 700;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        h2 {
+            font-size: 13pt;
+            font-weight: 700;
+            color: #2d7a4f;
+            margin: 20px 0 10px 0;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #333;
+            margin: 15px 0 8px 0;
+        }
+
+        p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 16px 0;
+            font-size: 11pt;
+        }
+
+        table th {
+            background: #1a5632;
+            color: #fff;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 10.5pt;
+        }
+
+        table td {
+            padding: 7px 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        table tr:nth-child(even) td {
+            background: #f7faf8;
+        }
+
+        table.identity-table td:first-child {
+            font-weight: 700;
+            width: 35%;
+            color: #333;
+        }
+
+        /* Diagram Box */
+        .diagram-box {
+            background: #f4f8f5;
+            border: 1px solid #c8dece;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
+            line-height: 1.4;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* Content Box */
+        .content-box {
+            background: #f9fbfa;
+            border-left: 4px solid #1a5632;
+            padding: 15px 18px;
+            margin: 12px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .content-box p {
+            margin-bottom: 6px;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: #fff8f0;
+            border: 1px solid #f0c78a;
+            border-left: 4px solid #e6a23c;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 10.5pt;
+        }
+
+        .example-box {
+            background: #f0f7f2;
+            border: 1px solid #c8dece;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 10.5pt;
+        }
+
+        .example-box .label {
+            font-weight: 700;
+            color: #1a5632;
+            margin-bottom: 6px;
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            margin: 8px 0 12px 20px;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Footer note */
+        .footer-note {
+            font-size: 9pt;
+            color: #888;
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .highlight {
+            color: #1a5632;
+            font-weight: 700;
+        }
+
+        .check {
+            color: #2d7a4f;
+            font-weight: 700;
+        }
+
+        .cross {
+            color: #cc3333;
+            font-weight: 700;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                max-width: none;
+            }
+
+            h1 {
+                margin-top: 0;
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==================== COVER PAGE ==================== -->
+    <div class="cover-page">
+        <div class="proposal-label">Proposal</div>
+        <div class="hackathon-name">Hackathon dan Digdaya 2026</div>
+
+        <div class="divider-line"></div>
+
+        <div class="title-main">PanganKita</div>
+        <div class="subtitle">Sistem Peringatan Dini & Pendukung Keputusan Berbasis AI<br>untuk Ketahanan Pangan
+            Nasional</div>
+
+        <div class="divider-line"></div>
+
+        <div class="team-info">
+            <strong>Nama Tim:</strong> [Isi nama tim]<br>
+            <strong>Ketua Tim:</strong> [Isi nama ketua]<br>
+            <strong>Institusi:</strong> [Isi nama institusi]
+        </div>
+
+        <div class="year">2026</div>
+    </div>
+
+    <!-- ==================== 1. TEAM IDENTITY ==================== -->
+    <h1><span class="section-number">1</span> Team Identity</h1>
+
+    <table class="identity-table">
+        <tr>
+            <td>Nama Tim</td>
+            <td><em>[Isi nama tim]</em></td>
+        </tr>
+        <tr>
+            <td>Nama Ketua Tim</td>
+            <td><em>[Isi nama ketua]</em></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><em>[Isi email]</em></td>
+        </tr>
+        <tr>
+            <td>Kontak</td>
+            <td><em>[Isi nomor HP/WA]</em></td>
+        </tr>
+        <tr>
+            <td>Institusi</td>
+            <td><em>[Isi institusi/universitas]</em></td>
+        </tr>
+        <tr>
+            <td>Link Portofolio</td>
+            <td><em>[Isi link jika ada]</em></td>
+        </tr>
+    </table>
+
+    <h2>Nama Anggota Tim & Peran</h2>
+    <table>
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Peran</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><em>[Nama Anggota 1]</em></td>
+            <td>Project Lead / Backend Developer</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><em>[Nama Anggota 2]</em></td>
+            <td>Frontend Developer / UI-UX</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><em>[Nama Anggota 3]</em></td>
+            <td>Data Engineer / AI Engineer</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><em>[Nama Anggota 4]</em></td>
+            <td>Researcher / Presenter</td>
+        </tr>
+    </table>
+
+    <h2>Ringkasan Tim</h2>
+    <div class="content-box">
+        <p>Tim kami terdiri dari mahasiswa yang memiliki pengalaman dalam pengembangan aplikasi web, analisis data, dan
+            kecerdasan buatan. Kami telah mengerjakan beberapa proyek berbasis data dan memiliki pemahaman mendalam
+            tentang permasalahan distribusi pangan di Indonesia. Kombinasi keahlian teknis dan pemahaman domain
+            menjadikan kami relevan untuk membangun solusi yang menggabungkan teknologi AI dengan data pangan nasional
+            guna mendukung pengambilan keputusan pemerintah.</p>
+    </div>
+
+    <!-- ==================== 2. EXECUTIVE SUMMARY ==================== -->
+    <h1><span class="section-number">2</span> Executive Summary Project</h1>
+
+    <div class="content-box">
+        <p>PanganKita adalah sistem pendukung keputusan berbasis kecerdasan buatan yang membantu pemerintah mendeteksi
+            dan memprediksi lonjakan harga pangan sebelum terjadi. Sistem ini mengintegrasikan data harga dari PIHPS,
+            data cuaca dari BMKG, dan data produksi dari BPS untuk menghasilkan peringatan dini, analisis penyebab,
+            serta rekomendasi aksi redistribusi secara otomatis. Proyek ini mendukung tema ketahanan pangan dan ekonomi
+            digital dengan mengubah pendekatan penanganan krisis pangan dari reaktif menjadi prediktif.</p>
+    </div>
+
+    <!-- ==================== 3. PROBLEM STATEMENT ==================== -->
+    <h1><span class="section-number">3</span> Problem Statement</h1>
+
+    <table class="identity-table">
+        <tr>
+            <td>Problem Statement yang Dipilih</td>
+            <td>Peningkatan Produktivitas, Ketahanan Pangan, dan Penciptaan Lapangan Kerja</td>
+        </tr>
+        <tr>
+            <td>Sub-Problem Statement Acuan</td>
+            <td>1. Digitalisasi Ketahanan Pangan<br>2. Platform Matching Demand-Supply Antarwilayah<br>3. Pemantauan
+                Inflasi</td>
+        </tr>
+    </table>
+
+    <h2>Tujuan Utama</h2>
+    <div class="content-box">
+        <p>Tujuan utama PanganKita adalah membangun sistem cerdas yang mampu:</p>
+        <ol>
+            <li>Mendeteksi anomali harga pangan secara real-time di seluruh wilayah Indonesia melalui peta heatmap
+                interaktif.</li>
+            <li>Memprediksi lonjakan harga 7–14 hari sebelum terjadi menggunakan analisis korelasi data harga, cuaca,
+                dan produksi.</li>
+            <li>Memberikan rekomendasi aksi konkret kepada pemerintah berupa saran redistribusi stok dari wilayah
+                surplus ke wilayah defisit.</li>
+            <li>Menyediakan antarmuka chatbot AI berbahasa Indonesia agar pejabat pemerintah dapat bertanya dan
+                mendapatkan insight berbasis data secara instan.</li>
+        </ol>
+        <p><strong>Target spesifik:</strong> mengurangi waktu respons pemerintah terhadap krisis harga pangan dari
+            hitungan minggu menjadi hitungan hari.</p>
+    </div>
+
+    <!-- ==================== 4. PROBLEM DEFINITION ==================== -->
+    <h1><span class="section-number">4</span> Problem Definition</h1>
+
+    <h2>Apa Masalah Utamanya?</h2>
+    <div class="content-box">
+        <p>Indonesia mengalami lonjakan harga pangan yang berulang dan merugikan masyarakat. Harga komoditas strategis
+            seperti cabai merah bisa melonjak 200–300% dalam hitungan minggu, menyebabkan inflasi dan menurunkan daya
+            beli rakyat. Akar masalahnya bukan ketiadaan data, melainkan:</p>
+        <ol>
+            <li><strong>Data tidak terintegrasi</strong> — Data harga, cuaca, produksi, dan stok pangan tersebar di
+                sistem berbeda (PIHPS, BMKG, BPS) tanpa koneksi satu sama lain.</li>
+            <li><strong>Tidak ada kemampuan prediksi</strong> — Tidak ada sistem yang menganalisis korelasi antar data
+                tersebut untuk memprediksi lonjakan harga sebelum terjadi.</li>
+            <li><strong>Respons pemerintah reaktif</strong> — Pemerintah baru merespons setelah harga sudah naik dan
+                masyarakat sudah terdampak.</li>
+            <li><strong>PIHPS hanya data viewer</strong> — Sistem informasi harga yang ada saat ini hanya menampilkan
+                data mentah tanpa analisis, prediksi, maupun rekomendasi aksi.</li>
+        </ol>
+        <p>Akibatnya, intervensi pemerintah selalu terlambat dan biaya stabilisasi harga membengkak.</p>
+    </div>
+
+    <h2>Siapa yang Terdampak dan Seberapa Besar?</h2>
+    <div class="content-box">
+        <p>Pihak yang terdampak langsung:</p>
+        <ol>
+            <li><strong>270 juta lebih konsumen Indonesia</strong> — terutama masyarakat berpenghasilan rendah yang
+                mengalokasikan lebih dari 50% pengeluaran untuk pangan.</li>
+            <li><strong>Sekitar 33 juta petani</strong> — menderita ketidakstabilan harga; harga turun saat panen raya,
+                naik saat mereka tidak punya stok untuk dijual.</li>
+            <li><strong>Pemerintah pusat dan 514 pemerintah kabupaten/kota</strong> — harus mengeluarkan anggaran besar
+                untuk stabilisasi harga tanpa alat analisis yang memadai.</li>
+        </ol>
+        <p>Dampaknya bersifat nasional dan memengaruhi inflasi secara langsung.</p>
+    </div>
+
+    <!-- ==================== 5. BUKTI MASALAH ==================== -->
+    <h1><span class="section-number">5</span> Bukti Masalah</h1>
+
+    <div class="content-box">
+        <p>Berdasarkan data BPS, inflasi volatile food (bahan makanan) secara konsisten menjadi penyumbang utama inflasi
+            nasional. Pada beberapa periode, harga cabai merah mengalami lonjakan hingga 200–300% akibat gangguan cuaca
+            dan distribusi yang tidak optimal.</p>
+        <p>Laporan Bank Indonesia menunjukkan disparitas harga pangan antar wilayah bisa mencapai 50–100% untuk
+            komoditas yang sama. Data Bapanas menunjukkan adanya surplus di sentra produksi yang tidak terserap pasar,
+            sementara wilayah lain justru mengalami kelangkaan.</p>
+        <p>Sistem PIHPS yang ada saat ini hanya menyajikan tabel harga tanpa kemampuan analisis prediktif, sehingga
+            belum mampu menjadi alat pengambilan keputusan yang efektif bagi pemerintah.</p>
+    </div>
+
+    <!-- ==================== 6. PROPOSED SOLUTION ==================== -->
+    <h1><span class="section-number">6</span> Proposed Solution</h1>
+
+    <h2>Solusi Inti</h2>
+    <div class="content-box">
+        <p>PanganKita adalah platform web berbasis AI yang berfungsi sebagai sistem peringatan dini dan pendukung
+            keputusan untuk ketahanan pangan nasional. Platform ini secara otomatis mengambil data dari sumber resmi
+            pemerintah (PIHPS, BPS, BMKG) tanpa memerlukan input manual dari pengguna. Data tersebut diolah oleh mesin
+            AI untuk menghasilkan empat output utama:</p>
+        <ol>
+            <li><strong>Peta heatmap interaktif</strong> — menampilkan harga pangan real-time di seluruh Indonesia.</li>
+            <li><strong>Peringatan dini otomatis</strong> — ketika terdeteksi anomali atau diprediksi akan terjadi
+                lonjakan harga.</li>
+            <li><strong>Rekomendasi aksi redistribusi</strong> — dari wilayah surplus ke wilayah defisit, lengkap dengan
+                estimasi volume dan logistik.</li>
+            <li><strong>Chatbot AI berbahasa Indonesia</strong> — memungkinkan pejabat pemerintah bertanya dan
+                mendapatkan analisis berbasis data secara instan.</li>
+        </ol>
+    </div>
+
+    <h2>Bagaimana Solusi Bekerja?</h2>
+    <div class="content-box">
+        <p><strong>Input:</strong> Data dikumpulkan secara otomatis dari tiga sumber utama melalui API dan web scraping
+            terjadwal: (a) harga pangan harian dari PIHPS Kemendag (216 pasar), (b) data produksi dan stok dari BPS, (c)
+            data cuaca dan curah hujan dari BMKG.</p>
+        <p><strong>Proses:</strong> Data dinormalisasi dan dianalisis oleh tiga mesin utama: (a) Anomaly Detection —
+            mendeteksi kenaikan harga yang tidak wajar; (b) Time-Series Forecasting — memprediksi tren harga 7–14 hari
+            ke depan menggunakan algoritma ARIMA/Prophet; (c) Correlation Engine — menganalisis hubungan antara cuaca
+            buruk dan potensi penurunan produksi.</p>
+        <p><strong>Output:</strong> Dashboard interaktif berisi peta heatmap, daftar alert prioritas, rekomendasi aksi
+            spesifik (wilayah asal, tujuan, volume, estimasi biaya logistik), serta chatbot AI yang menjawab pertanyaan
+            pejabat pemerintah dalam bahasa Indonesia.</p>
+    </div>
+
+    <!-- ==================== 7. SKEMA ARSITEKTUR SOLUSI ==================== -->
+    <h1><span class="section-number">7</span> Skema Arsitektur Solusi & Contoh Output</h1>
+
+    <h2>Skema Arsitektur Solusi</h2>
+    <div class="diagram-box">
+        ┌──────────────────────────────────────┐
+        │ SUMBER DATA (Otomatis) │
+        │ │
+        │ 📊 PIHPS ──→ Harga pangan harian │
+        │ 📊 BPS ──→ Produksi & stok │
+        │ 🌤️ BMKG ──→ Cuaca & curah hujan │
+        └─────────────────┬────────────────────┘
+        │ Auto-fetch (Scheduler)
+        ▼
+        ┌──────────────────────────────────────┐
+        │ AI ENGINE (Backend) │
+        │ │
+        │ • Anomaly Detection │
+        │ • Price Forecasting (ARIMA/Prophet) │
+        │ • Correlation Analysis │
+        │ • Recommendation Engine │
+        │ • AI Chatbot (LLM + RAG) │
+        └─────────────────┬────────────────────┘
+        │ RESTful API
+        ▼
+        ┌──────────────────────────────────────┐
+        │ OUTPUT (Frontend) │
+        │ │
+        │ 🗺️ Peta Heatmap Harga Pangan │
+        │ ⚠️ Alert Peringatan Dini │
+        │ 💡 Rekomendasi Redistribusi │
+        │ 🤖 AI Chatbot Bahasa Indonesia │
+        └─────────────────┬────────────────────┘
+        │
+        ▼
+        🏛️ Pemerintah Pusat & Daerah
+        (Pengambil Keputusan)
+    </div>
+
+    <h2>Contoh Output Sistem</h2>
+    <div class="example-box">
+        <div class="label">⚠️ Contoh Alert Peringatan Dini:</div>
+        <p><strong>PERINGATAN DINI — 6 Maret 2026</strong></p>
+        <p>Prediksi: Harga <strong>CABAI MERAH</strong> di <strong>JAWA BARAT</strong> akan naik <strong>35%</strong>
+            dalam 7–10 hari ke depan.</p>
+        <p><em>Penyebab terdeteksi:</em></p>
+        <ul>
+            <li>Curah hujan tinggi di Cianjur & Garut (sumber: BMKG)</li>
+            <li>Indeks vegetasi lahan turun 28% (sumber: citra satelit)</li>
+            <li>Stok cabai di pasar menurun 3 hari berturut-turut</li>
+        </ul>
+        <p><em>Confidence Level: 82%</em></p>
+    </div>
+
+    <!-- ==================== 8. IMPACT & OUTCOME ==================== -->
+    <h1><span class="section-number">8</span> Impact & Outcome</h1>
+
+    <h2>Manfaat Utama Jika Solusi Diterapkan</h2>
+    <div class="content-box">
+        <ol>
+            <li><strong>Deteksi dini 7–14 hari lebih awal</strong> — Pemerintah dapat mendeteksi potensi krisis harga
+                pangan sebelum terjadi, sehingga intervensi bisa dilakukan sebelum masyarakat terdampak.</li>
+            <li><strong>Redistribusi lebih efisien</strong> — Rekomendasi otomatis mengurangi disparitas harga antar
+                wilayah, sehingga wilayah surplus dapat memasok wilayah defisit secara lebih cepat.</li>
+            <li><strong>Penghematan anggaran</strong> — Intervensi tepat sasaran berdasarkan data mengurangi biaya
+                stabilisasi harga yang selama ini boros.</li>
+            <li><strong>Perlindungan masyarakat</strong> — Masyarakat berpenghasilan rendah terlindungi dari lonjakan
+                harga pangan yang menggerus daya beli.</li>
+            <li><strong>Keuntungan petani</strong> — Distribusi yang lebih merata mengurangi kejatuhan harga saat panen
+                raya.</li>
+        </ol>
+    </div>
+
+    <h2>Dampak Jangka Pendek dan Menengah</h2>
+    <div class="content-box">
+        <p><strong>Jangka pendek (0–6 bulan):</strong> Pemerintah memiliki dashboard terpadu untuk memantau harga pangan
+            secara real-time dan menerima alert otomatis saat terjadi anomali. Waktu respons terhadap lonjakan harga
+            berkurang signifikan.</p>
+        <p><strong>Jangka menengah (6–24 bulan):</strong> Sistem prediksi semakin akurat seiring bertambahnya data
+            historis. Integrasi dengan seluruh Pemda di 34 provinsi memungkinkan koordinasi redistribusi pangan
+            nasional. Kontribusi pada pengendalian inflasi bahan makanan secara terukur.</p>
+    </div>
+
+    <!-- ==================== 9. INNOVATION & DIFFERENTIATION ==================== -->
+    <h1><span class="section-number">9</span> Innovation & Differentiation</h1>
+
+    <h2>Apa yang Membuat Solusi Ini Berbeda?</h2>
+    <div class="content-box">
+        <p>PanganKita memiliki tiga unsur inovasi utama:</p>
+        <ol>
+            <li><strong>Pendekatan prediktif, bukan reaktif</strong> — Sistem memprediksi krisis sebelum terjadi,
+                berbeda dari sistem yang ada yang hanya melaporkan data setelah harga sudah naik.</li>
+            <li><strong>Integrasi multi-sumber data</strong> — Menggabungkan data harga, cuaca, dan produksi dalam satu
+                analisis terpadu, sesuatu yang belum tersedia di platform manapun.</li>
+            <li><strong>AI Chatbot berbahasa Indonesia</strong> — Pejabat pemerintah dapat bertanya dalam bahasa natural
+                dan mendapatkan analisis lengkap tanpa perlu keahlian teknis.</li>
+        </ol>
+    </div>
+
+    <h2>Posisi Dibanding Solusi yang Sudah Ada</h2>
+    <table>
+        <tr>
+            <th>Fitur</th>
+            <th>PIHPS (Kemendag)</th>
+            <th>PanganKita</th>
+        </tr>
+        <tr>
+            <td>Menampilkan harga pangan</td>
+            <td class="check">✅ Ada</td>
+            <td class="check">✅ Ada</td>
+        </tr>
+        <tr>
+            <td>Alert otomatis saat anomali</td>
+            <td class="cross">❌ Tidak ada</td>
+            <td class="check">✅ Ada</td>
+        </tr>
+        <tr>
+            <td>Prediksi harga ke depan</td>
+            <td class="cross">❌ Tidak ada</td>
+            <td class="check">✅ Ada</td>
+        </tr>
+        <tr>
+            <td>Rekomendasi redistribusi</td>
+            <td class="cross">❌ Tidak ada</td>
+            <td class="check">✅ Ada</td>
+        </tr>
+        <tr>
+            <td>Integrasi data cuaca & produksi</td>
+            <td class="cross">❌ Hanya harga</td>
+            <td class="check">✅ Multi-sumber</td>
+        </tr>
+        <tr>
+            <td>AI Chatbot tanya jawab</td>
+            <td class="cross">❌ Tidak ada</td>
+            <td class="check">✅ Ada</td>
+        </tr>
+        <tr>
+            <td>Analisis penyebab kenaikan harga</td>
+            <td class="cross">❌ Tidak ada</td>
+            <td class="check">✅ Ada</td>
+        </tr>
+    </table>
+    <p>PanganKita bukan pengganti PIHPS, melainkan <strong>evolusi dari data viewer menjadi decision support
+            system</strong> yang actionable bagi pengambil kebijakan.</p>
+
+    <!-- ==================== 10. TECHNICAL APPROACH ==================== -->
+    <h1><span class="section-number">10</span> Technical Approach</h1>
+
+    <h2>Teknologi Utama yang Digunakan</h2>
+    <table>
+        <tr>
+            <th>Layer</th>
+            <th>Teknologi</th>
+            <th>Fungsi</th>
+        </tr>
+        <tr>
+            <td>Frontend</td>
+            <td>React / Next.js</td>
+            <td>Dashboard web responsif dan cepat</td>
+        </tr>
+        <tr>
+            <td>Peta Interaktif</td>
+            <td>Leaflet.js + OpenStreetMap</td>
+            <td>Visualisasi peta heatmap Indonesia</td>
+        </tr>
+        <tr>
+            <td>Grafik & Chart</td>
+            <td>Chart.js / Recharts</td>
+            <td>Visualisasi tren dan data analitik</td>
+        </tr>
+        <tr>
+            <td>Backend</td>
+            <td>Laravel (PHP)</td>
+            <td>API, integrasi data, logika bisnis</td>
+        </tr>
+        <tr>
+            <td>Database</td>
+            <td>MySQL / PostgreSQL</td>
+            <td>Penyimpanan data harga & analisis</td>
+        </tr>
+        <tr>
+            <td>AI/ML</td>
+            <td>ARIMA / Prophet</td>
+            <td>Prediksi harga (time-series forecasting)</td>
+        </tr>
+        <tr>
+            <td>AI Chatbot</td>
+            <td>Gemini API + RAG</td>
+            <td>Chatbot cerdas berbahasa Indonesia</td>
+        </tr>
+    </table>
+
+    <h2>Pemilihan dan Penggunaan Teknologi</h2>
+    <div class="content-box">
+        <p>Laravel dipilih karena framework PHP yang robust dan tim sudah berpengalaman menggunakannya. React/Next.js
+            dipilih untuk frontend yang cepat dan mendukung server-side rendering. ARIMA/Prophet dipilih karena terbukti
+            efektif untuk prediksi time-series pada data harga komoditas. Gemini API dipilih untuk chatbot karena
+            mendukung bahasa Indonesia dengan baik dan dapat diintegrasikan dengan RAG untuk menjawab berdasarkan data
+            aktual. Leaflet.js dipilih karena ringan, gratis, dan fleksibel untuk peta interaktif.</p>
+    </div>
+
+    <!-- ==================== 11. ALGORITMA & DATA ==================== -->
+    <h1><span class="section-number">11</span> Algoritma & Data</h1>
+
+    <h2>Algoritma Solusi</h2>
+    <div class="content-box">
+        <p>Tiga algoritma utama yang digunakan:</p>
+        <ol>
+            <li><strong>Anomaly Detection</strong> — Menggunakan Z-Score dan IQR (Interquartile Range) untuk mendeteksi
+                harga yang menyimpang signifikan dari pola normal. Jika harga melewati threshold tertentu, sistem
+                otomatis memicu alert peringatan dini.</li>
+            <li><strong>Time-Series Forecasting</strong> — Menggunakan ARIMA dan Facebook Prophet untuk memprediksi
+                harga 7–14 hari ke depan berdasarkan pola historis, musiman, dan tren.</li>
+            <li><strong>Correlation Analysis</strong> — Menggunakan Pearson correlation untuk mengukur hubungan antara
+                variabel cuaca (curah hujan, suhu) dengan perubahan harga, sehingga sistem dapat menjelaskan penyebab
+                kenaikan harga secara otomatis.</li>
+        </ol>
+    </div>
+
+    <h2>Data atau Input Utama</h2>
+    <table>
+        <tr>
+            <th>Sumber Data</th>
+            <th>Jenis Data</th>
+            <th>Ketersediaan</th>
+        </tr>
+        <tr>
+            <td>PIHPS Kemendag</td>
+            <td>Harga harian 11 komoditas pangan dari 216 pasar tradisional</td>
+            <td>Publik, diperbarui harian</td>
+        </tr>
+        <tr>
+            <td>BPS</td>
+            <td>Data produksi pertanian per wilayah, inflasi bulanan</td>
+            <td>API resmi BPS tersedia</td>
+        </tr>
+        <tr>
+            <td>BMKG</td>
+            <td>Data cuaca, curah hujan, dan prakiraan cuaca harian</td>
+            <td>API BMKG tersedia</td>
+        </tr>
+    </table>
+    <p>Keandalan data sangat tinggi karena bersumber dari lembaga resmi pemerintah. Data diambil secara otomatis melalui
+        scheduler tanpa input manual.</p>
+
+    <!-- ==================== 12. KEAMANAN & SKALABILITAS ==================== -->
+    <h1><span class="section-number">12</span> Keamanan & Skalabilitas</h1>
+
+    <div class="content-box">
+        <p><strong>Keamanan:</strong> Sistem menggunakan autentikasi berbasis token (JWT) untuk akses API, role-based
+            access control untuk membedakan hak akses pusat dan daerah, serta HTTPS untuk enkripsi data in-transit. Data
+            yang disimpan hanya data publik dari sumber pemerintah, sehingga tidak menyimpan data sensitif pengguna.</p>
+        <p><strong>Skalabilitas:</strong> Arsitektur modular memungkinkan penambahan sumber data baru. Database
+            mendukung partisi berdasarkan wilayah dan waktu. Frontend di-deploy di CDN untuk akses cepat dari seluruh
+            Indonesia. Sistem dapat di-scale horizontal sesuai kebutuhan.</p>
+    </div>
+
+    <!-- ==================== 13. IMPLEMENTATION FEASIBILITY ==================== -->
+    <h1><span class="section-number">13</span> Implementation Feasibility</h1>
+
+    <h2>Status Inovasi</h2>
+    <p>Inovasi saat ini dalam tahap <strong>ide/konsep</strong> menuju <strong>prototype (MVP)</strong> yang akan
+        dibangun selama Hackathon.</p>
+
+    <h2>Apakah Inovasi Realistis untuk Dibangun?</h2>
+    <div class="content-box">
+        <p>Solusi ini sangat realistis karena:</p>
+        <ol>
+            <li>Data yang dibutuhkan sudah tersedia secara publik dari PIHPS, BPS, dan BMKG — tidak perlu mengumpulkan
+                data baru.</li>
+            <li>Teknologi yang digunakan (Laravel, React, ARIMA, Gemini API) sudah mature dan well-documented.</li>
+            <li>Tim memiliki pengalaman langsung dalam pengembangan web application menggunakan Laravel.</li>
+            <li>MVP dapat dibangun dalam 2 hari hackathon karena arsitektur sederhana: fetch data → proses → tampilkan.
+            </li>
+            <li>Tidak memerlukan infrastruktur khusus — dapat berjalan di cloud server standar.</li>
+        </ol>
+    </div>
+
+    <h2>Tahapan Pengembangan</h2>
+    <table>
+        <tr>
+            <th>Tahap</th>
+            <th>Timeline</th>
+            <th>Kegiatan</th>
+        </tr>
+        <tr>
+            <td><strong>1. Hackathon</strong></td>
+            <td>Hari 1–2</td>
+            <td>Membangun MVP: dashboard heatmap, alert anomali (Z-Score), chatbot AI dasar (Gemini API). Output:
+                prototype fungsional.</td>
+        </tr>
+        <tr>
+            <td><strong>2. Pengembangan</strong></td>
+            <td>Bulan 1–3</td>
+            <td>Integrasi data BMKG & BPS, implementasi forecasting ARIMA/Prophet, rekomendasi redistribusi otomatis,
+                penyempurnaan UI/UX.</td>
+        </tr>
+        <tr>
+            <td><strong>3. Pilot</strong></td>
+            <td>Bulan 3–6</td>
+            <td>Uji coba dengan 2–3 pemerintah daerah, validasi akurasi prediksi, iterasi berdasarkan feedback.</td>
+        </tr>
+        <tr>
+            <td><strong>4. Skala Nasional</strong></td>
+            <td>Bulan 6–12</td>
+            <td>Deployment ke infrastruktur pemerintah, pelatihan 34 provinsi, integrasi WhatsApp Bot.</td>
+        </tr>
+    </table>
+
+    <!-- ==================== 14. BISNIS MODEL ==================== -->
+    <h1><span class="section-number">14</span> Bisnis Model dan Keberlanjutan</h1>
+
+    <table>
+        <tr>
+            <th>Komponen BMC</th>
+            <th>Detail</th>
+        </tr>
+        <tr>
+            <td><strong>Value Proposition</strong></td>
+            <td>Sistem prediktif membantu pemerintah mencegah krisis pangan sebelum terjadi, mengubah reaktif jadi
+                prediktif.</td>
+        </tr>
+        <tr>
+            <td><strong>Customer Segments</strong></td>
+            <td>Pemerintah pusat (Bapanas, Kemendag) dan pemerintah daerah (Dinas Perdagangan & Pertanian).</td>
+        </tr>
+        <tr>
+            <td><strong>Channels</strong></td>
+            <td>Presentasi langsung ke stakeholder pemerintah, demonstrasi pilot project, kemitraan dengan kementerian
+                terkait.</td>
+        </tr>
+        <tr>
+            <td><strong>Revenue Streams</strong></td>
+            <td>1. Lisensi platform B2G. 2. Data-as-a-Service (API analitik peneliti). 3. Konsultasi kebijakan bebasis
+                data.</td>
+        </tr>
+        <tr>
+            <td><strong>Key Resources</strong></td>
+            <td>Tim developer ahli sistem/data, data publik pemerintah (PIHPS, BPS), dan infrastruktur cloud.</td>
+        </tr>
+        <tr>
+            <td><strong>Key Partners</strong></td>
+            <td>Kementerian Perdagangan, Bapanas, BPS, BMKG, dan perguruan tinggi validasi model AI.</td>
+        </tr>
+        <tr>
+            <td><strong>Cost Structure</strong></td>
+            <td>Biaya server cloud, API LLM (Gemini), dan pengembangan tim (R&D). Data operasional sangat terjangkau.
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Keberlanjutan</strong></td>
+            <td>Model B2G menjamin pendapatan berkelanjutan melalui kontrak berlangganan tahunan dari pemerintah.</td>
+        </tr>
+    </table>
+
+    <!-- ==================== REFERENSI ==================== -->
+    <h1><span class="section-number">★</span> Referensi & Lampiran</h1>
+
+    <ol>
+        <li>Badan Pusat Statistik (BPS). <em>Data Inflasi dan Harga Konsumen.</em> <a
+                href="https://www.bps.go.id">https://www.bps.go.id</a></li>
+        <li>Pusat Informasi Harga Pangan Strategis (PIHPS), Kementerian Perdagangan. <a
+                href="https://hfrfrpihps.kemendag.go.id">https://hfrfrpihps.kemendag.go.id</a></li>
+        <li>Badan Meteorologi, Klimatologi, dan Geofisika (BMKG). <em>Data Cuaca danIklim.</em> <a
+                href="https://www.bmkg.go.id">https://www.bmkg.go.id</a></li>
+        <li>Bank Indonesia. <em>Laporan Inflasi.</em> <a href="https://www.bi.go.id">https://www.bi.go.id</a></li>
+        <li>Badan Pangan Nasional (Bapanas). <em>Data Ketahanan Pangan.</em> <a
+                href="https://badanpangan.go.id">https://badanpangan.go.id</a></li>
+    </ol>
+
+    <div class="content-box">
+        <p><strong>Lampiran Mockup/Prototype (TBD)</strong><br>
+            <em>[Silakan dilampirkan screenshot aplikasi pada bagian ini saat sudah tersedia]</em>
+        </p>
+    </div>
+
+    <div class="footer-note">
+        <p><em>Dokumen ini disusun sebagai proposal untuk Hackathon dan Digdaya 2026.</em></p>
+        <p><strong>PanganKita</strong> — Prediksi. Cegah. Lindungi Pangan Bangsa. 🇮🇩</p>
+    </div>
+
+</body>
+
+</html>

@@ -60,7 +60,6 @@ class TemplateApiController extends Controller
         return response()->json([
             'id' => $template->id,
             'name' => $template->name,
-            'orientation' => $template->orientation,
             'category' => $template->category,
             'template_image' => asset('storage/' . $template->template_image),
             'frame_count' => $template->frame_count,
