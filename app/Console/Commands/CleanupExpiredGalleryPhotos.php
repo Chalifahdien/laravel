@@ -15,7 +15,7 @@ class CleanupExpiredGalleryPhotos extends Command
      * @var string
      */
     protected $signature = 'gallery:cleanup-expired
-                            {--hours=120 : Jumlah jam setelah dibuat sebelum foto dihapus (default 3 hari)}';
+                            {--hours=168 : Jumlah jam setelah dibuat sebelum foto dihapus (default 3 hari)}';
 
     /**
      * The console command description.
