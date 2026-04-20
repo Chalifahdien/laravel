@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Template;
+use App\Models\PaperSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -45,8 +46,11 @@ class TemplateUploadController extends Controller
             ->pluck('category')
             ->toArray();
 
+        $paperSizes = PaperSize::all();
+ 
         return view('admin.templates.create', [
-            'existingCategories' => $existingCategories
+            'existingCategories' => $existingCategories,
+            'paperSizes' => $paperSizes
         ]);
     }
 
@@ -62,10 +66,13 @@ class TemplateUploadController extends Controller
             ->pluck('category')
             ->toArray();
 
+        $paperSizes = PaperSize::all();
+ 
         return view('admin.templates.edit', [
             'template' => $template,
             'frames' => $template->frames,
-            'existingCategories' => $existingCategories
+            'existingCategories' => $existingCategories,
+            'paperSizes' => $paperSizes
         ]);
     }
 
