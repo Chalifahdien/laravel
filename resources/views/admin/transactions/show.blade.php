@@ -126,6 +126,11 @@
                                 </tr>
 
                                 <tr>
+                                    <td class="text-muted">Gift</td>
+                                    <td>{{ $photoSession->finalImage->gift ?? '-' }}</td>
+                                </tr>
+
+                                <tr>
                                     <td class="text-muted">Created</td>
                                     <td>{{ $photoSession->created_at->format('d M Y H:i') }}</td>
                                 </tr>
@@ -219,36 +224,30 @@
                 </div>
 
                 {{-- FINAL IMAGE --}}
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-4">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Final Image</h3>
                         </div>
 
                         <div class="card-body text-center">
-                            @if ($photoSession->finalImage)
-                                @if ($photoSession->finalImage->image_path)
-                                    <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
-                                        class="img-fluid rounded shadow-sm" style="max-height: 400px">
-                                    <div class="mt-3">
-                                        <a href="{{ route('gallery.final.download', $photoSession->download->token ?? '') }}"
-                                            class="btn btn-primary">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                <path d="M7 11l5 5l5 -5" />
-                                                <path d="M12 4l0 12" />
-                                            </svg>
-                                            Download
-                                        </a>
-                                    </div>
-                                @else
-                                    <div class="text-muted">
-                                        Final image not available
-                                    </div>
-                                @endif
+                            @if ($photoSession->finalImage && $photoSession->finalImage->image_path)
+                                <img src="{{ asset('storage/' . $photoSession->finalImage->image_path) }}"
+                                    class="img-fluid rounded shadow-sm" style="max-height: 400px">
+                                <div class="mt-3">
+                                    <a href="{{ route('gallery.final.download', $photoSession->download->token ?? '') }}"
+                                        class="btn btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                            <path d="M7 11l5 5l5 -5" />
+                                            <path d="M12 4l0 12" />
+                                        </svg>
+                                        Download
+                                    </a>
+                                </div>
                             @else
                                 <div class="text-muted">
                                     Final image not available
@@ -259,7 +258,7 @@
                 </div>
 
                 {{-- LIVE PHOTO --}}
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-4">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Live Photo</h3>
@@ -300,6 +299,54 @@
                             @else
                                 <div class="text-muted">
                                     Live photo not available
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{-- GIFT --}}
+                <div class="col-12 col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Gift</h3>
+                        </div>
+
+                        <div class="card-body text-center">
+                            @if ($photoSession->finalImage && $photoSession->finalImage->gift)
+                                @php
+                                    $giftPath = $photoSession->finalImage->gift;
+                                    $extension = strtolower(pathinfo($giftPath, PATHINFO_EXTENSION));
+                                    $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                @endphp
+
+                                @if ($isImage)
+                                    <img src="{{ asset('storage/' . $giftPath) }}" class="img-fluid rounded shadow-sm"
+                                        style="max-height: 400px;">
+                                @else
+                                    <video autoplay loop muted playsinline class="img-fluid rounded shadow-sm"
+                                        style="max-height: 400px;">
+                                        <source src="{{ asset('storage/' . $giftPath) }}"
+                                            type="video/{{ $extension }}">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                @endif
+                                <div class="mt-3">
+                                    <a href="{{ asset('storage/' . $giftPath) }}" class="btn btn-primary" download>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                            <path d="M7 11l5 5l5 -5" />
+                                            <path d="M12 4l0 12" />
+                                        </svg>
+                                        Download Gift
+                                    </a>
+                                </div>
+                            @else
+                                <div class="text-muted">
+                                    Gift not available
                                 </div>
                             @endif
                         </div>

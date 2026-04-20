@@ -19,6 +19,7 @@ class PhotoSessionController extends Controller
             'frames.*' => 'required',
             'final_image' => 'required',
             'live_photo' => 'nullable|file',
+            'gift' => 'nullable|file',
         ]);
 
         $start = microtime(true);
@@ -67,11 +68,20 @@ class PhotoSessionController extends Controller
                 Log::info("Live photo stored in " . (microtime(true) - $videoStoreStart) . "s");
             }
 
+            $giftPath = null;
+            if ($request->hasFile('gift')) {
+                $giftStoreStart = microtime(true);
+                $giftPath = $request->file('gift')
+                    ->store("sessions/{$session->id}/final", 'public');
+                Log::info("Gift stored in " . (microtime(true) - $giftStoreStart) . "s");
+            }
+
             FinalImage::updateOrCreate(
                 ['session_id' => $session->id],
                 [
                     'image_path' => $finalPath,
                     'video_path' => $videoPath,
+                    'gift' => $giftPath,
                     'print_quantity' => 1,
                 ]
             );
@@ -102,7 +112,8 @@ class PhotoSessionController extends Controller
                 'session_id' => $session->id,
                 'download_token' => $download->token, // Send token to frontend
                 'final_image' => $finalPath,
-                'live_photo' => $videoPath
+                'live_photo' => $videoPath,
+                'gift' => $giftPath
             ]);
 
         } catch (\Exception $e) {

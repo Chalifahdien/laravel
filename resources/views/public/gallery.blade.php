@@ -148,7 +148,7 @@
 
                                 <!-- FINAL PHOTO -->
                                 @if ($session->finalImage)
-                                    <div class="col-sm-12 col-md-6">
+                                    <div class="col-sm-12 col-md-4">
                                         <div class="card">
 
                                             <!-- LABEL kiri atas -->
@@ -199,7 +199,7 @@
                                             $ext = strtolower(pathinfo($videoPath, PATHINFO_EXTENSION));
                                             $isGif = $ext === 'gif';
                                         @endphp
-                                        <div class="col-sm-12 col-md-6 mt-3 mt-md-0">
+                                        <div class="col-sm-12 col-md-4 mt-3 mt-md-0">
                                             <div class="card">
 
                                                 <!-- LABEL kiri atas -->
@@ -253,7 +253,69 @@
 
                                             </div>
                                         </div>
+                                    @endif
 
+                                    <!-- GIFT -->
+                                    @if ($session->finalImage->gift)
+                                        @php
+                                            $giftPath = $session->finalImage->gift;
+                                            $extGift = strtolower(pathinfo($giftPath, PATHINFO_EXTENSION));
+                                            $isGiftImg = in_array($extGift, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                        @endphp
+                                        <div class="col-sm-12 col-md-4 mt-3 mt-md-0">
+                                            <div class="card">
+
+                                                <!-- LABEL kiri atas -->
+                                                <div class="label-overlay">
+                                                    <span class="badge bg-green-lt">
+                                                        GIFT
+                                                    </span>
+                                                </div>
+
+
+                                                <!-- tombol download kanan atas -->
+                                                <div class="download-overlay">
+                                                    <a href="{{ asset('storage/' . $giftPath) }}"
+                                                        class="btn btn-primary" download>
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon m-0"
+                                                            width="20" height="20" viewBox="0 0 24 24"
+                                                            stroke-width="2" stroke="currentColor" fill="none"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                            <path d="M7 11l5 5l5 -5" />
+                                                            <path d="M12 4l0 12" />
+
+                                                        </svg>
+
+                                                    </a>
+                                                </div>
+
+
+                                                <!-- MEDIA -->
+                                                @if ($isGiftImg)
+                                                    <img src="{{ asset('storage/' . $giftPath) }}"
+                                                        class="card-img-top gallery-img"
+                                                        style="aspect-ratio: {{ ($session->template->orientation ?? 'portrait') == 'landscape' ? '4/3' : '3/4' }}; object-fit: cover;"
+                                                        data-type="image"
+                                                        data-src="{{ asset('storage/' . $giftPath) }}"
+                                                        alt="Gift">
+                                                @else
+                                                    <video class="card-img-top gallery-img"
+                                                        style="aspect-ratio: {{ ($session->template->orientation ?? 'portrait') == 'landscape' ? '4/3' : '3/4' }}; object-fit: cover;"
+                                                        muted autoplay loop playsinline data-type="video"
+                                                        data-src="{{ asset('storage/' . $giftPath) }}">
+
+                                                        <source src="{{ asset('storage/' . $giftPath) }}"
+                                                            type="video/{{ $extGift }}">
+
+                                                    </video>
+                                                @endif
+
+                                            </div>
+                                        </div>
                                     @endif
                                 @endif
                             </div>

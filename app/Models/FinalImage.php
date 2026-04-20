@@ -11,7 +11,8 @@ class FinalImage extends Model
         'image_path',
         'video_path',
         'print_quantity',
-        'printed'
+        'printed',
+        'gift'
     ];
 
     protected $casts = [
