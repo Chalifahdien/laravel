@@ -134,6 +134,31 @@
                                     <td class="text-muted">Created</td>
                                     <td>{{ $photoSession->created_at->format('d M Y H:i') }}</td>
                                 </tr>
+
+                                @if ($photoSession->download)
+                                    <tr>
+                                        <td class="text-muted align-middle">Gallery Link</td>
+                                        <td>
+                                            <div class="input-group input-group-flat input-group-sm">
+                                                <input type="text" class="form-control" id="galleryLinkInput"
+                                                    value="{{ route('gallery.show', $photoSession->download->token) }}" readonly>
+                                                <span class="input-group-text">
+                                                    <a href="javascript:void(0)" class="link-secondary" title="Copy Link"
+                                                        data-bs-toggle="tooltip" onclick="copyToClipboard()">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
+                                                            <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" />
+                                                        </svg>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -411,4 +436,15 @@
 
         </div>
     </div>
+
+    <script>
+        function copyToClipboard() {
+            var copyText = document.getElementById("galleryLinkInput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(function() {
+                alert("Gallery link copied to clipboard!");
+            });
+        }
+    </script>
 @endsection
